@@ -8,15 +8,15 @@ const AppRoutes = [
     //element: <Home/>
   //},
   {
-    path: '/Metrics',
+    path: '/metrics',
     element: <Metrics/>
   },
   {
-    path: '/MyEvents',
+    path: '/my-events',
     element: <MyEvents/>
   },
   {
-    path: '/CreateEvent',
+    path: '/create-event',
     element: <CreateEvent/>
   }
 

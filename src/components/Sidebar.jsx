@@ -6,7 +6,7 @@ import {AiOutlineHome} from 'react-icons/ai'
 import {BsGraphUp, BsGear}from 'react-icons/bs'
 
 import {BiCalendarEvent} from 'react-icons/bi'
-import { NavLink } from 'react-router-dom'
+import { NavLink, NavItem } from 'react-router-dom'
 import classes from '../App.css'
 
 export const Sidebar = () => {
@@ -16,19 +16,19 @@ export const Sidebar = () => {
 
     const menuItem = [
         {
-            path: "/MyEvents",
+            path: "/my-events",
             name: "MyEvents",
             description: "Mis eventos",
             icon: <AiOutlineHome/>
         },
         {
-            path: "/CreateEvent",
+            path: "/create-event",
             name: "CreateEvent",
             description: "Crear evento",
             icon: <BiCalendarEvent/>
         },
         {
-            path: "/Metrics",
+            path: "/metrics",
             name: "Metrics",
             description: "Metricas",
             icon: <BsGraphUp/>
@@ -46,10 +46,12 @@ export const Sidebar = () => {
                 </div >
                 {
                    menuItem.map((item, index)=>(
-                       <NavLink to={item.path} key={index} className="link" activeclassName="active">
-                           <div className="icon">{item.icon}</div>
-                           <div style={{display: isOpen ? "block" : "none"}} className="link_text">{item.description}</div>
-                       </NavLink>
+                        <NavItem>
+                            <NavLink to={item.path} key={index} className="link">
+                                <div className="icon">{item.icon}</div>
+                                <div style={{display: isOpen ? "block" : "none"}} className="link_text">{item.description}</div>
+                            </NavLink>
+                       </NavItem>
                    ))
                }
             </div>
