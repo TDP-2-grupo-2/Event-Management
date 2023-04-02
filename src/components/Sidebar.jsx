@@ -6,7 +6,8 @@ import {AiOutlineHome} from 'react-icons/ai'
 import {BsGraphUp, BsGear}from 'react-icons/bs'
 
 import {BiCalendarEvent} from 'react-icons/bi'
-import { NavLink, NavItem } from 'react-router-dom'
+import {NavItem} from 'reactstrap';
+import { NavLink} from 'react-router-dom'
 import classes from '../App.css'
 
 export const Sidebar = () => {
