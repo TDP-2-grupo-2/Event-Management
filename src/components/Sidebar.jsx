@@ -15,10 +15,9 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
+import { Metrics } from '../pages/Metrics';
+import { MyEvents } from '../pages/MyEvents';
+import { CreateEvent } from '../pages/CreateEvent';
 
 
 
@@ -75,31 +74,36 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
 export const Sidebar = () => {
     const[isOpen ,setIsOpen] = useState(false);
     const[currentPageTitle ,setCurrentPageTitle] = useState('');
+    const[componentToRender ,setComponentToRenderize] = useState(0);
     const theme = useTheme();
     const handleSidebarOpen = () => setIsOpen (!isOpen);
     const sidebarFontColor = 'white'// gris'rgba(141,155,180,255)';
-
 
     const menuItem = [
         {
             path: "/my-events",
             name: "Mis eventos",
-            description: "Mis eventos",
-            icon: <AiOutlineHome color={sidebarFontColor}/>
+            icon: <AiOutlineHome color={sidebarFontColor}/>,
         },
         {
             path: "/create-event",
             name: "Agregar Eventos",
-            description: "Crear evento",
-            icon: <BiCalendarEvent color={sidebarFontColor}/>
+            icon: <BiCalendarEvent color={sidebarFontColor}/>,
         },
         {
             path: "/metrics",
-            name: "Metricas",
-            description: "Metricas",
-            icon: <BsGraphUp color={sidebarFontColor}/>
+            name: "Métricas",
+            icon: <BsGraphUp color={sidebarFontColor}/>,
         },
     ]
+    const renderComponent = () => {
+        return componentToRender
+    }
+
+    const handlePage = (index, item) => {
+        setCurrentPageTitle(item.name)
+        setComponentToRenderize(index)
+    }
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -149,9 +153,9 @@ export const Sidebar = () => {
                 {
                     menuItem.map((item, index)=>(
                         <NavItem>
-                            <NavLink to={item.path} key={index} className="link" onClick={() => {setCurrentPageTitle(item.name)}}>
+                            <NavLink to={item.path} key={index} className="link" onClick={(item) => {handlePage(index, item)}}>
                                 <div className="icon" >{item.icon}</div>
-                                <div style={{display: isOpen ? "block" : "none", color: sidebarFontColor}} className="link_text">{item.description}</div>
+                                <div style={{display: isOpen ? "block" : "none", color: sidebarFontColor}} className="link_text">{item.name}</div>
                             </NavLink>
                         </NavItem>
                     ))
@@ -159,21 +163,11 @@ export const Sidebar = () => {
                 </List>
             </Drawer>
 
-            <Main open={isOpen} style={{bakcground: 'rgba(137,152,202,255)'}}>
+            <Main open={isOpen} style={{background: 'rgba(137,152,202,255)'}} renderComponent={renderComponent}>
             <DrawerHeader/>
-            <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
-          eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
-          neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
-          tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis
-          sed odio morbi. Euismod lacinia at quis risus sed vulputate odio. Morbi
-          tincidunt ornare massa eget egestas purus viverra accumsan in. In hendrerit
-          gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem
-          et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis
-          tristique sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
+               {componentToRender == 0 ? <MyEvents/>: <></>}
+               {componentToRender == 1 ? <CreateEvent/>: <></>}
+               {componentToRender == 2 ? <Metrics/>: <></>}            
             </Main>
         </Box>
     )
