@@ -18,6 +18,7 @@ import IconButton from '@mui/material/IconButton';
 import { Metrics } from '../pages/Metrics';
 import { MyEvents } from '../pages/MyEvents';
 import { CreateEvent } from '../pages/CreateEvent';
+import { Button } from '@mui/material';
 
 
 
@@ -143,9 +144,9 @@ export const Sidebar = () => {
                     <Typography variant="h6" noWrap component="div" align='center' color={sidebarFontColor}>
                         Administracion de eventos
                     </Typography>
-                <IconButton onClick={handleSidebarOpen}>
-                    <FaBars color={sidebarFontColor}/>
-                </IconButton>
+                    <IconButton onClick={handleSidebarOpen}>
+                        <FaBars color={sidebarFontColor}/>
+                    </IconButton>
                 </DrawerHeader>
                 <Divider/>
 
@@ -153,10 +154,10 @@ export const Sidebar = () => {
                 {
                     menuItem.map((item, index)=>(
                         <NavItem>
-                            <NavLink to={item.path} key={index} className="link" onClick={(item) => {handlePage(index, item)}}>
+                            <Button variant="text" key={index} className="link" onClick={(item) => {handlePage(index, item)}} style={{textTransform: 'none'}}>
                                 <div className="icon" >{item.icon}</div>
                                 <div style={{display: isOpen ? "block" : "none", color: sidebarFontColor}} className="link_text">{item.name}</div>
-                            </NavLink>
+                            </Button>
                         </NavItem>
                     ))
                 }

@@ -5,7 +5,7 @@ export const MyEvents = () => {
     console.log("entreeeee")
     return (
         <div>
-            <h1 style={{ color: 'red' }}> My events Pages</h1>
+            <h1> My events Pages</h1>
         </div>
     );
 };
