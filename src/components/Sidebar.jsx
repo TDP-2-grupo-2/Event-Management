@@ -27,34 +27,33 @@ const drawerWidth = 300;
 
 
 
-const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'isOpen' })(
-  ({ theme, isOpen }) => ({
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: `-${drawerWidth}px`,
-    ...(isOpen && {
+const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
+    ({ theme, open }) => ({
+      flexGrow: 1,
+      padding: theme.spacing(3),
       transition: theme.transitions.create('margin', {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen,
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
       }),
-      marginLeft: 0,
+      marginLeft: `-${drawerWidth}px`,
+      ...(open && {
+        transition: theme.transitions.create('margin', {
+          easing: theme.transitions.easing.easeOut,
+          duration: theme.transitions.duration.enteringScreen,
+        }),
+        marginLeft: 0,
+      }),
     }),
-  }),
-);
-
-
-const AppBar = styled(MuiAppBar, {
-    shouldForwardProp: (prop) => prop !== 'isOpen',
-  })(({ theme, isOpen }) => ({
+  );
+  
+  const AppBar = styled(MuiAppBar, {
+    shouldForwardProp: (prop) => prop !== 'open',
+  })(({ theme, open }) => ({
     transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    ...(isOpen && {
+    ...(open && {
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: `${drawerWidth}px`,
       transition: theme.transitions.create(['margin', 'width'], {
@@ -63,8 +62,8 @@ const AppBar = styled(MuiAppBar, {
       }),
     }),
   }));
-
-const DrawerHeader = styled('div')(({ theme }) => ({
+  
+  const DrawerHeader = styled('div')(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
     padding: theme.spacing(0, 1),
@@ -75,6 +74,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 export const Sidebar = () => {
     const[isOpen ,setIsOpen] = useState(false);
+    const[currentPageTitle ,setCurrentPageTitle] = useState('');
     const theme = useTheme();
     const handleSidebarOpen = () => setIsOpen (!isOpen);
     const sidebarFontColor = 'white'// gris'rgba(141,155,180,255)';
@@ -83,28 +83,29 @@ export const Sidebar = () => {
     const menuItem = [
         {
             path: "/my-events",
-            name: "MyEvents",
+            name: "Mis eventos",
             description: "Mis eventos",
             icon: <AiOutlineHome color={sidebarFontColor}/>
         },
         {
             path: "/create-event",
-            name: "CreateEvent",
+            name: "Agregar Eventos",
             description: "Crear evento",
             icon: <BiCalendarEvent color={sidebarFontColor}/>
         },
         {
             path: "/metrics",
-            name: "Metrics",
+            name: "Metricas",
             description: "Metricas",
             icon: <BsGraphUp color={sidebarFontColor}/>
         },
     ]
 
     return (
-        <Box sx={{ display: 'flex' }} style={{bakcground: 'rgba(137,152,202,255)'}}>
-
-            <AppBar position="fixed" open={isOpen} style={{bakcground: 'rgba(137,152,202,255)'}}>
+        <Box sx={{ display: 'flex' }}>
+            <style>{'body { background-color: rgba(137,152,202,255); }'}</style>
+            <CssBaseline />
+            <AppBar elevation={0} position="fixed" open={isOpen} currentPageTitle={currentPageTitle}  style={{ background: 'transparent' }}>
                 <Toolbar>
                     <IconButton
                         color="rgba(137,152,202,255)"
@@ -114,6 +115,9 @@ export const Sidebar = () => {
                         sx={{ mr: 2, ...(isOpen && { display: 'none' }) }}>
                         <FaBars color={sidebarFontColor}/>
                     </IconButton>
+                    <Typography variant="h6" noWrap component="div">
+                        {currentPageTitle}
+                    </Typography>
                 </Toolbar>
             </AppBar>
 
@@ -121,11 +125,11 @@ export const Sidebar = () => {
                 sx={{
                 width: drawerWidth,
                 flexShrink: 0,
-                '& .MuiDrawer-paper': {
+                    '& .MuiDrawer-paper': {
                     width: drawerWidth,
                     boxSizing: 'border-box',
                     background: 'rgba(112, 92, 156)'
-                },
+                    },
                 }}
                 variant="persistent"
                 anchor="left"
@@ -139,11 +143,13 @@ export const Sidebar = () => {
                     <FaBars color={sidebarFontColor}/>
                 </IconButton>
                 </DrawerHeader>
+                <Divider/>
+
                 <List>
                 {
                     menuItem.map((item, index)=>(
                         <NavItem>
-                            <NavLink to={item.path} key={index} className="link">
+                            <NavLink to={item.path} key={index} className="link" onClick={() => {setCurrentPageTitle(item.name)}}>
                                 <div className="icon" >{item.icon}</div>
                                 <div style={{display: isOpen ? "block" : "none", color: sidebarFontColor}} className="link_text">{item.description}</div>
                             </NavLink>
@@ -153,8 +159,21 @@ export const Sidebar = () => {
                 </List>
             </Drawer>
 
-            <Main open={isOpen}>
+            <Main open={isOpen} style={{bakcground: 'rgba(137,152,202,255)'}}>
             <DrawerHeader/>
+            <Typography paragraph>
+          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
+          eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
+          neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
+          tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis
+          sed odio morbi. Euismod lacinia at quis risus sed vulputate odio. Morbi
+          tincidunt ornare massa eget egestas purus viverra accumsan in. In hendrerit
+          gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem
+          et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis
+          tristique sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
+          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
+          posuere sollicitudin aliquam ultrices sagittis orci a.
+        </Typography>
             </Main>
         </Box>
     )
