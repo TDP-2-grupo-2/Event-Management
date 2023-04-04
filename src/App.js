@@ -8,13 +8,13 @@ function App() {
   return (
     <BrowserRouter>
       <Sidebar>
-        <Routes>
+      </Sidebar>
+      <Routes>
           {AppRoutes.map((route, index) => {
             const { element, ...rest } = route;
             return <Route key={index} {...rest} element={element} />;
           })}
         </Routes>
-      </Sidebar>
     </BrowserRouter>
   
   );

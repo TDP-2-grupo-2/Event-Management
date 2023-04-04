@@ -38,7 +38,7 @@ export const Sidebar = () => {
 
     return (
         <div className='container'>
-            <div style={{width: isOpen ? "280px" : "50px"}} className='sidebar'>
+            <div style={{width: isOpen ? "280px" : "50px", display: "flex-display"}} className='sidebar'>
                 <div className='top_section'>
                     <h1 style={{display: isOpen ? "block" : "none"}} className="logo">Event Management</h1>
                     <div style={{marginLeft: isOpen ? "50px" : "0px"}} className='bars'>
