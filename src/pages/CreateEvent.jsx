@@ -6,6 +6,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from "dayjs";
 import { styled } from '@mui/material/styles';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import {MapView} from '../components/MapView'
 
 
 const eventypes = [
@@ -59,7 +60,7 @@ export const CreateEvent = (props) => {
                     width:"50%",
                     }} 
                 >
-                    <Grid container>
+                    <Grid container rowSpacing={3}>
                         <Grid item>
                             <Input
                                 id="photosInput"
@@ -82,6 +83,9 @@ export const CreateEvent = (props) => {
                         <TextField 
                         placeholder="Ingresa la ubicacion de evento" 
                         />
+                    </Grid>
+                    <Grid item  style={{ display: "flex", justifyContent: "flex-start" }}>
+                        <> <MapView/> </>
                     </Grid>
                     
                     </Grid>
