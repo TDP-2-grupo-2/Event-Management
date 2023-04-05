@@ -1,12 +1,14 @@
-import { Paper, Grid, Typography, TextField, Box , MenuItem, Input} from "@mui/material";
+import { Button, Grid, Typography, TextField, Box , MenuItem, Input} from "@mui/material";
 import React , {useState, useEffect } from "react";
 import { DesktopTimePicker } from '@mui/x-date-pickers/DesktopTimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from "dayjs";
+import { useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import {MapView} from '../components/MapView'
+import moment from "moment";
 
 
 const eventypes = [
@@ -40,14 +42,73 @@ export const CreateEvent = (props) => {
     console.log("entreeeee")
     const [eventName, setEventName] = useState("")
     const [eventDescription, setEventDescription] = useState("")
-    const [eventStartTime, setEventStartTime] = useState("")
-    const [eventEndTime, setEventEndTime] = useState("")
+    const [eventStartTime, setEventStartTime] = useState(dayjs('2022-04-17T15:30'))
+    const [eventEndTime, setEventEndTime] = useState(dayjs('2022-04-17T15:30'))
     const [eventLocation, setEventLocation] = useState("")
-    const [eventDate, setEventDate] = useState("")
+    const [eventDate, setEventDate] = useState(dayjs(Date.now()))
     const [eventCapacity, setEventCapcity] = useState(0)
     const [eventType, setEventType] = useState("")
     const [fileInputShow, setFileInputShow] = useState("");
-    const apiurl = 'https://event-service-solfonte.cloud.okteto.net/'
+    const navigate = useNavigate();
+
+    const APIURL = 'https://event-service-solfonte.cloud.okteto.net'
+
+    const onSubmitEvent = async (event) => {
+       
+        console.log("entre a submit event ")
+        console.log(eventName)
+        console.log(eventDescription)
+        console.log(eventCapacity)
+        console.log(eventStartTime)
+        console.log(eventType)
+        console.log(eventLocation)
+        console.log(eventEndTime)
+        console.log(eventDate)
+        let eventDateFormat = moment(eventDate).format('YYYY-MM-DD');
+        let eventStartTimeFormat = eventStartTime.$H + ":" + eventStartTime.$m 
+        let eventEndTimeFormat = eventEndTime.$H + ":" + eventEndTime.$m 
+        console.log(eventDateFormat)
+        console.log(eventStartTimeFormat)
+        console.log(eventEndTimeFormat)
+        const paramsUpload = {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: eventName,
+                owner: "pepe", // Como no hay login esto tiene q ir harcodeado por ahora (no hay usuario)
+                description: eventDescription,
+                location: eventLocation,
+                locationDescription: "ejemplo", // falta agregar este campo
+                capacity: eventCapacity,
+                dateEvent: eventDateFormat,
+                eventType: eventType,
+                tags: ["tag"],
+                latitud: 0.8, //falta
+                longitud: 0.7, //falta
+                start: eventStartTimeFormat,
+                end: eventEndTimeFormat,
+                //falta fotos (opcional)
+                // falta faqs 
+            })
+        };
+        const url = `${APIURL}/events/`;
+        const response = await fetch(
+            url,
+            paramsUpload
+        );
+        const jsonResponse = await response.json();
+        if (response.status === 200){
+            if(!jsonResponse.status_code){
+                navigate('/');
+                window.location.reload();
+            }else{
+                // mostrar mensaje de error 
+            }
+
+        }
+    }
    
     return (
         <div className="CreateEvent" style={{background: "rgba(137,152,202,255)"}}>
@@ -90,7 +151,9 @@ export const CreateEvent = (props) => {
                     </Grid>
                     <Grid item xs={12} style={{ display: "flex", justifyContent: "flex-start" }}>
                         <TextField 
-                        placeholder="Ingresa la ubicacion de evento" 
+                        placeholder="Ingresa la ubicacion de evento"
+                        value={eventLocation}
+                        onChange = {(event) => setEventLocation(event.target.value)} 
                         />
                     </Grid>
                     <Grid item  style={{ display: "flex", justifyContent: "flex-start" }}>
@@ -117,6 +180,8 @@ export const CreateEvent = (props) => {
                     <Grid item xs={12} sm={12} style={{ display: "flex", justifyContent: "flex-start" }}>
                         <TextField label="Nombre Evento" 
                         placeholder="Ingresa el nombre del evento" 
+                        value={eventName}
+                        onChange = {(event) => setEventName(event.target.value)}
                         fullWidth
                         />
                     </Grid>
@@ -126,6 +191,8 @@ export const CreateEvent = (props) => {
                                     multiline
                                     rows={1} 
                                     fullWidth
+                                    value={eventDescription}
+                                    onChange = {(event) => setEventDescription(event.target.value)}
                                     />
                     </Grid>
                     <Grid item xs={12} style={{ display: "flex", justifyContent: "flex-start" }}>
@@ -137,7 +204,8 @@ export const CreateEvent = (props) => {
                     <Grid item xs={6} sm={6} style={{ display: "flex", justifyContent: "flex-start" }}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DesktopTimePicker label= "Hora inicio" 
-                                                defaultValue={dayjs('2022-04-17T15:30')} 
+                                                value={eventStartTime || null}
+                                                onChange={(event) => setEventStartTime(event)}
                                                 />
                         </LocalizationProvider>
 
@@ -145,7 +213,8 @@ export const CreateEvent = (props) => {
                     <Grid item xs={6} sm={6} style={{ display: "flex", justifyContent: "flex-end" }}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DesktopTimePicker label="Hora fin" 
-                                            defaultValue={dayjs('2022-04-17T15:30')}
+                                                value={eventEndTime || null}
+                                                onChange={(event) => setEventEndTime(event)}
                                              />
                         </LocalizationProvider>
 
@@ -154,6 +223,8 @@ export const CreateEvent = (props) => {
                         <TextField
                             label="Capacidad"
                             type="number"
+                            value={eventCapacity}
+                            onChange = {(event) => setEventCapcity(event.target.value)}
                             InputProps={{
                                 inputProps: { min: 0 }
                             }}
@@ -162,8 +233,10 @@ export const CreateEvent = (props) => {
                     <Grid item xs={6} style={{ display: "flex", justifyContent: "flex-end" }}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker label="Fecha" 
-                                        defaultValue={dayjs()}
-                                        minDate={dayjs()} />
+                                        value={eventDate}
+                                        //minDate={dayjs()}
+                                        onChange={(event) => setEventDate(event.format("YYYY-MM-DD"))}
+                                         />
                         </LocalizationProvider>
 
                     </Grid>
@@ -173,6 +246,8 @@ export const CreateEvent = (props) => {
                             label="Tipo de Evento"
                             defaultValue="Concierto"
                             fullWidth
+                            value={eventType}
+                            onChange = {(event) => setEventType(event.target.value)}
                             >
                             {eventypes.map((option) => (
                                 <MenuItem key={option.value} value={option.value}>
@@ -206,6 +281,12 @@ export const CreateEvent = (props) => {
                         placeholder="Respuesta 2" 
                         />
                     </Grid>
+                    <Grid item xs={12} style={{ display: "flex", justifyContent: "center" }}>
+                        <Button variant="contained" 
+                                sx={{ color: 'white', backgroundColor: 'rgba(112, 92, 156);', borderColor: 'purple' }}
+                                onClick={onSubmitEvent}
+                                 >+ Crear Evento</Button>
+                    </Grid>
 
             </Grid>
         </Box>
@@ -216,4 +297,4 @@ export const CreateEvent = (props) => {
     );
    
     
-};
+}
