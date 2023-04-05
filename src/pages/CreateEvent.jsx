@@ -42,6 +42,7 @@ export const CreateEvent = (props) => {
     const [eventCapacity, setEventCapcity] = useState(0)
     const [eventType, setEventType] = useState("")
     const [fileInputShow, setFileInputShow] = useState("");
+    const [eventLocationDescription, setEventLocationDescription] = useState("")
     const [photosNamesHashed, setPhotosNamesHashed] = useState([]);
     const [eventPhotosUpload, setEventPhotosUpload] = useState([]);
     const navigate = useNavigate();
@@ -59,9 +60,12 @@ export const CreateEvent = (props) => {
         console.log(eventStartTime)
         console.log(eventType)
         console.log(eventLocation)
+
         console.log(eventEndTime)
         console.log(eventDate)
-        let eventDateFormat = moment(eventDate).format('YYYY-MM-DD');
+
+        const month = eventDate.$M  +  1
+        const eventDateFormat =  eventDate.$y + "-" + month  + "-" + eventDate.$D
         let eventStartTimeFormat = eventStartTime.$H + ":" + eventStartTime.$m 
         let eventEndTimeFormat = eventEndTime.$H + ":" + eventEndTime.$m 
         console.log(eventDateFormat)
@@ -79,7 +83,7 @@ export const CreateEvent = (props) => {
                 owner: "pepe", // Como no hay login esto tiene q ir harcodeado por ahora (no hay usuario)
                 description: eventDescription,
                 location: eventLocation,
-                locationDescription: "ejemplo", // falta agregar este campo
+                locationDescription: eventLocationDescription, // falta agregar este campo
                 capacity: eventCapacity,
                 dateEvent: eventDateFormat,
                 eventType: eventType,
@@ -141,7 +145,7 @@ export const CreateEvent = (props) => {
                     width:"50%",
                     }} 
                 >
-                    <Grid container rowSpacing={3}>
+                    <Grid container rowSpacing={4}>
                         <Grid item>
                             <Input
                                 id="photosInput"
@@ -160,15 +164,22 @@ export const CreateEvent = (props) => {
                             <h3>Ubicacion</h3>
                         </div>
                     </Grid>
-                    <Grid item xs={12} style={{ display: "flex", justifyContent: "flex-start" }}>
+                    <Grid item xs={6} style={{ display: "flex", justifyContent: "flex-start" }}>
                         <TextField 
                         placeholder="Ingresa la ubicacion de evento"
                         value={eventLocation}
                         onChange = {(event) => setEventLocation(event.target.value)} 
                         />
                     </Grid>
+                    <Grid item xs={6} style={{ display: "flex", justifyContent: "flex-start" }}>
+                        <TextField 
+                        placeholder="Dettale la ubicacion del evento"
+                        value={eventLocationDescription}
+                        onChange = {(event) => setEventLocationDescription(event.target.value)} 
+                        />
+                    </Grid>
                     <Grid item  style={{ display: "flex", justifyContent: "flex-start" }}>
-                      
+                      <><MapView/></>
                     </Grid>
                     
                     </Grid>
@@ -244,9 +255,9 @@ export const CreateEvent = (props) => {
                     <Grid item xs={6} style={{ display: "flex", justifyContent: "flex-end" }}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker label="Fecha" 
-                                        value={eventDate}
-                                        //minDate={dayjs()}
-                                        onChange={(event) => setEventDate(event.format("YYYY-MM-DD"))}
+                                        value={eventDate || null}
+                                        minDate={dayjs(Date.now())}
+                                        onChange={(event) => setEventDate(dayjs(new Date(event.toISOString())))}
                                          />
                         </LocalizationProvider>
 
