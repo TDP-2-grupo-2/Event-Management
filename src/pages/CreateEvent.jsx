@@ -38,7 +38,16 @@ const Img = styled('img')({
 
 export const CreateEvent = (props) => {
     console.log("entreeeee")
+    const [eventName, setEventName] = useState("")
+    const [eventDescription, setEventDescription] = useState("")
+    const [eventStartTime, setEventStartTime] = useState("")
+    const [eventEndTime, setEventEndTime] = useState("")
+    const [eventLocation, setEventLocation] = useState("")
+    const [eventDate, setEventDate] = useState("")
+    const [eventCapacity, setEventCapcity] = useState(0)
+    const [eventType, setEventType] = useState("")
     const [fileInputShow, setFileInputShow] = useState("");
+    const apiurl = 'https://event-service-solfonte.cloud.okteto.net/'
    
     return (
         <div className="CreateEvent" style={{background: "rgba(137,152,202,255)"}}>
@@ -85,7 +94,7 @@ export const CreateEvent = (props) => {
                         />
                     </Grid>
                     <Grid item  style={{ display: "flex", justifyContent: "flex-start" }}>
-                        <> <MapView/> </>
+                      
                     </Grid>
                     
                     </Grid>
@@ -105,16 +114,18 @@ export const CreateEvent = (props) => {
                 }}
       >
             <Grid container rowSpacing={2} >
-                    <Grid item xs={12} style={{ display: "flex", justifyContent: "flex-start" }}>
+                    <Grid item xs={12} sm={12} style={{ display: "flex", justifyContent: "flex-start" }}>
                         <TextField label="Nombre Evento" 
                         placeholder="Ingresa el nombre del evento" 
+                        fullWidth
                         />
                     </Grid>
-                    <Grid item xs={12} style={{ display: "flex", justifyContent: "flex-start" }}>
+                    <Grid item xs={12} sm={12} style={{ display: "flex", justifyContent: "flex-start" }}>
                         <TextField label="Descripcion" 
                                     placeholder="Ingresa la descripcion del evento"  
                                     multiline
-                                    rows={2} 
+                                    rows={1} 
+                                    fullWidth
                                     />
                     </Grid>
                     <Grid item xs={12} style={{ display: "flex", justifyContent: "flex-start" }}>
@@ -123,15 +134,19 @@ export const CreateEvent = (props) => {
                         </div>
                     </Grid>
 
-                    <Grid item xs={6} style={{ display: "flex", justifyContent: "flex-start" }}>
+                    <Grid item xs={6} sm={6} style={{ display: "flex", justifyContent: "flex-start" }}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DesktopTimePicker label= "Hora inicio" defaultValue={dayjs('2022-04-17T15:30')} />
+                            <DesktopTimePicker label= "Hora inicio" 
+                                                defaultValue={dayjs('2022-04-17T15:30')} 
+                                                />
                         </LocalizationProvider>
 
                     </Grid>
-                    <Grid item xs={6} style={{ display: "flex", justifyContent: "flex-end" }}>
+                    <Grid item xs={6} sm={6} style={{ display: "flex", justifyContent: "flex-end" }}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DesktopTimePicker label="Hora fin" defaultValue={dayjs('2022-04-17T15:30')} />
+                            <DesktopTimePicker label="Hora fin" 
+                                            defaultValue={dayjs('2022-04-17T15:30')}
+                                             />
                         </LocalizationProvider>
 
                     </Grid>
@@ -146,15 +161,18 @@ export const CreateEvent = (props) => {
                     </Grid>
                     <Grid item xs={6} style={{ display: "flex", justifyContent: "flex-end" }}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DatePicker label="Fecha" defaultValue={dayjs('2022-04-17')} />
+                            <DatePicker label="Fecha" 
+                                        defaultValue={dayjs()}
+                                        minDate={dayjs()} />
                         </LocalizationProvider>
 
                     </Grid>
-                    <Grid item xs={12} style={{ display: "flex", justifyContent: "flex-start" }}>
+                    <Grid item xs={12} sm={12} style={{ display: "flex", justifyContent: "flex-start" }}>
                         <TextField
                             select
                             label="Tipo de Evento"
                             defaultValue="Concierto"
+                            fullWidth
                             >
                             {eventypes.map((option) => (
                                 <MenuItem key={option.value} value={option.value}>
