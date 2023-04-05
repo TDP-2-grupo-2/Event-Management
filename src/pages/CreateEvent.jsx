@@ -9,6 +9,7 @@ import { styled } from '@mui/material/styles';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import {MapView} from '../components/MapView'
 import moment from "moment";
+import { handleUploadFirebaseImage, deleteFirebaseImage } from '../common/FirebaseHandler';
 
 
 const eventypes = [
@@ -30,14 +31,6 @@ const eventypes = [
     },
   ];
 
-const Img = styled('img')({
-    margin: 'auto',
-    display: 'block',
-    maxWidth: '100%',
-    maxHeight: '100%',
-  });
-
-
 export const CreateEvent = (props) => {
     console.log("entreeeee")
     const [eventName, setEventName] = useState("")
@@ -49,9 +42,13 @@ export const CreateEvent = (props) => {
     const [eventCapacity, setEventCapcity] = useState(0)
     const [eventType, setEventType] = useState("")
     const [fileInputShow, setFileInputShow] = useState("");
+    const [photosNamesHashed, setPhotosNamesHashed] = useState([]);
+    const [eventPhotosUpload, setEventPhotosUpload] = useState([]);
     const navigate = useNavigate();
 
     const APIURL = 'https://event-service-solfonte.cloud.okteto.net'
+
+
 
     const onSubmitEvent = async (event) => {
        
@@ -70,6 +67,8 @@ export const CreateEvent = (props) => {
         console.log(eventDateFormat)
         console.log(eventStartTimeFormat)
         console.log(eventEndTimeFormat)
+        let photosNames = await handleUploadPhotos();
+        console.log(photosNames)
         const paramsUpload = {
             method: "POST",
             headers: {
@@ -89,6 +88,7 @@ export const CreateEvent = (props) => {
                 longitud: 0.7, //falta
                 start: eventStartTimeFormat,
                 end: eventEndTimeFormat,
+                photos: photosNames,
                 //falta fotos (opcional)
                 // falta faqs 
             })
@@ -108,6 +108,17 @@ export const CreateEvent = (props) => {
             }
 
         }
+    }
+
+    const handleUploadPhotos = async () => {
+        const hashedNames = [];
+        console.log(eventPhotosUpload)
+        console.log(eventPhotosUpload.length)
+        for ( let i=0; i<eventPhotosUpload.length; i++){
+            hashedNames.push(await handleUploadFirebaseImage(eventPhotosUpload[i].name, eventPhotosUpload[i]));
+        }
+        setPhotosNamesHashed(hashedNames);
+        return hashedNames;
     }
    
     return (
@@ -141,7 +152,7 @@ export const CreateEvent = (props) => {
                                 inputProps = {{accept: "image/*", "multiple":false}}
                                 type = "file"
                                 style={{width:"100%", marginBottom: 10}}
-                                onChange = {(event) => {setFileInputShow(event.target.value);}}
+                                onChange = {(event) => {setFileInputShow(event.target.value);setEventPhotosUpload(event.target.files)}}
                             />
                         </Grid>
                         <Grid item xs={12} style={{ display: "flex", justifyContent: "flex-start" }}>
