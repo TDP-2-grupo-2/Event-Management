@@ -167,7 +167,7 @@ export const CreateEvent = (props) => {
                         />
                     </Grid>
                     <Grid item  style={{ display: "flex", justifyContent: "flex-start" }}>
-                      <MapView position={mapPosition}/>
+                      <MapView location={eventLocation}/>
                     </Grid>
                     
                     </Grid>
