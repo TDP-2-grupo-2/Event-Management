@@ -32,7 +32,6 @@ const eventypes = [
   ];
 
 export const CreateEvent = (props) => {
-    console.log("entreeeee")
     const [eventName, setEventName] = useState("")
     const [eventDescription, setEventDescription] = useState("")
     const [eventStartTime, setEventStartTime] = useState(dayjs('2022-04-17T15:30'))
@@ -52,17 +51,6 @@ export const CreateEvent = (props) => {
 
 
     const onSubmitEvent = async (event) => {
-       
-        console.log("entre a submit event ")
-        console.log(eventName)
-        console.log(eventDescription)
-        console.log(eventCapacity)
-        console.log(eventStartTime)
-        console.log(eventType)
-        console.log(eventLocation)
-
-        console.log(eventEndTime)
-        console.log(eventDate)
 
         const month = eventDate.$M  +  1
         const eventDateFormat =  eventDate.$y + "-" + month  + "-" + eventDate.$D
@@ -124,11 +112,11 @@ export const CreateEvent = (props) => {
         setPhotosNamesHashed(hashedNames);
         return hashedNames;
     }
-   
+    const mapPosition = [51.505, -0.09]
     return (
         <div className="CreateEvent" style={{background: "rgba(137,152,202,255)"}}>
             <Typography  variant="h3" align="top">
-                Create Event
+                Agregar evento
             </Typography>
             <Box display="flex"
                 justifyContent="space-between"
@@ -179,7 +167,7 @@ export const CreateEvent = (props) => {
                         />
                     </Grid>
                     <Grid item  style={{ display: "flex", justifyContent: "flex-start" }}>
-                      <><MapView/></>
+                      <MapView position={mapPosition}/>
                     </Grid>
                     
                     </Grid>
