@@ -11,10 +11,7 @@ const BUENOS_AIRES_POSITION = [-58.3837591, -34.6037345]
 
 
 export const MapView = (props) => {
-    //const [address, setAddress] = useState(props.address);
-    const [address, setAddress] = useState('montevideo 1372, caba, argentina');
-    const mapRef = useRef();
-    const [mapView, setMapView] = useState({
+    let [viewPort, setViewPort] = useState({
       longitude: BUENOS_AIRES_POSITION[0],
       latitude: BUENOS_AIRES_POSITION[1],
       zoom: 12
@@ -22,27 +19,39 @@ export const MapView = (props) => {
     
     
     const findPlace = async () => {
-      const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURI(address)}.json?access_token=${MAP_BOX_TOKEN}`
-      const response = await fetch(url);
+      if (props.location !== ''){
+        console.log("enrte al el if")
+        const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURI(props.location)}.json?access_token=${MAP_BOX_TOKEN}`
+        const response = await fetch(url);
+        const jsonResponse = await response.json();
+        const newView = jsonResponse.features[0].center
+        console.log(newView)
+        setViewPort({...viewPort, longitude: newView[0], latitude: newView[1]})
+        console.log(viewPort)
 
-      const jsonResponse = await response.json();
-      const newView = jsonResponse.features[0].center
-      console.log(newView)
-      setMapView({...mapView, longitude: newView[0], latitude: newView[1]})
-      console.log("cambio")
+        }
     }
-    
+
+      useEffect(() => {
+        findPlace();
+        console.log("ENTRO")
+        console.log(props.location)
+      }, [props.location])
+  
 
    return (
     <div>
     <ReactMapGl
-        initialViewState={mapView}
-        style={{width: '40vw', height: '50vh'}}
+        {...viewPort}
+        initialViewState={viewPort}
+        style={{width: '40vw', height: '50vh', overflow: "visible"}}
         mapStyle="mapbox://styles/mapbox/dark-v11"
         mapboxAccessToken={MAP_BOX_TOKEN}
+        onViewportChange={(viewport) => setViewPort(viewport)}
+        key={props.location}
       >
 
-    <Marker latitude={-34.6037345} longitude={-58.3837591} anchor='bottom'>
+    <Marker latitude={viewPort['latitude']} longitude={viewPort['longitude']} anchor='bottom'>
       <img src={pin} width={50}/>
     </Marker>
         

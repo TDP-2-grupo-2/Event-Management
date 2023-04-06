@@ -44,6 +44,8 @@ export const CreateEvent = (props) => {
     const [eventLocationDescription, setEventLocationDescription] = useState("")
     const [photosNamesHashed, setPhotosNamesHashed] = useState([]);
     const [eventPhotosUpload, setEventPhotosUpload] = useState([]);
+    const [locationToMap, setLocationToMap] = useState([])
+    
     const navigate = useNavigate();
 
     const APIURL = 'https://event-service-solfonte.cloud.okteto.net'
@@ -132,43 +134,55 @@ export const CreateEvent = (props) => {
                     borderRadius: 1,
                     width:"50%",
                     }} 
-                >
-                    <Grid container rowSpacing={4}>
-                        <Grid item>
-                            <Input
-                                id="photosInput"
-                                label="Upload Photos"
-                                name="Upload Photos"
-                                className={"inputStyle"}
-                                value={fileInputShow}
-                                inputProps = {{accept: "image/*", "multiple":false}}
-                                type = "file"
-                                style={{width:"100%", marginBottom: 10}}
-                                onChange = {(event) => {setFileInputShow(event.target.value);setEventPhotosUpload(event.target.files)}}
-                            />
-                        </Grid>
-                        <Grid item xs={12} style={{ display: "flex", justifyContent: "flex-start" }}>
-                        <div>
-                            <h3>Ubicacion</h3>
-                        </div>
-                    </Grid>
-                    <Grid item xs={6} style={{ display: "flex", justifyContent: "flex-start" }}>
-                        <TextField 
-                        placeholder="Ingresa la ubicacion de evento"
-                        value={eventLocation}
-                        onChange = {(event) => setEventLocation(event.target.value)} 
-                        />
-                    </Grid>
-                    <Grid item xs={6} style={{ display: "flex", justifyContent: "flex-start" }}>
-                        <TextField 
-                        placeholder="Dettale la ubicacion del evento"
+            >
+            <Grid container rowSpacing={4}>
+                <Grid item>
+                    <Input
+                        id="photosInput"
+                        label="Upload Photos"
+                        name="Upload Photos"
+                        className={"inputStyle"}
+                        value={fileInputShow}
+                        inputProps = {{accept: "image/*", "multiple":false}}
+                        type = "file"
+                        style={{width:"100%", marginBottom: 10}}
+                        onChange = {(event) => {setFileInputShow(event.target.value);setEventPhotosUpload(event.target.files)}}
+                    />
+                </Grid>
+                <Grid item xs={12} style={{ display: "flex", justifyContent: "flex-start", direction: "row"}}>
+                    <div>
+                        <h3>Ubicacion</h3>
+                    </div>
+                    
+                </Grid>
+                
+                <Grid item xs={6} style={{ display: "flex", justifyContent: "flex-start" }}>
+                    <TextField 
+                    placeholder="Ingresa la ubicacion de evento"
+                    value={eventLocation}
+                    onChange = {(event) => setEventLocation(event.target.value)} 
+                    />
+                </Grid>
+                <Grid item xs={6} style={{ display: "flex", justifyContent: "flex-start" }}>
+                    <TextField 
+                        placeholder="Detalle la ubicación del evento"
                         value={eventLocationDescription}
                         onChange = {(event) => setEventLocationDescription(event.target.value)} 
-                        />
-                    </Grid>
-                    <Grid item  style={{ display: "flex", justifyContent: "flex-start" }}>
-                      <MapView location={eventLocation}/>
-                    </Grid>
+                />                    
+                </Grid>
+                <Grid item xs={6} style={{ display: "flex", justifyContent: "flex-start" }}>
+                    <Button 
+                        variant="contained"
+                        onClick={() => setLocationToMap(eventLocation)}
+                        sx={{ color: 'white', backgroundColor: 'rgba(112, 92, 156);', borderColor: 'purple' }}
+                    >
+                            Marcar en el mapa
+                    </Button>
+                </Grid>
+                <Grid item  style={{ display: "flex", justifyContent: "center" }}>
+                    <MapView location={locationToMap}/>
+                </Grid>
+                    
                     
                     </Grid>
                     
@@ -197,7 +211,7 @@ export const CreateEvent = (props) => {
                     </Grid>
                     <Grid item xs={12} sm={12} style={{ display: "flex", justifyContent: "flex-start" }}>
                         <TextField label="Descripcion" 
-                                    placeholder="Ingresa la descripcion del evento"  
+                                    placeholder="Ingresa la descripción del evento"  
                                     multiline
                                     rows={1} 
                                     fullWidth
