@@ -1,4 +1,4 @@
-import { Button, Grid, Typography, TextField, Box , MenuItem, Input} from "@mui/material";
+import { Button, Grid, Typography, TextField, Box , MenuItem, Input, useStepContext} from "@mui/material";
 import React , {useState, useEffect } from "react";
 import { DesktopTimePicker } from '@mui/x-date-pickers/DesktopTimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -7,8 +7,8 @@ import dayjs from "dayjs";
 import { useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import {MapView} from '../components/MapView'
-import moment from "moment";
+import {MapView, getLatitudandlongitud} from '../components/MapView'
+
 import { handleUploadFirebaseImage, deleteFirebaseImage } from '../common/FirebaseHandler';
 
 
@@ -45,6 +45,9 @@ export const CreateEvent = (props) => {
     const [photosNamesHashed, setPhotosNamesHashed] = useState([]);
     const [eventPhotosUpload, setEventPhotosUpload] = useState([]);
     const [locationToMap, setLocationToMap] = useState([])
+    const [pregunta1, setPregunta1] = useState([])
+    const [pregunta2, setPregunta2] = useState([])
+    
     
     const navigate = useNavigate();
 
@@ -58,10 +61,9 @@ export const CreateEvent = (props) => {
         const eventDateFormat =  eventDate.$y + "-" + month  + "-" + eventDate.$D
         let eventStartTimeFormat = eventStartTime.$H + ":" + eventStartTime.$m 
         let eventEndTimeFormat = eventEndTime.$H + ":" + eventEndTime.$m 
-        console.log(eventDateFormat)
-        console.log(eventStartTimeFormat)
-        console.log(eventEndTimeFormat)
+        let eventPosition = await getLatitudandlongitud()
         let photosNames = await handleUploadPhotos();
+        let eventFaqs = getFaqs();
         console.log(photosNames)
         const paramsUpload = {
             method: "POST",
@@ -73,18 +75,17 @@ export const CreateEvent = (props) => {
                 owner: "pepe", // Como no hay login esto tiene q ir harcodeado por ahora (no hay usuario)
                 description: eventDescription,
                 location: eventLocation,
-                locationDescription: eventLocationDescription, // falta agregar este campo
+                locationDescription: eventLocationDescription,
                 capacity: eventCapacity,
                 dateEvent: eventDateFormat,
                 eventType: eventType,
                 tags: ["tag"],
-                latitud: 0.8, //falta
-                longitud: 0.7, //falta
+                latitud: eventPosition[1], 
+                longitud: eventPosition[0], 
                 start: eventStartTimeFormat,
                 end: eventEndTimeFormat,
                 photos: photosNames,
-                //falta fotos (opcional)
-                // falta faqs 
+                faqs: eventFaqs, 
             })
         };
         const url = `${APIURL}/events/`;
@@ -104,6 +105,11 @@ export const CreateEvent = (props) => {
         }
     }
 
+    const getFaqs = () =>{
+        const faqs = {'¿Hasta que hora puede ingresarse al evento?': pregunta1, 
+                    '¿Se suspende el evento por lluvia?': pregunta2};
+        return faqs
+    }
     const handleUploadPhotos = async () => {
         const hashedNames = [];
         console.log(eventPhotosUpload)
@@ -285,14 +291,17 @@ export const CreateEvent = (props) => {
                             <h3>Preguntas Frecuentes</h3>
                         </div>
                     </Grid>
-                    <Grid item xs={12}  style={{ display: "flex", justifyContent: "flex-start" }}>
+                    <Grid item xs={12} style={{ display: "flex", justifyContent: "flex-start" }}>
                         <div>
                             <h4>¿Hasta que hora puede ingresarse al evento?</h4>
                         </div>
                     </Grid>
-                    <Grid item xs={12} style={{ display: "flex", justifyContent: "flex-start" }}>
+                    <Grid item xs={12} sm={8} style={{ display: "flex", justifyContent: "flex-start" }}>
                         <TextField 
                         placeholder="Respuesta 1" 
+                        value={pregunta1}
+                        fullWidth
+                        onChange = {(event) => setPregunta1(event.target.value)}
                         />
                     </Grid>
                     <Grid item xs={12}  style={{ display: "flex", justifyContent: "flex-start" }}>
@@ -300,9 +309,12 @@ export const CreateEvent = (props) => {
                             <h4>¿Se suspende el evento por lluvia?</h4>
                         </div>
                     </Grid>
-                    <Grid item xs={12} style={{ display: "flex", justifyContent: "flex-start" }}>
+                    <Grid item xs={12} sm={8} style={{ display: "flex", justifyContent: "flex-start" }}>
                         <TextField 
-                        placeholder="Respuesta 2" 
+                        placeholder="Respuesta 2"
+                        value={pregunta2} 
+                        fullWidth
+                        onChange = {(event) => setPregunta2(event.target.value)}
                         />
                     </Grid>
                     <Grid item xs={12} style={{ display: "flex", justifyContent: "center" }}>
