@@ -51,11 +51,7 @@ export const CreateEvent = (props) => {
     const [pregunta3, setPregunta3] = useState("")
     
     
-    const navigate = useNavigate();
-
     const APIURL = 'https://event-service-solfonte.cloud.okteto.net'
-
-
 
     const onSubmitEvent = async (event) => {
 
