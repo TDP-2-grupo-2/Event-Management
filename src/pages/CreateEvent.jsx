@@ -45,8 +45,9 @@ export const CreateEvent = (props) => {
     const [photosNamesHashed, setPhotosNamesHashed] = useState([]);
     const [eventPhotosUpload, setEventPhotosUpload] = useState([]);
     const [locationToMap, setLocationToMap] = useState([])
-    const [pregunta1, setPregunta1] = useState([])
-    const [pregunta2, setPregunta2] = useState([])
+    const [pregunta1, setPregunta1] = useState("")
+    const [pregunta2, setPregunta2] = useState("")
+    const [pregunta3, setPregunta3] = useState("")
     
     
     const navigate = useNavigate();
@@ -107,7 +108,8 @@ export const CreateEvent = (props) => {
 
     const getFaqs = () =>{
         const faqs = {'¿Hasta que hora puede ingresarse al evento?': pregunta1, 
-                    '¿Se suspende el evento por lluvia?': pregunta2};
+                    '¿Se suspende el evento por lluvia?': pregunta2, 
+                    '¿Se puede ingresar con comida?': pregunta3};
         return faqs
     }
     const handleUploadPhotos = async () => {
@@ -141,7 +143,7 @@ export const CreateEvent = (props) => {
                     width:"50%",
                     }} 
             >
-            <Grid container rowSpacing={4}>
+            <Grid container rowSpacing={4} columnSpacing={2}>
                 <Grid item>
                     <Input
                         id="photosInput"
@@ -162,15 +164,17 @@ export const CreateEvent = (props) => {
                     
                 </Grid>
                 
-                <Grid item xs={6} style={{ display: "flex", justifyContent: "flex-start" }}>
+                <Grid item xs={6}  style={{ display: "flex", justifyContent: "flex-start" }}>
                     <TextField 
+                    fullWidth
                     placeholder="Ingresa la ubicacion de evento"
                     value={eventLocation}
                     onChange = {(event) => setEventLocation(event.target.value)} 
                     />
                 </Grid>
-                <Grid item xs={6} style={{ display: "flex", justifyContent: "flex-start" }}>
+                <Grid item xs={6}  style={{ display: "flex", justifyContent: "flex-start" }}>
                     <TextField 
+                        fullWidth
                         placeholder="Detalle la ubicación del evento"
                         value={eventLocationDescription}
                         onChange = {(event) => setEventLocationDescription(event.target.value)} 
@@ -203,10 +207,10 @@ export const CreateEvent = (props) => {
                 justifyContent: "center",
                 bgcolor: "rgba(137,152,202,255)",
                 borderRadius: 1,
-                width:"40%",
+                width:"50%",
                 }}
       >
-            <Grid container rowSpacing={2} >
+            <Grid container rowSpacing={3} columnSpacing={1} >
                     <Grid item xs={12} sm={12} style={{ display: "flex", justifyContent: "flex-start" }}>
                         <TextField label="Nombre Evento" 
                         placeholder="Ingresa el nombre del evento" 
@@ -231,7 +235,7 @@ export const CreateEvent = (props) => {
                         </div>
                     </Grid>
 
-                    <Grid item xs={6} sm={6} style={{ display: "flex", justifyContent: "flex-start" }}>
+                    <Grid item xs={6}  style={{ display: "flex", justifyContent: "flex-start" }}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DesktopTimePicker label= "Hora inicio" 
                                                 value={eventStartTime || null}
@@ -240,7 +244,7 @@ export const CreateEvent = (props) => {
                         </LocalizationProvider>
 
                     </Grid>
-                    <Grid item xs={6} sm={6} style={{ display: "flex", justifyContent: "flex-end" }}>
+                    <Grid item xs={6}  style={{ display: "flex", justifyContent: "flex-end" }}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DesktopTimePicker label="Hora fin" 
                                                 value={eventEndTime || null}
@@ -249,23 +253,25 @@ export const CreateEvent = (props) => {
                         </LocalizationProvider>
 
                     </Grid>
-                    <Grid item xs={6}  style={{ display: "flex", justifyContent: "flex-start" }}>
+                    <Grid item xs={6}   style={{ display: "flex", justifyContent: "flex-start" }}>
                         <TextField
                             label="Capacidad"
                             type="number"
                             value={eventCapacity}
+                        
                             onChange = {(event) => setEventCapcity(event.target.value)}
                             InputProps={{
                                 inputProps: { min: 0 }
                             }}
                         />
                     </Grid>
-                    <Grid item xs={6} style={{ display: "flex", justifyContent: "flex-end" }}>
+                    <Grid item xs={6}  style={{ display: "flex", justifyContent: "flex-end" }}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker label="Fecha" 
                                         value={eventDate || null}
                                         minDate={dayjs(Date.now())}
                                         onChange={(event) => setEventDate(dayjs(new Date(event.toISOString())))}
+                                        
                                          />
                         </LocalizationProvider>
 
@@ -276,6 +282,7 @@ export const CreateEvent = (props) => {
                             label="Tipo de Evento"
                             defaultValue="Concierto"
                             fullWidth
+                            size = 'small'
                             value={eventType}
                             onChange = {(event) => setEventType(event.target.value)}
                             >
@@ -296,11 +303,12 @@ export const CreateEvent = (props) => {
                             <h4>¿Hasta que hora puede ingresarse al evento?</h4>
                         </div>
                     </Grid>
-                    <Grid item xs={12} sm={8} style={{ display: "flex", justifyContent: "flex-start" }}>
+                    <Grid item xs={12} sm={12} style={{ display: "flex", justifyContent: "flex-start" }}>
                         <TextField 
                         placeholder="Respuesta 1" 
                         value={pregunta1}
                         fullWidth
+                        size="small"
                         onChange = {(event) => setPregunta1(event.target.value)}
                         />
                     </Grid>
@@ -309,12 +317,27 @@ export const CreateEvent = (props) => {
                             <h4>¿Se suspende el evento por lluvia?</h4>
                         </div>
                     </Grid>
-                    <Grid item xs={12} sm={8} style={{ display: "flex", justifyContent: "flex-start" }}>
+                    <Grid item xs={12} sm={12} style={{ display: "flex", justifyContent: "flex-start" }}>
                         <TextField 
                         placeholder="Respuesta 2"
                         value={pregunta2} 
                         fullWidth
+                        size="small"
                         onChange = {(event) => setPregunta2(event.target.value)}
+                        />
+                    </Grid>
+                    <Grid item xs={12}  style={{ display: "flex", justifyContent: "flex-start" }}>
+                        <div>
+                            <h4>¿Se puede acceder con comida?</h4>
+                        </div>
+                    </Grid>
+                    <Grid item xs={12} sm={12} style={{ display: "flex", justifyContent: "flex-start" }}>
+                        <TextField 
+                        placeholder="Respuesta 3"
+                        value={pregunta3} 
+                        fullWidth
+                        size="small"
+                        onChange = {(event) => setPregunta3(event.target.value)}
                         />
                     </Grid>
                     <Grid item xs={12} style={{ display: "flex", justifyContent: "center" }}>
