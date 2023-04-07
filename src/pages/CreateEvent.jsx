@@ -1,4 +1,4 @@
-import { Button, Grid, Typography, TextField, Box , MenuItem, Input, useStepContext} from "@mui/material";
+import { Button, Grid, Typography, TextField, Box , MenuItem, Input, Snackbar, Alert} from "@mui/material";
 import React , {useState, useEffect } from "react";
 import { DesktopTimePicker } from '@mui/x-date-pickers/DesktopTimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -32,6 +32,7 @@ const eventypes = [
   ];
 
 export const CreateEvent = (props) => {
+    const [open, setOpen] = useState(false)
     const [eventName, setEventName] = useState("")
     const [eventDescription, setEventDescription] = useState("")
     const [eventStartTime, setEventStartTime] = useState(dayjs('2022-04-17T15:30'))
@@ -95,16 +96,26 @@ export const CreateEvent = (props) => {
             paramsUpload
         );
         const jsonResponse = await response.json();
-        if (response.status === 200){
+        console.log("ver respuesta")
+        console.log(response.status)
+        if (response.status === 201){
+            console.log(jsonResponse.status_code)
             if(!jsonResponse.status_code){
-                navigate('/');
-                window.location.reload();
+                console.log("cree bien el evento ")
+                setOpen(true)
+                //navigate('/my-events');
+                //window.location.reload();
             }else{
+                console.log("hay error")
                 // mostrar mensaje de error 
             }
 
         }
     }
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     const getFaqs = () =>{
         const faqs = {'¿Hasta que hora puede ingresarse al evento?': pregunta1, 
@@ -344,7 +355,17 @@ export const CreateEvent = (props) => {
                         <Button variant="contained" 
                                 sx={{ color: 'white', backgroundColor: 'rgba(112, 92, 156);', borderColor: 'purple' }}
                                 onClick={onSubmitEvent}
-                                 >+ Crear Evento</Button>
+                                 >+ Crear Evento
+                        </Button>
+                        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} 
+                                anchorOrigin={{
+                                    vertical: "bottom",
+                                    horizontal: "center"
+                                }}>
+                            <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                                El evento a sido creado exitosamente
+                            </Alert>
+                        </Snackbar>
                     </Grid>
 
             </Grid>
