@@ -19,8 +19,6 @@ export const getLatitudandlongitud = async (location) => {
       return newView
     }
 }
-  
-
 
 export const MapView = (props) => {
     let [viewPort, setViewPort] = useState({
@@ -32,21 +30,16 @@ export const MapView = (props) => {
     
     const findPlace = async () => {
       if (props.location !== ''){
-        console.log("enrte al el if")
         const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURI(props.location)}.json?access_token=${MAP_BOX_TOKEN}`
         const response = await fetch(url);
         const jsonResponse = await response.json();
         const newView = jsonResponse.features[0].center
-        console.log(newView)
         setViewPort({...viewPort, longitude: newView[0], latitude: newView[1]})
-        console.log(viewPort)
-
         }
     }
 
       useEffect(() => {
         findPlace();
-        console.log("ENTRO")
         console.log(props.location)
       }, [props.location])
   

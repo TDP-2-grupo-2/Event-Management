@@ -57,10 +57,9 @@ export const CreateEvent = (props) => {
     const [pregunta3, setPregunta3] = useState("")
     const [file, setFile] = useState("")
     
+    
 
     const APIURL = 'https://event-service-solfonte.cloud.okteto.net'
-
-
 
     const onSubmitEvent = async (event) => {
 
