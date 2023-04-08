@@ -8,6 +8,12 @@ import { useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import {MapView, getLatitudandlongitud} from '../components/MapView'
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+
 
 import { handleUploadFirebaseImage, deleteFirebaseImage } from '../common/FirebaseHandler';
 
@@ -49,9 +55,8 @@ export const CreateEvent = (props) => {
     const [pregunta1, setPregunta1] = useState("")
     const [pregunta2, setPregunta2] = useState("")
     const [pregunta3, setPregunta3] = useState("")
+    const [file, setFile] = useState("")
     
-    
-    const navigate = useNavigate();
 
     const APIURL = 'https://event-service-solfonte.cloud.okteto.net'
 
@@ -103,8 +108,7 @@ export const CreateEvent = (props) => {
             if(!jsonResponse.status_code){
                 console.log("cree bien el evento ")
                 setOpen(true)
-                //navigate('/my-events');
-                //window.location.reload();
+               
             }else{
                 console.log("hay error")
                 // mostrar mensaje de error 
@@ -123,6 +127,15 @@ export const CreateEvent = (props) => {
                     '¿Se puede ingresar con comida?': pregunta3};
         return faqs
     }
+
+    function handleUploadOfFile (event)  {
+        setFileInputShow(event.target.value);
+        setEventPhotosUpload(event.target.files)
+        let url = URL.createObjectURL(event.target.files[0]);
+        setFile(url)
+        console.log(url)
+    }
+
     const handleUploadPhotos = async () => {
         const hashedNames = [];
         console.log(eventPhotosUpload)
@@ -133,7 +146,7 @@ export const CreateEvent = (props) => {
         setPhotosNamesHashed(hashedNames);
         return hashedNames;
     }
-    const mapPosition = [51.505, -0.09]
+
     return (
         <div className="CreateEvent" style={{background: "rgba(137,152,202,255)"}}>
             <Typography  variant="h3" align="top">
@@ -155,7 +168,7 @@ export const CreateEvent = (props) => {
                     }} 
             >
             <Grid container rowSpacing={4} columnSpacing={2}>
-                <Grid item>
+                <Grid item xs={12}>
                     <Input
                         id="photosInput"
                         label="Upload Photos"
@@ -165,9 +178,25 @@ export const CreateEvent = (props) => {
                         inputProps = {{accept: "image/*", "multiple":false}}
                         type = "file"
                         style={{width:"100%", marginBottom: 10}}
-                        onChange = {(event) => {setFileInputShow(event.target.value);setEventPhotosUpload(event.target.files)}}
+                        onChange = {(event) => {handleUploadOfFile(event)}}
                     />
                 </Grid>
+                {
+                        file.length > 0 &&            
+                    <Grid item xs={6}>
+                        
+                        <Card >
+                            <CardActionArea>
+                                <CardMedia
+                                    component="img"
+                                    alt="Default"
+                                    image={file}
+                                    title={fileInputShow}
+                                />
+                            </CardActionArea>
+                        </Card>
+                    </Grid>
+                }
                 <Grid item xs={12} style={{ display: "flex", justifyContent: "flex-start", direction: "row"}}>
                     <div>
                         <h3>Ubicacion</h3>
@@ -178,6 +207,7 @@ export const CreateEvent = (props) => {
                 <Grid item xs={6}  style={{ display: "flex", justifyContent: "flex-start" }}>
                     <TextField 
                     fullWidth
+                    required
                     placeholder="Ingresa la ubicacion de evento"
                     value={eventLocation}
                     onChange = {(event) => setEventLocation(event.target.value)} 
@@ -224,6 +254,7 @@ export const CreateEvent = (props) => {
             <Grid container rowSpacing={3} columnSpacing={1} >
                     <Grid item xs={12} sm={12} style={{ display: "flex", justifyContent: "flex-start" }}>
                         <TextField label="Nombre Evento" 
+                        required
                         placeholder="Ingresa el nombre del evento" 
                         value={eventName}
                         onChange = {(event) => setEventName(event.target.value)}
@@ -232,6 +263,7 @@ export const CreateEvent = (props) => {
                     </Grid>
                     <Grid item xs={12} sm={12} style={{ display: "flex", justifyContent: "flex-start" }}>
                         <TextField label="Descripcion" 
+                                    required
                                     placeholder="Ingresa la descripción del evento"  
                                     multiline
                                     rows={1} 
@@ -248,7 +280,8 @@ export const CreateEvent = (props) => {
 
                     <Grid item xs={6}  style={{ display: "flex", justifyContent: "flex-start" }}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DesktopTimePicker label= "Hora inicio" 
+                            <DesktopTimePicker label= "Hora inicio"
+                                                 
                                                 value={eventStartTime || null}
                                                 onChange={(event) => setEventStartTime(event)}
                                                 />
@@ -269,7 +302,7 @@ export const CreateEvent = (props) => {
                             label="Capacidad"
                             type="number"
                             value={eventCapacity}
-                        
+                            required
                             onChange = {(event) => setEventCapcity(event.target.value)}
                             InputProps={{
                                 inputProps: { min: 0 }
@@ -293,6 +326,7 @@ export const CreateEvent = (props) => {
                             label="Tipo de Evento"
                             defaultValue="Concierto"
                             fullWidth
+                            required
                             size = 'small'
                             value={eventType}
                             onChange = {(event) => setEventType(event.target.value)}
@@ -317,6 +351,7 @@ export const CreateEvent = (props) => {
                     <Grid item xs={12} sm={12} style={{ display: "flex", justifyContent: "flex-start" }}>
                         <TextField 
                         placeholder="Respuesta 1" 
+                        required
                         value={pregunta1}
                         fullWidth
                         size="small"
@@ -333,6 +368,7 @@ export const CreateEvent = (props) => {
                         placeholder="Respuesta 2"
                         value={pregunta2} 
                         fullWidth
+                        required
                         size="small"
                         onChange = {(event) => setPregunta2(event.target.value)}
                         />
@@ -345,8 +381,10 @@ export const CreateEvent = (props) => {
                     <Grid item xs={12} sm={12} style={{ display: "flex", justifyContent: "flex-start" }}>
                         <TextField 
                         placeholder="Respuesta 3"
+                        required
                         value={pregunta3} 
                         fullWidth
+                        
                         size="small"
                         onChange = {(event) => setPregunta3(event.target.value)}
                         />
