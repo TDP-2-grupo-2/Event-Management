@@ -6,6 +6,7 @@ export const MyEvents = () => {
     return (
         <div>
             <h1> My events Pages</h1>
+           
         </div>
     );
 };

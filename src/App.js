@@ -7,14 +7,14 @@ import {Sidebar} from './components/Sidebar'
 function App() {
   return (
     <BrowserRouter>
-      <Sidebar>
-      </Sidebar>
       <Routes>
           {AppRoutes.map((route, index) => {
             const { element, ...rest } = route;
             return <Route key={index} {...rest} element={element} />;
           })}
         </Routes>
+      <Sidebar>
+      </Sidebar>
     </BrowserRouter>
   
   );
