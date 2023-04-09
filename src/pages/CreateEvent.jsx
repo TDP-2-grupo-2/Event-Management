@@ -1,17 +1,13 @@
 import { Button, Grid, Typography, TextField, Box , MenuItem, Input, Snackbar, Alert} from "@mui/material";
-import React , {useState, useEffect } from "react";
+import React , {useState} from "react";
 import { DesktopTimePicker } from '@mui/x-date-pickers/DesktopTimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from "dayjs";
-import { useNavigate } from 'react-router-dom';
-import { styled } from '@mui/material/styles';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import {MapView, getLatitudandlongitud} from '../components/MapView'
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 
 
