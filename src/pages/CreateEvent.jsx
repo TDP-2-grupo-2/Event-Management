@@ -20,20 +20,24 @@ import { handleUploadFirebaseImage, deleteFirebaseImage } from '../common/Fireba
 
 const eventypes = [
     {
-      value: 'Concierto',
-      label: 'Concierto',
+        value: 'Concierto',
+        label: 'Concierto',
     },
     {
-      value: 'Teatro',
-      label: 'Teatro',
+        value: 'Teatro',
+        label: 'Teatro',
     },
     {
-      value: 'Cine',
-      label: 'Cine',
+        value: 'Cine',
+        label: 'Cine',
     },
     {
-      value: 'Show',
-      label: 'Show',
+        value: 'Show',
+        label: 'Show',
+    },
+    {
+        value: 'Conferencia',
+        label: 'Conferencia',
     },
   ];
 
@@ -105,7 +109,6 @@ export const CreateEvent = (props) => {
         if (response.status === 201){
             console.log(jsonResponse.status_code)
             if(!jsonResponse.status_code){
-                console.log("cree bien el evento ")
                 setOpen(true)
                
             }else{
@@ -121,9 +124,9 @@ export const CreateEvent = (props) => {
     };
 
     const getFaqs = () =>{
-        const faqs = {'¿Hasta que hora puede ingresarse al evento?': pregunta1, 
-                    '¿Se suspende el evento por lluvia?': pregunta2, 
-                    '¿Se puede ingresar con comida?': pregunta3};
+        const faqs =   [{'pregunta': '¿Hasta que hora puede ingresarse al evento?', 'respuesta': pregunta1},
+                        {'pregunta': '¿Se suspende el evento por lluvia?', 'respuesta': pregunta2},
+                        {'pregunta': '¿Se puede ingresar con comida?', 'respuesta': pregunta3},]
         return faqs
     }
 
