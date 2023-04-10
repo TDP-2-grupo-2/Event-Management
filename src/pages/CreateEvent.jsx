@@ -67,7 +67,7 @@ export const CreateEvent = (props) => {
         const eventDateFormat =  eventDate.$y + "-" + month  + "-" + eventDate.$D
         let eventStartTimeFormat = eventStartTime.$H + ":" + eventStartTime.$m 
         let eventEndTimeFormat = eventEndTime.$H + ":" + eventEndTime.$m 
-        let eventPosition = await getLatitudandlongitud()
+        let eventPosition = await getLatitudandlongitud(eventLocation)
         let photosNames = await handleUploadPhotos();
         let eventFaqs = getFaqs();
         console.log(photosNames)

@@ -11,11 +11,12 @@ const BUENOS_AIRES_POSITION = [-58.3837591, -34.6037345]
 
 export const getLatitudandlongitud = async (location) => {
     if (location !== ''){
-      const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURI(props.location)}.json?access_token=${MAP_BOX_TOKEN}`
+      const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURI(location)}.json?access_token=${MAP_BOX_TOKEN}`
       const response = await fetch(url);
+      console.log(location);
       const jsonResponse = await response.json();
-      const newView = jsonResponse.features[0].center
-      return newView
+      const newView = jsonResponse.features[0].center;
+      return newView;
     }
 }
 
