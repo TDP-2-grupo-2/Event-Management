@@ -113,14 +113,15 @@ export const Sidebar = () => {
             <CssBaseline />
             <AppBar elevation={0} position="fixed" open={isOpen} currentPageTitle={currentPageTitle}  style={{ background: 'transparent' }}>
                 <Toolbar>
-                    <IconButton
+                    {!isOpen? <IconButton
                         color="rgba(137,152,202,255)"
                         aria-label="open drawer"
                         onClick={handleSidebarOpen}
                         edge="start"
                         sx={{ mr: 2, ...(isOpen && { display: 'none' }) }}>
                         <FaBars color={sidebarFontColor}/>
-                    </IconButton>
+                    </IconButton> : <></>}
+                    
                     <Typography variant="h6" noWrap component="div">
                         {currentPageTitle}
                     </Typography>

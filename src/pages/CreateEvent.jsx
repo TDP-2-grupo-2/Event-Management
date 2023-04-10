@@ -61,6 +61,9 @@ export const CreateEvent = (props) => {
 
     const APIURL = 'https://event-service-solfonte.cloud.okteto.net'
 
+    const ButtomStyle ={
+        
+    }
     const onSubmitEvent = async (event) => {
 
         const month = eventDate.$M  +  1
@@ -131,7 +134,7 @@ export const CreateEvent = (props) => {
         setEventPhotosUpload(event.target.files)
         let url = URL.createObjectURL(event.target.files[0]);
         setFile(url)
-        console.log(url)
+        //console.log(url)
     }
 
     const handleUploadPhotos = async () => {
@@ -220,13 +223,16 @@ export const CreateEvent = (props) => {
                 />                    
                 </Grid>
                 <Grid item xs={6} style={{ display: "flex", justifyContent: "flex-start" }}>
+                    <div style={  {backgroundColor: '#705C9C', }}>
                     <Button 
                         variant="contained"
                         onClick={() => setLocationToMap(eventLocation)}
-                        sx={{ color: 'white', backgroundColor: 'rgba(112, 92, 156);', borderColor: 'purple' }}
+                        sx={{ color: 'white', backgroundColor: '#705C9C', borderColor: 'purple' }}
                     >
                             Marcar en el mapa
                     </Button>
+                    </div>
+                    
                 </Grid>
                 <Grid item  style={{ display: "flex", justifyContent: "center" }}>
                     <MapView location={locationToMap}/>
@@ -388,11 +394,14 @@ export const CreateEvent = (props) => {
                         />
                     </Grid>
                     <Grid item xs={12} style={{ display: "flex", justifyContent: "center" }}>
+                        <div style={{backgroundColor: 'rgba(112, 92, 156)'}}>
                         <Button variant="contained" 
-                                sx={{ color: 'white', backgroundColor: 'rgba(112, 92, 156);', borderColor: 'purple' }}
+                                sx={{ color: 'white', backgroundColor: 'rgba(112, 92, 156)', borderColor: 'purple' }}
                                 onClick={onSubmitEvent}
                                  >+ Crear Evento
                         </Button>
+                        </div>
+                        
                         <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} 
                                 anchorOrigin={{
                                     vertical: "bottom",
