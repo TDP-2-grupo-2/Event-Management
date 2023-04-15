@@ -13,17 +13,34 @@ export const MyEvents = () => {
     const [ loading, setLoading ] = useState( true );
     const [ urlsImages, setUrlsImages ] = useState( [] );
 
+    function getMonth (eventDate) {
+        console.log("entre a get month")
+        console.log(eventDate)
+        let eventDateAux = new Date(eventDate);
+        console.log(eventDateAux)
+        let month = eventDateAux.toLocaleString('default', { month: 'short' }).toUpperCase();
+        console.log(month)
+        return month
+    }
+    function getNumber(eventDate) {
+        let date = new Date(eventDate);
+        console.log(date)
+        let number = date.getDate();
+        console.log(number)
+        return number
+    }
+
     async function getImagesFromFireBase( eventsVar ){
-        console.log("estoy en setetar imagens y eventos")
-        console.log(eventsVar)
+      
         const urlsArray = [];
-        console.log(eventsVar[0].name)
+        console.log(eventsVar[0])
         for ( let i=0; i < eventsVar[0].length ; i++ ){
-            console.log("entre al for")
+            eventsVar[0][i].month = getMonth(eventsVar[0][i].dateEvent)
+            eventsVar[0][i].day = getNumber(eventsVar[0][i].dateEvent)
             const arrayURLS = [];
             
             for ( let j=0; j < eventsVar[0][i].photos.length ; j++ ){
-                console.log("entre al for de imagenes")
+               
                 const url = await getFirebaseImage( 
                     `files/${eventsVar[0][i].photos[j]}`
                 );
@@ -35,7 +52,7 @@ export const MyEvents = () => {
         setUrlsImages( urlsArray );
         setLoading( false );
         setEvents(eventsVar[0]);
-        console.log(events.length)
+     
     }
 
     async function getOrganizerEvents(){
@@ -66,9 +83,7 @@ export const MyEvents = () => {
 
 
     useEffect( () => {
-        console.log("cant de events ", events.length);
         getOrganizerEvents();
-        console.log("cant de events ", events.length);
     }, []);
     
     return (
@@ -87,9 +102,9 @@ export const MyEvents = () => {
                                 <Event
                                     name={prop.name} 
                                     description={prop.description} 
-                                    type={prop.type} 
-                                    month='DIC'
-                                    date='21'
+                                    type={prop.eventType}
+                                    month={prop.month} 
+                                    day={prop.day}
                                     image={ urlsImages.length > 0 ? urlsImages[idx][0] : []}
                                 />
                             </Grid>

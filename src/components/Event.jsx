@@ -3,17 +3,20 @@ import {Card, CardContent, CardMedia, Typography, Box} from "@mui/material";
 
 
 export const Event = (props) => {
+   
     return(
         <>
-            <Card x={{ maxWidth: "100%", height:"100%"}} style={{backgroundColor: '#705C9C'}}>
+            <Card sx={{ width: '25vw' , height: '25vw' ,borderRadius: 1,}} style={{backgroundColor: '#705C9C'}}>
             <CardMedia
                 component="img"
-                sx={{ height: 150}}
+                sx={{ height: 220}}
                 image={props.image}
             />
             <Box display="flex"
                 justifyContent="space-between"
-                alignItems="center">
+                alignItems="center"
+                >
+                    
                 <Box  sx={{
                         p: 1,
                         m: 3,
@@ -22,16 +25,16 @@ export const Event = (props) => {
                         justifyContent: "center",
                         bgcolor: 'white',
                         borderRadius: 1,
-                        width:"20%",
-                        height: "20%",
+                        width:"10%",
+                        height: "50%",
                         }}>
                     <Box>
-                    <CardContent >
+                    <CardContent  >
                     <Typography variant="body2" color="text.secondary">
                         {props.month}
                     </Typography>
                     <Typography variant="body2" color="text.primary">
-                        {props.date}
+                        {props.day}
                     </Typography>
                     </CardContent>
                     </Box>
@@ -44,15 +47,17 @@ export const Event = (props) => {
                         justifyContent: "flex-start",
                         bgcolor: '#705C9C',
                         borderRadius: 1,
-                        width:"80%",
+                        width:"90%",
+                        height: "10%"
                         }} >
                     
                     <CardContent>
-                    <Typography variant="h4" component="div" color='white'>
+                    <Typography variant="h5" component="div" color='white'>
                         {props.name}
                         <br />
                     </Typography>
-                    <Typography variant="body2" color="white">
+                    <Typography variant="caption" color="white">
+                        <br />
                         {props.type}
                         <br />
                         {props.description}
