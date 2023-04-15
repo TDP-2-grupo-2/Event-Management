@@ -14,19 +14,14 @@ export const MyEvents = () => {
     const [ urlsImages, setUrlsImages ] = useState( [] );
 
     function getMonth (eventDate) {
-        console.log("entre a get month")
-        console.log(eventDate)
+      
         let eventDateAux = new Date(eventDate);
-        console.log(eventDateAux)
         let month = eventDateAux.toLocaleString('default', { month: 'short' }).toUpperCase();
-        console.log(month)
         return month
     }
     function getNumber(eventDate) {
         let date = new Date(eventDate);
-        console.log(date)
         let number = date.getDate();
-        console.log(number)
         return number
     }
 
@@ -62,7 +57,7 @@ export const MyEvents = () => {
                 'Content-Type': 'application/json',
             }
         };
-        const url = `${APIURL}/events/`;
+        const url = `${APIURL}/events/?owner=Jorge%20Perez`;
         const response = await fetch(
             url,
             paramsUpload
