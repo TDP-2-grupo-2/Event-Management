@@ -9,9 +9,9 @@ import {MapView, getLatitudandlongitud} from '../components/MapView'
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardMedia from '@material-ui/core/CardMedia';
-
-
 import { handleUploadFirebaseImage, deleteFirebaseImage } from '../common/FirebaseHandler';
+import { TabSection } from "../components/TabSection";
+
 
 
 const eventypes = [
@@ -37,6 +37,8 @@ const eventypes = [
     },
   ];
 
+ 
+
 export const CreateEvent = (props) => {
     const [open, setOpen] = useState(false)
     const [eventName, setEventName] = useState("")
@@ -49,6 +51,8 @@ export const CreateEvent = (props) => {
     const [eventType, setEventType] = useState("")
     const [fileInputShow, setFileInputShow] = useState("");
     const [eventLocationDescription, setEventLocationDescription] = useState("")
+    const [agendaValues, setAgendaValues]= useState([{time:dayjs(props.start), description:''}]);
+    
     const [photosNamesHashed, setPhotosNamesHashed] = useState([]);
     const [eventPhotosUpload, setEventPhotosUpload] = useState([]);
     const [locationToMap, setLocationToMap] = useState([])
@@ -58,12 +62,11 @@ export const CreateEvent = (props) => {
     const [file, setFile] = useState("")
     
     
+    
 
     const APIURL = 'https://event-service-solfonte.cloud.okteto.net'
 
-    const ButtomStyle ={
-        
-    }
+ 
     const onSubmitEvent = async (event) => {
 
         const month = eventDate.$M  +  1
@@ -72,8 +75,8 @@ export const CreateEvent = (props) => {
         let eventEndTimeFormat = eventEndTime.$H + ":" + eventEndTime.$m 
         let eventPosition = await getLatitudandlongitud(eventLocation)
         let photosNames = await handleUploadPhotos();
+        let eventAgenda = getAgenda();
         let eventFaqs = getFaqs();
-        console.log(photosNames)
         const paramsUpload = {
             method: "POST",
             headers: {
@@ -89,6 +92,7 @@ export const CreateEvent = (props) => {
                 dateEvent: eventDateFormat,
                 eventType: eventType,
                 tags: ["tag"],
+                agenda: eventAgenda,
                 latitud: eventPosition[1], 
                 longitud: eventPosition[0], 
                 start: eventStartTimeFormat,
@@ -122,6 +126,26 @@ export const CreateEvent = (props) => {
         setOpen(false);
     };
 
+    const getAgenda = () => {
+        const agendaItenirary = []
+        
+        for (let i = 0; i < agendaValues.length; i++){ 
+            let time_agenda
+
+            if (agendaValues[i].time.$m.toString().length == 1){
+                console.log("entre")
+                time_agenda = agendaValues[i].time.$H + ":" + agendaValues[i].time.$m + '0'
+                console.log(time_agenda)
+            }else{
+                time_agenda = agendaValues[i].time.$H + ":" + agendaValues[i].time.$m
+                console.log(time_agenda)
+            }
+            
+            agendaItenirary.push({'horario': time_agenda, 'descripcion': agendaValues[i].description})
+        }
+        return agendaItenirary
+    }
+
     const getFaqs = () =>{
         const faqs =   [{'pregunta': '¿Hasta que hora puede ingresarse al evento?', 'respuesta': pregunta1},
                         {'pregunta': '¿Se suspende el evento por lluvia?', 'respuesta': pregunta2},
@@ -134,13 +158,10 @@ export const CreateEvent = (props) => {
         setEventPhotosUpload(event.target.files)
         let url = URL.createObjectURL(event.target.files[0]);
         setFile(url)
-        //console.log(url)
     }
 
     const handleUploadPhotos = async () => {
         const hashedNames = [];
-        console.log(eventPhotosUpload)
-        console.log(eventPhotosUpload.length)
         for ( let i=0; i<eventPhotosUpload.length; i++){
             hashedNames.push(await handleUploadFirebaseImage(eventPhotosUpload[i].name, eventPhotosUpload[i]));
         }
@@ -342,57 +363,21 @@ export const CreateEvent = (props) => {
                             ))}
                         </TextField>
                     </Grid>
-                    <Grid item xs={12} style={{ display: "flex", justifyContent: "flex-start" }}>
-                        <div>
-                            <h3>Preguntas Frecuentes</h3>
-                        </div>
+                    <Grid item xs={12} style={{ display: "flex", justifyContent: "center" }}>
+                                <TabSection
+                                        pregunta1={pregunta1}
+                                        pregunta2={pregunta2}
+                                        pregunta3={pregunta3}
+                                        setPregunta1={setPregunta1}
+                                        setPregunta2={setPregunta2}
+                                        setPregunta3={setPregunta3}
+                                        agendaValues={agendaValues}
+                                        setAgendaValues={setAgendaValues}
+                                >
+
+                                </TabSection>
                     </Grid>
-                    <Grid item xs={12} style={{ display: "flex", justifyContent: "flex-start" }}>
-                        <div>
-                            <h4>¿Hasta que hora puede ingresarse al evento?</h4>
-                        </div>
-                    </Grid>
-                    <Grid item xs={12} sm={12} style={{ display: "flex", justifyContent: "flex-start" }}>
-                        <TextField 
-                        placeholder="Respuesta 1" 
-                        required
-                        value={pregunta1}
-                        fullWidth
-                        size="small"
-                        onChange = {(event) => setPregunta1(event.target.value)}
-                        />
-                    </Grid>
-                    <Grid item xs={12}  style={{ display: "flex", justifyContent: "flex-start" }}>
-                        <div>
-                            <h4>¿Se suspende el evento por lluvia?</h4>
-                        </div>
-                    </Grid>
-                    <Grid item xs={12} sm={12} style={{ display: "flex", justifyContent: "flex-start" }}>
-                        <TextField 
-                        placeholder="Respuesta 2"
-                        value={pregunta2} 
-                        fullWidth
-                        required
-                        size="small"
-                        onChange = {(event) => setPregunta2(event.target.value)}
-                        />
-                    </Grid>
-                    <Grid item xs={12}  style={{ display: "flex", justifyContent: "flex-start" }}>
-                        <div>
-                            <h4>¿Se puede acceder con comida?</h4>
-                        </div>
-                    </Grid>
-                    <Grid item xs={12} sm={12} style={{ display: "flex", justifyContent: "flex-start" }}>
-                        <TextField 
-                        placeholder="Respuesta 3"
-                        required
-                        value={pregunta3} 
-                        fullWidth
-                        
-                        size="small"
-                        onChange = {(event) => setPregunta3(event.target.value)}
-                        />
-                    </Grid>
+                    
                     <Grid item xs={12} style={{ display: "flex", justifyContent: "center" }}>
                         <div style={{backgroundColor: 'rgba(112, 92, 156)'}}>
                         <Button variant="contained" 

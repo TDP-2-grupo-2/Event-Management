@@ -22,7 +22,7 @@ export const MyEvents = () => {
     function getNumber(eventDate) {
         let date = new Date(eventDate);
         let number = date.getDate();
-        return number
+        return number + 1
     }
 
     async function getImagesFromFireBase( eventsVar ){
@@ -106,7 +106,7 @@ export const MyEvents = () => {
                         )
             }) : 
             <Grid style={{marginTop:"3rem", textAlign:"center"}} item xs={12}>
-                <h4>You have no events uploaded yet.</h4>
+                <h4>No cargaste ningun evento todavia.</h4>
             </Grid>
         }
         </Grid>
