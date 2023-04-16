@@ -22,7 +22,7 @@ export const MyEvents = () => {
     function getNumber(eventDate) {
         let date = new Date(eventDate);
         let number = date.getDate();
-        return number
+        return number + 1
     }
 
     async function getImagesFromFireBase( eventsVar ){
