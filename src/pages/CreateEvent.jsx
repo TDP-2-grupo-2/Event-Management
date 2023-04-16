@@ -75,6 +75,8 @@ export const CreateEvent = (props) => {
         let eventEndTimeFormat = eventEndTime.$H + ":" + eventEndTime.$m 
         let eventPosition = await getLatitudandlongitud(eventLocation)
         let photosNames = await handleUploadPhotos();
+        let eventAgenda = getAgenda();
+        console.log(eventAgenda);
         let eventFaqs = getFaqs();
         console.log(photosNames)
         const paramsUpload = {
@@ -92,6 +94,7 @@ export const CreateEvent = (props) => {
                 dateEvent: eventDateFormat,
                 eventType: eventType,
                 tags: ["tag"],
+                agenda: eventAgenda,
                 latitud: eventPosition[1], 
                 longitud: eventPosition[0], 
                 start: eventStartTimeFormat,
@@ -124,6 +127,26 @@ export const CreateEvent = (props) => {
     const handleClose = () => {
         setOpen(false);
     };
+
+    const getAgenda = () => {
+        const agendaItenirary = []
+        
+        for (let i = 0; i < agendaValues.length; i++){ 
+            let time_agenda
+
+            if (agendaValues[i].time.$m.toString().length == 1){
+                console.log("entre")
+                time_agenda = agendaValues[i].time.$H + ":" + agendaValues[i].time.$m + '0'
+                console.log(time_agenda)
+            }else{
+                time_agenda = agendaValues[i].time.$H + ":" + agendaValues[i].time.$m
+                console.log(time_agenda)
+            }
+            
+            agendaItenirary.push({'horario': time_agenda, 'descripcion': agendaValues[i].description})
+        }
+        return agendaItenirary
+    }
 
     const getFaqs = () =>{
         const faqs =   [{'pregunta': '¿Hasta que hora puede ingresarse al evento?', 'respuesta': pregunta1},
