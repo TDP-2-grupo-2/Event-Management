@@ -1,19 +1,17 @@
-import { Button, Grid, Typography, TextField, Box , MenuItem, Input, Snackbar, Alert, Tabs, Tab} from "@mui/material";
+import { Button, Grid, Typography, TextField, Box , MenuItem, Input, Snackbar, Alert} from "@mui/material";
 import React , {useState} from "react";
 import { DesktopTimePicker } from '@mui/x-date-pickers/DesktopTimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from "dayjs";
-import PropTypes from 'prop-types';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import {MapView, getLatitudandlongitud} from '../components/MapView'
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardMedia from '@material-ui/core/CardMedia';
-
-
 import { handleUploadFirebaseImage, deleteFirebaseImage } from '../common/FirebaseHandler';
-import { Agenda } from "../components/Agenda";
+import { TabSection } from "../components/TabSection";
+
 
 
 const eventypes = [
@@ -39,39 +37,7 @@ const eventypes = [
     },
   ];
 
-  function TabPanel(props) {
-    const { children, value, index, ...other } = props;
-  
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
-        {...other}
-      >
-        {value === index && (
-          <Box sx={{ p: 3 }}>
-            <Typography>{children}</Typography>
-          </Box>
-        )}
-      </div>
-    );
-  }
-  
-  TabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.number.isRequired,
-    value: PropTypes.number.isRequired,
-  };
-  
-  function a11yProps(index) {
-    return {
-      id: `simple-tab-${index}`,
-      'aria-controls': `simple-tabpanel-${index}`,
-    };
-  }
-  
+ 
 
 export const CreateEvent = (props) => {
     const [open, setOpen] = useState(false)
@@ -94,11 +60,7 @@ export const CreateEvent = (props) => {
     const [pregunta2, setPregunta2] = useState("")
     const [pregunta3, setPregunta3] = useState("")
     const [file, setFile] = useState("")
-    const [value, setValue] = useState(0);
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
+    
     
     
 
@@ -383,77 +345,20 @@ export const CreateEvent = (props) => {
                             ))}
                         </TextField>
                     </Grid>
-                    <Box sx={{ borderBottom: 1, borderColor: 'divider' , width: '100%'}}>
-                        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                            <Tab label="Preguntas Frecuentes" {...a11yProps(0)} />
-                            <Tab label="Agenda" {...a11yProps(1)} />
-                        </Tabs>
-                    </Box>
-                    <TabPanel value={value} index={0}>
-                    <Grid container rowSpacing={3} columnSpacing={1}>
-                        <Grid item xs={12} style={{ display: "flex", justifyContent: "flex-start" }}>
-                            <div>
-                                <h3>Preguntas Frecuentes</h3>
-                                <br/>
-                            </div>
-                        </Grid>
-                        <Grid item xs={12} style={{ display: "flex", justifyContent: "flex-start" }}>
-                            <div>
-                                <h4>¿Hasta que hora puede ingresarse al evento?</h4>
-                            </div>
-                        </Grid>
-                        <Grid item xs={12} sm={12} style={{ display: "flex", justifyContent: "flex-start" }}>
-                            <TextField 
-                            placeholder="Respuesta 1" 
-                            required
-                            value={pregunta1}
-                            fullWidth
-                            size="small"
-                            onChange = {(event) => setPregunta1(event.target.value)}
-                            />
-                        </Grid>
-                        <Grid item xs={12}  style={{ display: "flex", justifyContent: "flex-start" }}>
-                            <div>
-                                <br/>
-                                <h4>¿Se suspende el evento por lluvia?</h4>
-                            </div>
-                        </Grid>
-                        <Grid item xs={12} sm={12} style={{ display: "flex", justifyContent: "flex-start" }}>
-                            <TextField 
-                            required
-                            placeholder="Respuesta 2"
-                            value={pregunta2} 
-                            fullWidth
-                            size="small"
-                            onChange = {(event) => setPregunta2(event.target.value)}
-                            />
-                        </Grid>
-                        <Grid item xs={12}  style={{ display: "flex", justifyContent: "flex-start" }}>
-                            <div>
-                                <br/>
-                                <h4>¿Se puede acceder con comida?</h4>
-                            </div>
-                        </Grid>
-                        <Grid item xs={12} sm={12} style={{ display: "flex", justifyContent: "flex-start" }}>
-                            <TextField 
-                            placeholder="Respuesta 3"
-                            required
-                            value={pregunta3} 
-                            fullWidth
-                            
-                            size="small"
-                            onChange = {(event) => setPregunta3(event.target.value)}
-                            />
-                        </Grid>
-                    </Grid>    
-                    </TabPanel>
-                    <TabPanel value={value} index={1}>
-                        <Agenda start={eventStartTime}
-                                end={eventEndTime}
-                                agendaValues={agendaValues}
-                                setAgendaValues={setAgendaValues}>
-                        </Agenda>
-                    </TabPanel>
+                    <Grid item xs={12} style={{ display: "flex", justifyContent: "center" }}>
+                                <TabSection
+                                        pregunta1={pregunta1}
+                                        pregunta2={pregunta2}
+                                        pregunta3={pregunta3}
+                                        setPregunta1={setPregunta1}
+                                        setPregunta2={setPregunta2}
+                                        setPregunta3={setPregunta3}
+                                        agendaValues={agendaValues}
+                                        setAgendaValues={setAgendaValues}
+                                >
+
+                                </TabSection>
+                    </Grid>
                     
                     <Grid item xs={12} style={{ display: "flex", justifyContent: "center" }}>
                         <div style={{backgroundColor: 'rgba(112, 92, 156)'}}>
