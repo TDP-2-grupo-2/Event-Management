@@ -13,6 +13,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 
 
 import { handleUploadFirebaseImage, deleteFirebaseImage } from '../common/FirebaseHandler';
+import { Agenda } from "../components/Agenda";
 
 
 const eventypes = [
@@ -84,6 +85,8 @@ export const CreateEvent = (props) => {
     const [eventType, setEventType] = useState("")
     const [fileInputShow, setFileInputShow] = useState("");
     const [eventLocationDescription, setEventLocationDescription] = useState("")
+    const [agendaValues, setAgendaValues]= useState([{time:dayjs(props.start), description:''}]);
+    
     const [photosNamesHashed, setPhotosNamesHashed] = useState([]);
     const [eventPhotosUpload, setEventPhotosUpload] = useState([]);
     const [locationToMap, setLocationToMap] = useState([])
@@ -445,7 +448,11 @@ export const CreateEvent = (props) => {
                     </Grid>    
                     </TabPanel>
                     <TabPanel value={value} index={1}>
-                        Item Two
+                        <Agenda start={eventStartTime}
+                                end={eventEndTime}
+                                agendaValues={agendaValues}
+                                setAgendaValues={setAgendaValues}>
+                        </Agenda>
                     </TabPanel>
                     
                     <Grid item xs={12} style={{ display: "flex", justifyContent: "center" }}>
