@@ -76,9 +76,7 @@ export const CreateEvent = (props) => {
         let eventPosition = await getLatitudandlongitud(eventLocation)
         let photosNames = await handleUploadPhotos();
         let eventAgenda = getAgenda();
-        console.log(eventAgenda);
         let eventFaqs = getFaqs();
-        console.log(photosNames)
         const paramsUpload = {
             method: "POST",
             headers: {
@@ -160,13 +158,10 @@ export const CreateEvent = (props) => {
         setEventPhotosUpload(event.target.files)
         let url = URL.createObjectURL(event.target.files[0]);
         setFile(url)
-        //console.log(url)
     }
 
     const handleUploadPhotos = async () => {
         const hashedNames = [];
-        console.log(eventPhotosUpload)
-        console.log(eventPhotosUpload.length)
         for ( let i=0; i<eventPhotosUpload.length; i++){
             hashedNames.push(await handleUploadFirebaseImage(eventPhotosUpload[i].name, eventPhotosUpload[i]));
         }

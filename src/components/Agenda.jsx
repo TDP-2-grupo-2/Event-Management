@@ -11,7 +11,6 @@ export const  Agenda = (props)  => {
     const [actualTimeValue, setActualValue] = useState(dayjs(props.start))
 
     const handleHourChange=(e, index)=>{
-        console.log(props.agendaValues)
         const {name, value} = e.target
         setActualValue(value)
         const list= [...props.agendaValues];
@@ -20,7 +19,6 @@ export const  Agenda = (props)  => {
     }
 
     const handleDescriptionChange=(e, index)=>{
-        console.log(props.agendaValues)
         const {name, value}= e.target;
         const list= [...props.agendaValues];
         list[index][name]= value;
