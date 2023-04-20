@@ -16,6 +16,7 @@ export const Login = (props) => {
  
         const userName = decoded.given_name + " " + decoded.family_name 
         const userEmail = decoded.email
+        const picture = decoded.picture
         console.log(userName)
         console.log(userEmail)
         const paramsLogin = {
@@ -37,6 +38,18 @@ export const Login = (props) => {
         console.log(response)
         if (response.status === 200){
             console.log(jsonResponse)
+            if(!jsonResponse.status_code){
+                localStorage.setItem("sessionToken", true);
+                localStorage.setItem("username", JSON.parse(paramsLogin.body).name);
+                localStorage.setItem("user", {'username': JSON.parse(paramsLogin.body).name, 
+                                                'token': jsonResponse,
+                                                'picture': picture})
+                window.dispatchEvent(new Event('storage')); 
+                props.setAuthentification(true)
+
+            }else{
+                
+            }
    
         }
     }
