@@ -1,18 +1,50 @@
-import React from "react"
+import React , {useState, useEffect} from "react"
 import { GoogleLogin } from '@react-oauth/google';
 import {Typography, Box, Grid} from "@mui/material";
 import logo from "../images/logo.png"
+import hand from "../images/hand.png"
+import jwt_decode from "jwt-decode";
+
 
 export const Login = (props) => {
+    const APIURL = 'https://event-service-solfonte.cloud.okteto.net'
 
-    const responseMessage = (response) => {
+    const responseMessage = async (googleMessage) => {
         console.log("respuesta de google")
-        console.log(response);
-      }
-      
+        console.log(googleMessage);
+        let decoded = jwt_decode(googleMessage.credential);
+ 
+        const userName = decoded.given_name + " " + decoded.family_name 
+        const userEmail = decoded.email
+        console.log(userName)
+        console.log(userEmail)
+        const paramsLogin = {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: userEmail,
+                name: userName,
+            })
+        };
+        const url = `${APIURL}/organizers/loginGoogle`;
+        const response = await fetch(
+            url,
+            paramsLogin
+        );
+        const jsonResponse = await response.json();
+        console.log(response)
+        if (response.status === 200){
+            console.log(jsonResponse)
+   
+        }
+    }
+
     const errorMessage = (error) => {
         console.log(error);
     };
+   
 
     return(
         <Box  display="flex"
@@ -27,11 +59,11 @@ export const Login = (props) => {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    bgcolor: "white",
+                    bgcolor: "rgba(112, 92, 156)",
                     borderRadius: 1,
                     width:"50%",
                     }} >
-                <Grid container>
+                <Grid container  rowSpacing={4}>
                     <Grid item xs={12} style={{ display: "flex", justifyContent: "center" }}>
                         <img  src={logo} alt="Flowers in Chania">
 
@@ -47,6 +79,12 @@ export const Login = (props) => {
                         <Typography  variant="h3" align="top">
                             Bienvenido
                         </Typography>
+                    </Grid>
+                    <Grid item xs={12} style={{ display: "flex", justifyContent: "center" }}>
+                        <img  src={hand} alt="Flowers in Chania">
+
+                        </img>
+ 
                     </Grid>
                     <Grid item xs={12} style={{ display: "flex", justifyContent: "center" }}>
                       
