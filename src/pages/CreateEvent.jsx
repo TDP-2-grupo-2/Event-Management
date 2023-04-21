@@ -35,6 +35,10 @@ const eventypes = [
         value: 'Conferencia',
         label: 'Conferencia',
     },
+    {
+        value: 'Otro',
+        label: 'Otro',
+    },
   ];
 
  
@@ -44,14 +48,14 @@ export const CreateEvent = (props) => {
     const [eventName, setEventName] = useState("")
     const [eventDescription, setEventDescription] = useState("")
     const [eventStartTime, setEventStartTime] = useState(dayjs('2022-04-17T15:30'))
-    const [eventEndTime, setEventEndTime] = useState(dayjs('2022-04-17T15:30'))
+    const [eventEndTime, setEventEndTime] = useState(dayjs('2022-04-17T17:30'))
     const [eventLocation, setEventLocation] = useState("")
     const [eventDate, setEventDate] = useState(dayjs(Date.now()))
     const [eventCapacity, setEventCapcity] = useState(0)
     const [eventType, setEventType] = useState("")
     const [fileInputShow, setFileInputShow] = useState("");
     const [eventLocationDescription, setEventLocationDescription] = useState("")
-    const [agendaValues, setAgendaValues]= useState([{time:dayjs(props.start), description:''}]);
+    const [agendaValues, setAgendaValues]= useState([{time:dayjs(eventStartTime), description:''}]);
     
     const [photosNamesHashed, setPhotosNamesHashed] = useState([]);
     const [eventPhotosUpload, setEventPhotosUpload] = useState([]);
@@ -371,6 +375,8 @@ export const CreateEvent = (props) => {
                                         setPregunta1={setPregunta1}
                                         setPregunta2={setPregunta2}
                                         setPregunta3={setPregunta3}
+                                        eventStartTime={eventStartTime}
+                                        eventEndTime={eventEndTime}
                                         agendaValues={agendaValues}
                                         setAgendaValues={setAgendaValues}
                                 >
