@@ -88,7 +88,7 @@ export const CreateEvent = (props) => {
             },
             body: JSON.stringify({
                 name: eventName,
-                owner: "Jorge Perez", // Como no hay login esto tiene q ir harcodeado por ahora (no hay usuario)
+                owner: localStorage.getItem('username'), // Como no hay login esto tiene q ir harcodeado por ahora (no hay usuario)
                 description: eventDescription,
                 location: eventLocation,
                 locationDescription: eventLocationDescription,

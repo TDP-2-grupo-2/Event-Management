@@ -50,14 +50,15 @@ export const MyEvents = () => {
      
     }
 
-    async function getOrganizerEvents(){
+    async function getOrganizerEvents(user){
         const paramsUpload = {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
             }
         };
-        const url = `${APIURL}/events/?owner=Jorge%20Perez`;
+        console.log(user)
+        const url = `${APIURL}/events/?owner=${user}`;
         const response = await fetch(
             url,
             paramsUpload
@@ -78,7 +79,7 @@ export const MyEvents = () => {
 
 
     useEffect( () => {
-        getOrganizerEvents();
+        getOrganizerEvents(localStorage.getItem('username'));
     }, []);
     
     return (
