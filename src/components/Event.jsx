@@ -9,7 +9,7 @@ export const Event = (props) => {
             <Card sx={{ width: '25vw' , height: '25vw' ,borderRadius: '16px',}} style={{backgroundColor: '#705C9C'}}>
             <CardMedia
                 component="img"
-                sx={{ height: 220}}
+                sx={{ height: '10vw'}}
                 image={props.image}
             />
             <Box display="flex"
