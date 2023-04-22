@@ -58,7 +58,7 @@ export const  Agenda = (props)  => {
                                         name="time"
                                         minTime={ idx > 0 ? props.agendaValues[idx -1].time : props.start}
                                         maxTime={props.agendaValues.length >= 3 && idx !== (props.agendaValues.length -1) ? props.agendaValues[idx +1].time : props.end}
-                                        onChange={e=>handleHourChange({ target: { value: dayjs(new Date(e.toISOString())), name: 'time' } },idx)}
+                                        onChange={e=>handleHourChange({ target: { value: e, name: 'time' } },idx)}
                                 />
                             </LocalizationProvider>
                         </Grid>

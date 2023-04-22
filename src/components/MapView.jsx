@@ -2,7 +2,6 @@ import { Box } from '@mui/material';
 import React, { useEffect, useState, useRef } from 'react'
 import {Marker} from "react-map-gl";
 import ReactMapGl from "react-map-gl";
-import {RiMapPin2Line} from "react-icons/ri"
 import 'mapbox-gl/dist/mapbox-gl.css'
 import pin from "./pin.png"
 
