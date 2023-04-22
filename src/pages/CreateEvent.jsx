@@ -208,19 +208,12 @@ export const CreateEvent = (props) => {
                     />
                 </Grid>
                 {
-                        file.length > 0 &&            
+                    file.length > 0 &&            
                     <Grid item xs={6}>
-                        
-                        <Card >
-                            <CardActionArea>
-                                <CardMedia
-                                    component="img"
-                                    alt="Default"
-                                    image={file}
-                                    title={fileInputShow}
-                                />
-                            </CardActionArea>
-                        </Card>
+                        <img
+                            src={file}
+                            alt={fileInputShow}
+                        />
                     </Grid>
                 }
                 <Grid item xs={12} style={{ display: "flex", justifyContent: "flex-start", direction: "row"}}>
