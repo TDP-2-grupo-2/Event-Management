@@ -4,10 +4,12 @@ import {Typography, Box, Grid} from "@mui/material";
 import logo from "../images/logo.png"
 import hand from "../images/hand.png"
 import jwt_decode from "jwt-decode";
+import {Notification} from '../components/Notification'
 
 
 export const Login = (props) => {
     const APIURL = 'https://event-service-solfonte.cloud.okteto.net'
+    const [notify, setNotify] = useState({isOpen: false, message: '', type: ''})
 
     const responseMessage = async (googleMessage) => {
         console.log("respuesta de google")
@@ -35,27 +37,35 @@ export const Login = (props) => {
             paramsLogin
         );
         const jsonResponse = await response.json();
-        console.log(response)
+        
         if (response.status === 200){
             console.log(jsonResponse)
             if(!jsonResponse.status_code){
                 localStorage.setItem("sessionToken", true);
                 localStorage.setItem("username", JSON.parse(paramsLogin.body).name);
                 localStorage.setItem("user", {'username': JSON.parse(paramsLogin.body).name, 
-                                                'token': jsonResponse,
-                                                'picture': picture})
+                'token': jsonResponse,
+                'picture': picture})
                 window.dispatchEvent(new Event('storage')); 
                 props.setAuthentification(true)
-
-            }else{
                 
+            }else{
+                setNotify({
+                    isOpen: true,
+                    message: 'No se pudo conectar con google',
+                    type: 'error'
+                })
             }
-   
+            
         }
     }
 
     const errorMessage = (error) => {
-        console.log(error);
+        setNotify({
+            isOpen: true,
+            message: 'No se pudo conectar con google',
+            type: 'error'
+        })
     };
    
 
@@ -85,7 +95,7 @@ export const Login = (props) => {
                     </Grid>
                     <Grid item xs={12} style={{ display: "flex", justifyContent: "center" }}>
                         <Typography  variant="h3" align="top">
-                            Administracion de eventos
+                            Administración de eventos
                         </Typography>
                     </Grid>
                     <Grid item xs={12} style={{ display: "flex", justifyContent: "center" }}>
@@ -103,9 +113,15 @@ export const Login = (props) => {
                       
                         <GoogleLogin onSuccess={responseMessage} onError={errorMessage} />
 
+                        <Notification
+                        notify={notify}
+                        setNotify={setNotify}/>
+
                     </Grid>
                 </Grid>
             </Box>
+
+            
         </Box> 
     );
 
