@@ -6,7 +6,15 @@ export const Event = (props) => {
    
     return(
         <>
-            <Card sx={{ width: '25vw' , height: '25vw' ,borderRadius: '16px',}} style={{backgroundColor: '#705C9C'}}>
+            <Card sx={{ maxWidth: 345,
+        width: '100%',
+        margin: '0 auto',
+        '@media (min-width:600px)': {
+          maxWidth: 500,
+        },
+        '@media (min-width:900px)': {
+          maxWidth: 800,
+        },borderRadius: '16px',}} style={{backgroundColor: '#705C9C'}}>
             <CardMedia
                 component="img"
                 sx={{ height: '10vw'}}
