@@ -43,6 +43,7 @@ export const Login = (props) => {
             if(!jsonResponse.status_code){
                 localStorage.setItem("sessionToken", true);
                 localStorage.setItem("username", JSON.parse(paramsLogin.body).name);
+                console.log(jsonResponse)
                 localStorage.setItem("token", jsonResponse)
                 localStorage.setItem("picture", picture)
 

@@ -11,6 +11,7 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardMedia from '@material-ui/core/CardMedia';
 import { handleUploadFirebaseImage, deleteFirebaseImage } from '../common/FirebaseHandler';
 import { TabSection } from "../components/TabSection";
+import { async } from "q";
 
 
 
@@ -41,10 +42,9 @@ const eventypes = [
     },
   ];
 
- 
-
 export const CreateEvent = (props) => {
     const [open, setOpen] = useState(false)
+    const [openSuccessDraftEvent, setOpenSuccessDraftEvent] = useState(false)
     const [eventName, setEventName] = useState("")
     const [eventDescription, setEventDescription] = useState("")
     const [eventStartTime, setEventStartTime] = useState(dayjs('2022-04-17T15:30'))
@@ -66,13 +66,73 @@ export const CreateEvent = (props) => {
     const [file, setFile] = useState("")
     
     
-    
-
     const APIURL = 'https://event-service-solfonte.cloud.okteto.net'
 
+    const onSubmitDraftEvent = async (event) => {
+        const month = eventDate.$M  +  1
+        const eventDateFormat =  eventDate.$y + "-" + month  + "-" + eventDate.$D
+        let eventStartTimeFormat = eventStartTime.$H + ":" + eventStartTime.$m 
+        let eventEndTimeFormat = eventEndTime.$H + ":" + eventEndTime.$m 
+        let eventPosition = [0,0]
+        if (eventLocation != ""){
+            eventPosition = await getLatitudandlongitud(eventLocation)
+        }
+        console.log(eventPosition)
+        let photosNames = await handleUploadPhotos();
+        let eventAgenda = getAgenda();
+        let eventFaqs = getFaqs();
+        let token = localStorage.getItem("token")
+        console.log("info token")
+        console.log(token)
+        const paramsUpload = {
+            method: "POST",
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: eventName,
+                ownerName: localStorage.getItem("username"),
+                description: eventDescription,
+                location: eventLocation,
+                locationDescription: eventLocationDescription,
+                capacity: eventCapacity,
+                dateEvent: eventDateFormat,
+                eventType: eventType,
+                tags: ["tag"],
+                agenda: eventAgenda,
+                latitud: eventPosition[1], 
+                longitud: eventPosition[0], 
+                start: eventStartTimeFormat,
+                end: eventEndTimeFormat,
+                photos: photosNames,
+                faqs: eventFaqs, 
+            })
+        };
+        const url = `${APIURL}/organizers/draft_events`;
+        const response = await fetch(
+            url,
+            paramsUpload
+        );
+        const jsonResponse = await response.json();
+        console.log("ver respuesta")
+        console.log(response.status)
+        if (response.status === 201){
+            console.log(jsonResponse.status_code)
+            if(!jsonResponse.status_code){
+                setOpenSuccessDraftEvent(true)
+               
+            }else{
+                console.log("hay error")
+                // mostrar mensaje de error 
+            }
+
+        }
+
+    }
  
     const onSubmitEvent = async (event) => {
-
+        
         const month = eventDate.$M  +  1
         const eventDateFormat =  eventDate.$y + "-" + month  + "-" + eventDate.$D
         let eventStartTimeFormat = eventStartTime.$H + ":" + eventStartTime.$m 
@@ -81,6 +141,7 @@ export const CreateEvent = (props) => {
         let photosNames = await handleUploadPhotos();
         let eventAgenda = getAgenda();
         let eventFaqs = getFaqs();
+
         const paramsUpload = {
             method: "POST",
             headers: {
@@ -377,13 +438,32 @@ export const CreateEvent = (props) => {
 
                                 </TabSection>
                     </Grid>
-                    
-                    <Grid item xs={12} style={{ display: "flex", justifyContent: "center" }}>
+                    <Grid item xs={6} style={{display: "flex", justifyContent:"center"}}>
+                        <div style={{backgroundColor: 'rgba(112, 92, 156)'}}>
+                            <Button variant="contained" 
+                                    sx={{ color: 'white', backgroundColor: 'rgba(112, 92, 156)', borderColor: 'purple' }}
+                                    onClick={onSubmitDraftEvent}
+                                    > Guardar Borrador
+                            </Button>
+                        </div>
+                        <Snackbar open={openSuccessDraftEvent} autoHideDuration={6000} onClose={handleClose} 
+                                anchorOrigin={{
+                                    vertical: "bottom",
+                                    horizontal: "center"
+                                }}>
+                            <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                                El evento a sido guardado como borrador exitosamente
+                            </Alert>
+                        </Snackbar>
+                        
+
+                    </Grid>
+                    <Grid item xs={6} style={{ display: "flex", justifyContent: "center" }}>
                         <div style={{backgroundColor: 'rgba(112, 92, 156)'}}>
                         <Button variant="contained" 
                                 sx={{ color: 'white', backgroundColor: 'rgba(112, 92, 156)', borderColor: 'purple' }}
                                 onClick={onSubmitEvent}
-                                 >+ Crear Evento
+                                 >+ Publicar Evento
                         </Button>
                         </div>
                         
