@@ -93,9 +93,9 @@ export const DraftEvents = () => {
                         return (
                             <Grid style={{"marginTop":"2rem"}} item xs={4}>
                                 <Event
-                                    name={prop.name} 
-                                    description={prop.description} 
-                                    type={prop.eventType}
+                                    name={prop.name || "nombre del evento"} 
+                                    description={prop.description || "Agregue una descripcion al evento que sea realizar"} 
+                                    type={prop.eventType || "TIPO DE EVENTO"}
                                     month={prop.month} 
                                     day={prop.day}
                                     image={ urlsImages.length > 0 ? urlsImages[idx][0] : []}

@@ -10,7 +10,7 @@ export const Event = (props) => {
             <CardMedia
                 component="img"
                 sx={{ height: '10vw'}}
-                image={props.image}
+                image={props.image || "https://www.fml.com.mx/wp-content/uploads/2016/04/Race-Registration-Image-Not-Found.png"}
             />
             <Box display="flex"
                 justifyContent="space-between"
