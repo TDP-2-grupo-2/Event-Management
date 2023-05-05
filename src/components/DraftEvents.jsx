@@ -5,7 +5,7 @@ import {Event} from './Event'
 import { getFirebaseImage } from '../common/FirebaseHandler';
 import { useEffect, useState } from 'react';
 
-export const DraftEvents = () => {
+export const DraftEvents = (props) => {
     console.log("entreeeee a mis eventos")
     const APIURL = 'https://event-service-solfonte.cloud.okteto.net'
 
@@ -82,25 +82,23 @@ export const DraftEvents = () => {
     useEffect( () => {
         getOrganizerEvents(localStorage.getItem("token"));
     }, []);
-    
+    // pasarle ademas las dos funciones de arriba
     return (
         !loading ? 
         <div className="DraftEvents" style={{background: "rgba(137,152,202,255)"}}>
             
         <Grid container spacing={5}>
             {events.length > 0 ? 
-                    events.map( (prop, idx) => {
+                    events.map( (event, idx) => {
                         return (
                             <Grid style={{"marginTop":"2rem"}} item xs={4}>
                                 <Event
-                                    name={prop.name || "nombre del evento"} 
-                                    description={prop.description || "Agregue una descripcion al evento que sea realizar"} 
-                                    type={prop.eventType || "TIPO DE EVENTO"}
-                                    month={prop.month} 
-                                    day={prop.day}
                                     image={ urlsImages.length > 0 ? urlsImages[idx][0] : []}
                                     isDraft={true}
                                     isActive={false}
+                                    event={event}
+                                    setEventToEdit={props.setEventToEdit}
+                                    setComponentToRenderize={props.setComponentToRenderize}
                                 />
                             </Grid>
                         )

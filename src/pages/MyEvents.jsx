@@ -59,11 +59,18 @@ export const MyEvents = (props) => {
             </Box>
             <TabPanel value={value} index={0}>
                 <Grid container rowSpacing={3} columnSpacing={1}>
-                        <DraftEvents></DraftEvents>
+                        <DraftEvents 
+                            setEventToEdit={props.setEventToEdit} 
+                            setComponentToRenderize={props.setComponentToRenderize} >
+
+                        </DraftEvents>
                 </Grid>     
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <ActiveEvents></ActiveEvents>
+                <ActiveEvents
+                    setEventToEdit={props.setEventToEdit} 
+                    setComponentToRenderize={props.setComponentToRenderize}>
+                 </ActiveEvents>
             </TabPanel>
         </Box>
         </>

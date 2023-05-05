@@ -20,6 +20,7 @@ import { MyEvents } from '../pages/MyEvents';
 import { CreateEvent } from '../pages/CreateEvent';
 import { Button } from '@mui/material';
 import {Avatar, CardHeader} from '@mui/material';
+import { EditDraftEvent } from '../pages/EditEventDraft';
 
 
 
@@ -75,6 +76,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
 
 export const Sidebar = () => {
     const[isOpen ,setIsOpen] = useState(false);
+    const[event, setEvent] = useState(null);
     const[currentPageTitle ,setCurrentPageTitle] = useState('');
     const[componentToRender ,setComponentToRenderize] = useState(0);
     const theme = useTheme();
@@ -85,18 +87,26 @@ export const Sidebar = () => {
         {
             path: "/my-events",
             name: "Mis eventos",
+            show: true,
             icon: <AiOutlineHome color={sidebarFontColor}/>,
         },
         {
             path: "/create-event",
             name: "Agregar Eventos",
+            show: true,
             icon: <BiCalendarEvent color={sidebarFontColor}/>,
         },
         {
             path: "/metrics",
             name: "Métricas",
+            show: true,
             icon: <BsGraphUp color={sidebarFontColor}/>,
         },
+        {
+            path: "/edit-draft-event",
+            name: "Edit draft event",
+            show: false,
+        }
     ]
     const renderComponent = () => {
         return componentToRender
@@ -167,12 +177,16 @@ export const Sidebar = () => {
                 <List>
                 {
                     menuItem.map((item, index)=>(
+                        item.show? 
                         <NavItem>
+
                             <Button variant="text" key={index} className="link" onClick={(item) => {handlePage(index, item)}} style={{textTransform: 'none'}}>
                                 <div className="icon" >{item.icon}</div>
                                 <div style={{display: isOpen ? "block" : "none", color: sidebarFontColor}} className="link_text">{item.name}</div>
                             </Button>
+                            
                         </NavItem>
+                        : <div></div>
                     ))
                 }
                 </List>
@@ -180,9 +194,10 @@ export const Sidebar = () => {
 
             <Main open={isOpen} style={{background: 'rgba(137,152,202,255)'}} renderComponent={renderComponent}>
             <DrawerHeader/>
-               {componentToRender == 0 ? <MyEvents/>: <></>}
+               {componentToRender == 0 ? <MyEvents setEventToEdit={setEvent} setComponentToRenderize={setComponentToRenderize}/>: <></>}
                {componentToRender == 1 ? <CreateEvent/>: <></>}
-               {componentToRender == 2 ? <Metrics/>: <></>}            
+               {componentToRender == 2 ? <Metrics/>: <></>}  
+               {componentToRender == 3 ? <EditDraftEvent eventToEdit={event}/>: <></>}          
             </Main>
         </Box>
     )

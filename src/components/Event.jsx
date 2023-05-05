@@ -1,9 +1,25 @@
 import React from "react";
 import {Card, CardContent, CardMedia, Typography, Box, Button, CardActions} from "@mui/material";
+import {useNavigate} from 'react-router-dom';
+
+
+// me llega la funcion set event, la de cambiar de pagina y mi evento actual 
+// destructuro el props
+
+
+
 
 
 export const Event = (props) => {
-   
+
+    
+    
+    let navigate = useNavigate(); 
+    const handleEdit = () =>{ 
+       props.setEventToEdit(props.Event)
+       props.setComponentToRenderize(3)
+    }
+
     return(
         <>
             <Card sx={{ width: '25vw' , height: '25vw' ,borderRadius: '16px',}} style={{backgroundColor: '#705C9C'}}>
@@ -32,10 +48,10 @@ export const Event = (props) => {
                     <Box >
                     <CardContent  >
                     <Typography variant="body2" color="text.secondary" sx={{ flexShrink: 1 }}>
-                        {props.month}
+                        {props.event.month}
                     </Typography>
                     <Typography variant="body2" color="text.primary" sx={{ flexShrink: 1 }}>
-                        {props.day}
+                        {props.event.day}
                     </Typography>
                     </CardContent>
                     </Box>
@@ -60,7 +76,7 @@ export const Event = (props) => {
                         fontSize:'115%',
                         },
                     }}>
-                        {props.name}
+                        {props.event.name}
                         <br />
                     </Typography>
                     <Typography variant="caption" color="white" wrap sx={{
@@ -72,9 +88,9 @@ export const Event = (props) => {
                         },
                     }}>
                         <br />
-                        {props.type}
+                        {props.event.type}
                         <br />
-                        {props.description}
+                        {props.event.description}
                     </Typography>
                     </CardContent>
                 </Box>
@@ -83,7 +99,9 @@ export const Event = (props) => {
             <Box sx={{ display: 'flex', alignItems: 'center', pl: 15, pb: 15, columnGap:"50px", height:"30%"}}>
                 <Button variant="contained" 
                         sx={{ color: 'rgba(112, 92, 156)', backgroundColor: 'white', borderColor: 'white' }}
-                        size="small">Editar
+                        size="small"
+                        onClick={handleEdit}>Editar
+                        
                 </Button>
                 
                 {props.isActive == true &&

@@ -5,6 +5,7 @@ import AppRoutes from './AppRoutes';
 import {Sidebar} from './components/Sidebar'
 import {Login} from './pages/Login'
 import { useState } from 'react';
+import { EditDraftEvent } from './pages/EditEventDraft';
 
 function App() {
   let [authenticated, setAuthentification] = useState(false)
@@ -17,6 +18,7 @@ function App() {
                 const { element, ...rest } = route;
                 return <Route key={index} {...rest} element={element} />;
               })}
+             
             </Routes>
         
           <Sidebar>
