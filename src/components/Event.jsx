@@ -1,5 +1,5 @@
 import React from "react";
-import {Card, CardContent, CardMedia, Typography, Box} from "@mui/material";
+import {Card, CardContent, CardMedia, Typography, Box, Button, CardActions} from "@mui/material";
 
 
 export const Event = (props) => {
@@ -78,6 +78,26 @@ export const Event = (props) => {
                     </Typography>
                     </CardContent>
                 </Box>
+                
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', pl: 15, pb: 15, columnGap:"50px", height:"30%"}}>
+                <Button variant="contained" 
+                        sx={{ color: 'rgba(112, 92, 156)', backgroundColor: 'white', borderColor: 'white' }}
+                        size="small">Editar
+                </Button>
+                
+                {props.isActive == true &&
+                    <Button variant="contained" 
+                    sx={{ color: 'rgba(112, 92, 156)', backgroundColor: 'white', borderColor: 'white' }}
+                    size="small"> Cancelar
+                    </Button>
+                }
+                { props.isDraft == true &&
+                    <Button variant="contained" 
+                            sx={{ color: 'rgba(112, 92, 156)', backgroundColor: 'white', borderColor: 'white' }}
+                            size="small">Publicar
+                    </Button>
+                }
             </Box>
             
             </Card>
