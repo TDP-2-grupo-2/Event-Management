@@ -1,127 +1,72 @@
-import React from "react";
-import {Typography, Grid, CircularProgress } from "@mui/material";
-import {Event} from '../components/Event'
-
-import { getFirebaseImage } from '../common/FirebaseHandler';
-import { useEffect, useState } from 'react';
-
-export const MyEvents = () => {
-    console.log("entreeeee a mis eventos")
-    const APIURL = 'https://event-service-solfonte.cloud.okteto.net'
-
-    const [ events, setEvents ] = useState ( [] );
-    const [ loading, setLoading ] = useState( true );
-    const [ urlsImages, setUrlsImages ] = useState( [] );
-
-    function getMonth (eventDate) {
-      
-        let eventDateAux = new Date(eventDate);
-        let month = eventDateAux.toLocaleString('default', { month: 'short' }).toUpperCase();
-        return month
-    }
-    function getNumber(eventDate) {
-        let date = new Date(eventDate);
-        let number = date.getDate();
-        return number + 1
-    }
-
-    async function getImagesFromFireBase( eventsVar ){
-      
-        const urlsArray = [];
-        console.log(eventsVar[0])
-        for ( let i=0; i < eventsVar[0].length ; i++ ){
-            eventsVar[0][i].month = getMonth(eventsVar[0][i].dateEvent)
-            eventsVar[0][i].day = getNumber(eventsVar[0][i].dateEvent)
-            const arrayURLS = [];
-            
-            for ( let j=0; j < eventsVar[0][i].photos.length ; j++ ){
-               
-                const url = await getFirebaseImage( 
-                    `files/${eventsVar[0][i].photos[j]}`
-                );
-                arrayURLS.push(url);
-            }
-            urlsArray.push(arrayURLS);
-            console.log(urlsArray)
-        }
-        setUrlsImages( urlsArray );
-        setLoading( false );
-        setEvents(eventsVar[0]);
-     
-    }
-
-    async function getOrganizerEvents(user){
-        const paramsUpload = {
-            method: "GET",
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        };
-        console.log(user)
-        const url = `${APIURL}/events/?owner=${user}`;
-        const response = await fetch(
-            url,
-            paramsUpload
-        );
-        const jsonResponse = await response.json();
-
-        if (response.status === 200){
-            if(!jsonResponse.status_code){
-                const arrayProps = [];
-                const keys = Object.keys(jsonResponse);
-                for ( let i=0; i<keys.length; i++){
-                    arrayProps.push(jsonResponse[keys[i]]);
-                }
-                await getImagesFromFireBase(arrayProps);
-            }
-        }     
-    }
+import React , {useState} from "react";
+import PropTypes from 'prop-types';
+import { Tabs, Tab,  Grid, Typography,Box} from "@mui/material";
+import { ActiveEvents } from '../components/ActiveEvents';
+import { DraftEvents } from '../components/DraftEvents';
 
 
-    useEffect( () => {
-        getOrganizerEvents(localStorage.getItem('username'));
-    }, []);
-    
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+  
     return (
-        !loading ? 
-        <div className="CreateEvent" style={{background: "rgba(137,152,202,255)"}}>
-            
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`simple-tabpanel-${index}`}
+        aria-labelledby={`simple-tab-${index}`}
+        {...other}
+      >
+        {value === index && (
+          <Box sx={{ p: 3 }}>
+            <Typography>{children}</Typography>
+          </Box>
+        )}
+      </div>
+    );
+  }
+  
+  TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
+  };
+  
+  function a11yProps(index) {
+    return {
+      id: `simple-tab-${index}`,
+      'aria-controls': `simple-tabpanel-${index}`,
+    };
+  }
+export const MyEvents = (props) => {
+    const [value, setValue] = useState(0);
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+
+    return (
+        <>
         <Typography  variant="h3" align="top">
             Mis Eventos
         </Typography>
-        
-        <Grid container spacing={5}>
-            {events.length > 0 ? 
-                    events.map( (prop, idx) => {
-                        return (
-                            <Grid style={{"marginTop":"2rem"}} item xs={4}>
-                                <Event
-                                    name={prop.name} 
-                                    description={prop.description} 
-                                    type={prop.eventType}
-                                    month={prop.month} 
-                                    day={prop.day}
-                                    image={ urlsImages.length > 0 ? urlsImages[idx][0] : []}
-                                />
-                            </Grid>
-                        )
-            }) : 
-            <Grid style={{marginTop:"3rem", textAlign:"center"}} item xs={12}>
-                <h4>No cargaste ningun evento todavia.</h4>
-            </Grid>
-        }
-        </Grid>
-        
-        </div>
-        : <CircularProgress 
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '100vh',
-          margin: 'auto',
-          width: '10vw'
-        }}
-      />
+        <Box sx={{ width: '100%' }}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' , width: '100%'}}>
+                <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                        <Tab label="Borrador" {...a11yProps(0)} />
+                        <Tab label="Activos" {...a11yProps(1)} />
+                        
+                </Tabs>
+            </Box>
+            <TabPanel value={value} index={0}>
+                <Grid container rowSpacing={3} columnSpacing={1}>
+                        <DraftEvents></DraftEvents>
+                </Grid>     
+            </TabPanel>
+            <TabPanel value={value} index={1}>
+                <ActiveEvents></ActiveEvents>
+            </TabPanel>
+        </Box>
+        </>
     );
+
 };

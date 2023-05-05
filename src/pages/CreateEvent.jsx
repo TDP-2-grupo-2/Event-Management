@@ -117,7 +117,7 @@ export const CreateEvent = (props) => {
         const jsonResponse = await response.json();
         console.log("ver respuesta")
         console.log(response.status)
-        if (response.status === 201){
+        if (response.status === 200){
             console.log(jsonResponse.status_code)
             if(!jsonResponse.status_code){
                 setOpenSuccessDraftEvent(true)
@@ -189,6 +189,7 @@ export const CreateEvent = (props) => {
 
     const handleClose = () => {
         setOpen(false);
+        setOpenSuccessDraftEvent(false);
     };
 
     const getAgenda = () => {
