@@ -88,7 +88,7 @@ export const CreateEvent = (props) => {
             },
             body: JSON.stringify({
                 name: eventName,
-                owner: "Jorge Perez", // Como no hay login esto tiene q ir harcodeado por ahora (no hay usuario)
+                owner: localStorage.getItem('username'), // Como no hay login esto tiene q ir harcodeado por ahora (no hay usuario)
                 description: eventDescription,
                 location: eventLocation,
                 locationDescription: eventLocationDescription,
@@ -208,19 +208,13 @@ export const CreateEvent = (props) => {
                     />
                 </Grid>
                 {
-                        file.length > 0 &&            
+                    file.length > 0 &&            
                     <Grid item xs={6}>
-                        
-                        <Card >
-                            <CardActionArea>
-                                <CardMedia
-                                    component="img"
-                                    alt="Default"
-                                    image={file}
-                                    title={fileInputShow}
-                                />
-                            </CardActionArea>
-                        </Card>
+                            <img
+                                src={file}
+                                alt={fileInputShow}
+                                style={{width: 'auto', height: 'auto', maxWidth:'300px', maxHeight: '300px'}}
+                            />
                     </Grid>
                 }
                 <Grid item xs={12} style={{ display: "flex", justifyContent: "flex-start", direction: "row"}}>

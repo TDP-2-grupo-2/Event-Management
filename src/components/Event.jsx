@@ -9,7 +9,7 @@ export const Event = (props) => {
             <Card sx={{ width: '25vw' , height: '25vw' ,borderRadius: '16px',}} style={{backgroundColor: '#705C9C'}}>
             <CardMedia
                 component="img"
-                sx={{ height: 220}}
+                sx={{ height: '10vw'}}
                 image={props.image}
             />
             <Box display="flex"
@@ -21,6 +21,7 @@ export const Event = (props) => {
                         p: 1,
                         m: 3,
                         display: "flex",
+                        gap: 2,
                         alignItems: "center",
                         justifyContent: "center",
                         bgcolor: 'white',
@@ -28,12 +29,12 @@ export const Event = (props) => {
                         width:"10%",
                         height: "50%",
                         }}>
-                    <Box>
+                    <Box >
                     <CardContent  >
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="body2" color="text.secondary" sx={{ flexShrink: 1 }}>
                         {props.month}
                     </Typography>
-                    <Typography variant="body2" color="text.primary">
+                    <Typography variant="body2" color="text.primary" sx={{ flexShrink: 1 }}>
                         {props.day}
                     </Typography>
                     </CardContent>
@@ -43,8 +44,7 @@ export const Event = (props) => {
                         p: 1,
                         m: 1,
                         display: "flex",
-                        alignItems: "flex-start",
-                        justifyContent: "flex-start",
+                        gap: 2,
                         bgcolor: '#705C9C',
                         borderRadius: 1,
                         width:"90%",
@@ -52,11 +52,25 @@ export const Event = (props) => {
                         }} >
                     
                     <CardContent>
-                    <Typography variant="h5" component="div" color='white'>
+                    <Typography variant="h5" component="div" color='white' wrap sx={{
+                        '@media (min-width:600px)': {
+                        fontSize: '130%',
+                        },
+                        '@media (min-width:900px)': {
+                        fontSize:'115%',
+                        },
+                    }}>
                         {props.name}
                         <br />
                     </Typography>
-                    <Typography variant="caption" color="white">
+                    <Typography variant="caption" color="white" wrap sx={{
+                        '@media (min-width:600px)': {
+                        fontSize: '130%',
+                        },
+                        '@media (min-width:900px)': {
+                        fontSize:'60%',
+                        },
+                    }}>
                         <br />
                         {props.type}
                         <br />
