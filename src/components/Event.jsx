@@ -1,23 +1,17 @@
 import React from "react";
 import {Card, CardContent, CardMedia, Typography, Box, Button, CardActions} from "@mui/material";
-import {useNavigate} from 'react-router-dom';
-
-
-// me llega la funcion set event, la de cambiar de pagina y mi evento actual 
-// destructuro el props
-
-
-
 
 
 export const Event = (props) => {
 
-    
-    
-    let navigate = useNavigate(); 
+
     const handleEdit = () =>{ 
-       props.setEventToEdit(props.Event)
-       props.setComponentToRenderize(3)
+
+        console.log(props.event)
+        props.event['image'] = props.image
+        console.log(props.event["_id"]["$oid"])
+        props.setEventToEdit(props.event)
+        props.setComponentToRenderize(3)
     }
 
     return(
@@ -76,7 +70,7 @@ export const Event = (props) => {
                         fontSize:'115%',
                         },
                     }}>
-                        {props.event.name}
+                        {props.event.name || "Nombre del evento" }
                         <br />
                     </Typography>
                     <Typography variant="caption" color="white" wrap sx={{
@@ -88,9 +82,9 @@ export const Event = (props) => {
                         },
                     }}>
                         <br />
-                        {props.event.type}
+                        {props.event.type || "TIPO DE EVENTO"}
                         <br />
-                        {props.event.description}
+                        {props.event.description || "Aqui iria la describcion del evento que usted creo"}
                     </Typography>
                     </CardContent>
                 </Box>

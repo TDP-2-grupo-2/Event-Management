@@ -1,5 +1,4 @@
 import React from "react";
-import { useState, useEffect } from 'react';
 import { Button,Grid, TextField} from "@mui/material";
 import { DesktopTimePicker } from '@mui/x-date-pickers/DesktopTimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -41,7 +40,7 @@ export const  Agenda = (props)  => {
         console.log(index)
         console.log(props.agendaValues)
         const list = [...props.agendaValues]
-        list.splice(index, 0, { time:dayjs(props.agendaValues[index -1].time), description:''});
+        list.splice(index, 0, { horario:dayjs(props.agendaValues[index -1].horario), descripcion:''});
         props.setAgendaValues(list)
       }
 
@@ -49,16 +48,17 @@ export const  Agenda = (props)  => {
     return (
         <Grid container spacing={3}>
             {props.agendaValues.map( (prop, idx) => {
+                console.log(prop)
                 return (
                     <>
                         <Grid item xs={3}>
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <DesktopTimePicker                      
-                                        value={prop.time}
+                                        value={dayjs(prop.horario, "HH:mm:ss")}
                                         name="time"
-                                        minTime={ idx > 0 ? props.agendaValues[idx -1].time : props.start}
-                                        maxTime={props.agendaValues.length >= 3 && idx !== (props.agendaValues.length -1) ? props.agendaValues[idx +1].time : props.end}
-                                        onChange={e=>handleHourChange({ target: { value: e, name: 'time' } },idx)}
+                                        minTime={ idx > 0 ? dayjs(props.agendaValues[idx -1].horario, "HH:mm:ss") : props.start}
+                                        maxTime={props.agendaValues.length >= 3 && idx !== (props.agendaValues.length -1) ? props.agendaValues[idx +1].horario : props.end}
+                                        onChange={e=>handleHourChange({ target: { value: e, name: 'horario' } },idx)}
                                 />
                             </LocalizationProvider>
                         </Grid>
@@ -66,9 +66,9 @@ export const  Agenda = (props)  => {
                             <TextField    
                                     placeholder="Descripcion"  
                                     name="description"
-                                    onChange={e=>handleDescriptionChange({ target: { value: e.target.value, name: 'description' } },idx)}
+                                    onChange={e=>handleDescriptionChange({ target: { value: e.target.value, name: 'descripcion' } },idx)}
                                     fullWidth
-                                    value={prop.description}
+                                    value={prop.descripcion}
                             />
                         </Grid> 
                         <Grid item xs={2}>

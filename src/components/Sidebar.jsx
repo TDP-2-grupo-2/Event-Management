@@ -76,7 +76,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
 
 export const Sidebar = () => {
     const[isOpen ,setIsOpen] = useState(false);
-    const[event, setEvent] = useState(null);
+    const[event, setEvent] = useState(0);
     const[currentPageTitle ,setCurrentPageTitle] = useState('');
     const[componentToRender ,setComponentToRenderize] = useState(0);
     const theme = useTheme();

@@ -5,8 +5,7 @@ import {Event} from './Event'
 import { getFirebaseImage } from '../common/FirebaseHandler';
 import { useEffect, useState } from 'react';
 
-export const ActiveEvents = () => {
-    console.log("entreeeee a mis eventos")
+export const ActiveEvents = (props) => {
     const APIURL = 'https://event-service-solfonte.cloud.okteto.net'
 
     const [ events, setEvents ] = useState ( [] );
@@ -88,18 +87,16 @@ export const ActiveEvents = () => {
             
         <Grid container spacing={5}>
             {events.length > 0 ? 
-                    events.map( (prop, idx) => {
+                    events.map( (event, idx) => {
                         return (
                             <Grid style={{"marginTop":"2rem"}} item xs={4}>
                                 <Event
-                                    name={prop.name} 
-                                    description={prop.description} 
-                                    type={prop.eventType}
-                                    month={prop.month} 
-                                    day={prop.day}
-                                    image={ urlsImages.length > 0 ? urlsImages[idx][0] : []}
-                                    isActive={true}
                                     isDraft={false}
+                                    isActive={true}
+                                    event={event}
+                                    image={ urlsImages.length > 0 ? urlsImages[idx][0] : []}
+                                    setEventToEdit={props.setEventToEdit}
+                                    setComponentToRenderize={props.setComponentToRenderize}
                                 />
                             </Grid>
                         )
