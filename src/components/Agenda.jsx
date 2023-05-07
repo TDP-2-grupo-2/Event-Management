@@ -37,18 +37,21 @@ export const  Agenda = (props)  => {
 
       const handleAddingAgenda=(e, index)=>{ 
         console.log("entre a add")
-        console.log(index)
         console.log(props.agendaValues)
+
         const list = [...props.agendaValues]
-        list.splice(index, 0, { horario:dayjs(props.agendaValues[index -1].horario), descripcion:''});
+        console.log(props.agendaValues[index -1].horario)
+        console.log(typeof props.agendaValues[index -1].horario)
+        list.splice(index, 0, { horario:dayjs(props.agendaValues[index -1].horario, "HH:mm:ss"), descripcion:''});
         props.setAgendaValues(list)
+        
       }
 
-
+    console.log(props.agendaValues)
     return (
+        
         <Grid container spacing={3}>
             {props.agendaValues.map( (prop, idx) => {
-                console.log(prop)
                 return (
                     <>
                         <Grid item xs={3}>
@@ -57,7 +60,7 @@ export const  Agenda = (props)  => {
                                         value={dayjs(prop.horario, "HH:mm:ss")}
                                         name="time"
                                         minTime={ idx > 0 ? dayjs(props.agendaValues[idx -1].horario, "HH:mm:ss") : props.start}
-                                        maxTime={props.agendaValues.length >= 3 && idx !== (props.agendaValues.length -1) ? props.agendaValues[idx +1].horario : props.end}
+                                        maxTime={props.agendaValues.length >= 3 && idx !== (props.agendaValues.length -1) ? dayjs(props.agendaValues[idx +1].horario, "HH:mm:ss") : props.end}
                                         onChange={e=>handleHourChange({ target: { value: e, name: 'horario' } },idx)}
                                 />
                             </LocalizationProvider>

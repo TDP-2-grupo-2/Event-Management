@@ -5,6 +5,7 @@ import {getLatitudandlongitud} from '../components/MapView'
 import { handleUploadFirebaseImage, deleteFirebaseImage } from '../common/FirebaseHandler';
 import { DisplayImageLocation } from "../components/DisplayImageLocation";
 import { GeneralEventInfo } from "../components/GeneralEventInfo";
+import { type } from "@testing-library/user-event/dist/type";
 
 
 export const EditDraftEvent = (props) => {
@@ -169,21 +170,22 @@ export const EditDraftEvent = (props) => {
     };
 
     const getAgenda = () => {
+        console.log(agendaValues)
         const agendaItenirary = []
         
         for (let i = 0; i < agendaValues.length; i++){ 
-            let time_agenda
-
-            if (agendaValues[i].time.$m.toString().length == 1){
-                console.log("entre")
-                time_agenda = agendaValues[i].time.$H + ":" + agendaValues[i].time.$m + '0' + ":00"
-                console.log(time_agenda)
-            }else{
-                time_agenda = agendaValues[i].time.$H + ":" + agendaValues[i].time.$m + ":00"
-                console.log(time_agenda)
+            let time_agenda = agendaValues[i].horario
+            if (typeof agendaValues[i].horario !== "string"){
+                if (agendaValues[i].horario.$m.toString().length == 1){
+                    console.log("entre")
+                    time_agenda = agendaValues[i].horario.$H + ":" + agendaValues[i].horario.$m + '0' + ":00"
+                    console.log(time_agenda)
+                }else{
+                    time_agenda = agendaValues[i].horario.$H + ":" + agendaValues[i].horario.$m + ":00"
+                    console.log(time_agenda)
+                }
             }
-            
-            agendaItenirary.push({'horario': time_agenda, 'descripcion': agendaValues[i].description})
+            agendaItenirary.push({'horario': time_agenda, 'descripcion': agendaValues[i].descripcion})
         }
         return agendaItenirary
     }

@@ -160,21 +160,22 @@ export const CreateEvent = (props) => {
 
     const getAgenda = () => {
         const agendaItenirary = []
-        
+        console.log("get agendaaa")
         for (let i = 0; i < agendaValues.length; i++){ 
             let time_agenda
 
-            if (agendaValues[i].time.$m.toString().length == 1){
+            if (agendaValues[i].horario.$m.toString().length == 1){
                 console.log("entre")
-                time_agenda = agendaValues[i].time.$H + ":" + agendaValues[i].time.$m + '0'
+                time_agenda = agendaValues[i].horario.$H + ":" + agendaValues[i].horario.$m + '0'
                 console.log(time_agenda)
             }else{
-                time_agenda = agendaValues[i].time.$H + ":" + agendaValues[i].time.$m
+                time_agenda = agendaValues[i].horario.$H + ":" + agendaValues[i].horario.$m
                 console.log(time_agenda)
             }
             
-            agendaItenirary.push({'horario': time_agenda, 'descripcion': agendaValues[i].description})
+            agendaItenirary.push({'horario': time_agenda, 'descripcion': agendaValues[i].descripcion})
         }
+        console.log(agendaItenirary)
         return agendaItenirary
     }
 
