@@ -35,7 +35,7 @@ export const EditDraftEvent = (props) => {
     const [pregunta1, setPregunta1] = useState(props.eventToEdit.faqs[0]['respuesta'])
     const [pregunta2, setPregunta2] = useState(props.eventToEdit.faqs[1]['respuesta'])
     const [pregunta3, setPregunta3] = useState(props.eventToEdit.faqs[2]['respuesta'])
-    const [file, setFile] = useState(props.eventToEdit.image)
+    const [file, setFile] = useState(props.eventToEdit.image || "")
 
     
     const APIURL = 'https://event-service-solfonte.cloud.okteto.net'
@@ -142,15 +142,16 @@ export const EditDraftEvent = (props) => {
             let photosNames = await handleUploadPhotos();
             let eventAgenda = getAgenda();
             let eventFaqs = getFaqs();
-
+            let token = localStorage.getItem("token")
             const paramsUpload = {
                 method: "POST",
                 headers: {
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
                     name: eventName,
-                    owner: localStorage.getItem('username'), // Como no hay login esto tiene q ir harcodeado por ahora (no hay usuario)
+                    ownerName: localStorage.getItem('username'), // Como no hay login esto tiene q ir harcodeado por ahora (no hay usuario)
                     description: eventDescription,
                     location: eventLocation,
                     locationDescription: eventLocationDescription,
@@ -165,10 +166,11 @@ export const EditDraftEvent = (props) => {
                     end: eventEndTimeFormat,
                     photos: photosNames,
                     faqs: eventFaqs, 
+                    draftId: props.eventToEdit["_id"]["$oid"]
                 })
             };
             console.log(paramsUpload)
-            const url = `${APIURL}/events/`;
+            const url = `${APIURL}/organizers/active_events`;
             const response = await fetch(
                 url,
                 paramsUpload

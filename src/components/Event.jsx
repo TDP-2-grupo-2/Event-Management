@@ -38,14 +38,16 @@ export const Event = (props) => {
             console.log(typeof props.event)
             console.log(props.event)
             console.log(props.event)
+            let token = localStorage.getItem("token")
             const paramsUpload = {
                 method: "POST",
                 headers: {
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
                     name: props.event.name,
-                    owner: localStorage.getItem('username'), // Como no hay login esto tiene q ir harcodeado por ahora (no hay usuario)
+                    ownerName: localStorage.getItem('username'), // Como no hay login esto tiene q ir harcodeado por ahora (no hay usuario)
                     description: props.event.description,
                     location: props.event.location,
                     locationDescription: props.event.locationDescription,
@@ -60,10 +62,11 @@ export const Event = (props) => {
                     end: props.event.end,
                     photos: props.event.photos,
                     faqs: props.event.faqs, 
+                    draftId: props.event["_id"]["$oid"]
                 })
             };
             console.log(paramsUpload)
-            const url = `${APIURL}/events/`;
+            const url = `${APIURL}/organizers/active_events`;
             const response = await fetch(
                 url,
                 paramsUpload
@@ -103,16 +106,17 @@ export const Event = (props) => {
     }
 
     const onCancelEvent = async () => {
-
+        let token = localStorage.getItem("token")
         const paramsUpload = {
             method: "PATCH",
             headers: {
+                'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
             }
         };
         const event_id = props.event["_id"]["$oid"]
         console.log(event_id)
-        const url = `${APIURL}/events/cancel/${event_id}`;
+        const url = `${APIURL}/organizers/canceled_events/${event_id}`;
         console.log(url)
         const response = await fetch(
             url,

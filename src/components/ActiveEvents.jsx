@@ -49,15 +49,16 @@ export const ActiveEvents = (props) => {
      
     }
 
-    async function getOrganizerEvents(user){
+    async function getOrganizerEvents(token){
         const paramsUpload = {
             method: "GET",
             headers: {
+                'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
             }
         };
-        console.log(user)
-        const url = `${APIURL}/events/?owner=${user}`;
+        console.log(token)
+        const url = `${APIURL}/organizers/active_events`;
         const response = await fetch(
             url,
             paramsUpload
@@ -78,7 +79,7 @@ export const ActiveEvents = (props) => {
 
 
     useEffect( () => {
-        getOrganizerEvents(localStorage.getItem('username'));
+        getOrganizerEvents(localStorage.getItem('token'));
     }, []);
     
     return (

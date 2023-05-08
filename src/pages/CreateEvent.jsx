@@ -107,15 +107,16 @@ export const CreateEvent = (props) => {
         let photosNames = await handleUploadPhotos();
         let eventAgenda = getAgenda();
         let eventFaqs = getFaqs();
-
+        let token = localStorage.getItem("token")
         const paramsUpload = {
             method: "POST",
             headers: {
+                'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 name: eventName,
-                owner: localStorage.getItem('username'), // Como no hay login esto tiene q ir harcodeado por ahora (no hay usuario)
+                ownerName: localStorage.getItem('username'), // Como no hay login esto tiene q ir harcodeado por ahora (no hay usuario)
                 description: eventDescription,
                 location: eventLocation,
                 locationDescription: eventLocationDescription,
@@ -132,7 +133,7 @@ export const CreateEvent = (props) => {
                 faqs: eventFaqs, 
             })
         };
-        const url = `${APIURL}/events/`;
+        const url = `${APIURL}/organizers/active_events`;
         const response = await fetch(
             url,
             paramsUpload
