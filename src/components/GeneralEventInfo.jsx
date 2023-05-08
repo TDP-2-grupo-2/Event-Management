@@ -10,33 +10,33 @@ import dayjs from "dayjs";
 
 const eventypes = [
     {
-        value: 'Concierto',
+        value: 'CONCIERTO',
         label: 'Concierto',
     },
     {
-        value: 'Teatro',
+        value: 'TEATRO',
         label: 'Teatro',
     },
     {
-        value: 'Cine',
+        value: 'CINE',
         label: 'Cine',
     },
     {
-        value: 'Show',
+        value: 'SHOW',
         label: 'Show',
     },
     {
-        value: 'Conferencia',
+        value: 'CONFERENCIA',
         label: 'Conferencia',
     },
     {
-        value: 'Otro',
+        value: 'OTRO',
         label: 'Otro',
     },
   ];
 
 export const GeneralEventInfo = (props) => {
-
+    console.log(props.disable)
     return (
 
         <Box
@@ -55,6 +55,7 @@ export const GeneralEventInfo = (props) => {
                         <Grid item xs={12} sm={12} style={{ display: "flex", justifyContent: "flex-start" }}>
                             <TextField label="Nombre Evento" 
                             required
+                            disabled={props.disable}
                             placeholder="Ingresa el nombre del evento" 
                             value={props.eventName}
                             onChange = {(event) => props.setEventName(event.target.value)}
@@ -101,6 +102,7 @@ export const GeneralEventInfo = (props) => {
                             <TextField
                                 label="Capacidad"
                                 type="number"
+                                disabled={props.disable}
                                 value={props.eventCapacity}
                                 required
                                 onChange = {(event) => props.setEventCapcity(event.target.value)}
@@ -125,6 +127,7 @@ export const GeneralEventInfo = (props) => {
                                 select
                                 label="Tipo de Evento"
                                 defaultValue="Concierto"
+                                disabled={props.disabled}
                                 fullWidth
                                 required
                                 size = 'small'

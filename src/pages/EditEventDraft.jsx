@@ -5,7 +5,7 @@ import {getLatitudandlongitud} from '../components/MapView'
 import { handleUploadFirebaseImage, deleteFirebaseImage } from '../common/FirebaseHandler';
 import { DisplayImageLocation } from "../components/DisplayImageLocation";
 import { GeneralEventInfo } from "../components/GeneralEventInfo";
-import { type } from "@testing-library/user-event/dist/type";
+import {Notification} from '../components/Notification'
 
 
 export const EditDraftEvent = (props) => {
@@ -14,9 +14,9 @@ export const EditDraftEvent = (props) => {
     console.log(props.eventToEdit)
     console.log(Object.keys(props.eventToEdit));
     console.log(props.eventToEdit.start)
+    const [notifyModify, setNotifyModify] = useState({isOpen: false, message: '', type: ''})
+    const [notifyPublish, setNotifyPublish] = useState({isOpen: false, message:'', type:''})
  
-    const [open, setOpen] = useState(false)
-    const [openSuccessDraftEvent, setOpenSuccessDraftEvent] = useState(false)
     const [eventName, setEventName] = useState(props.eventToEdit.name)
     const [eventDescription, setEventDescription] = useState(props.eventToEdit.description)
     const [eventStartTime, setEventStartTime] = useState(dayjs(props.eventToEdit.start, "HH:mm:ss"))
@@ -36,11 +36,12 @@ export const EditDraftEvent = (props) => {
     const [pregunta2, setPregunta2] = useState(props.eventToEdit.faqs[1]['respuesta'])
     const [pregunta3, setPregunta3] = useState(props.eventToEdit.faqs[2]['respuesta'])
     const [file, setFile] = useState(props.eventToEdit.image)
-    
+
     
     const APIURL = 'https://event-service-solfonte.cloud.okteto.net'
 
     const onSubmitSaveDraftEvent = async (event) => {
+        console.log("ENTREEEE")
         const month = eventDate.$M  +  1
         const eventDateFormat =  eventDate.$y + "-" + month  + "-" + eventDate.$D
         let eventStartTimeFormat = eventStartTime.$H + ":" + eventStartTime.$m  + ":00"
@@ -81,6 +82,8 @@ export const EditDraftEvent = (props) => {
                 faqs: eventFaqs, 
             })
         };
+        console.log("ESTOY ACA LA PUTA MADRE")
+        console.log(paramsUpload)
         console.log("id del evento")
         console.log(props.eventToEdit['_id'])
         const id = props.eventToEdit['_id']['$oid']
@@ -95,79 +98,112 @@ export const EditDraftEvent = (props) => {
         if (response.status === 200){
             console.log(jsonResponse.status_code)
             if(!jsonResponse.status_code){
-                setOpenSuccessDraftEvent(true)
+                setNotifyModify({
+                    isOpen: true,
+                    message: 'Evento ha sido modificado exitosamente',
+                    type: 'success'
+                })
                
             }else{
                 console.log("hay error")
-                // mostrar mensaje de error 
+                setNotifyModify({
+                    isOpen: true,
+                    message: 'Error al modidificar el evento. Intente mas tarde',
+                    type: 'error'
+                }) 
             }
 
         }
 
+    }
+
+    const allFieldsAreNotFill = () => {
+        if (eventName == "" || eventDescription == "" || eventLocation == ""){
+            return true
+        } else {
+            return false
+        }
     }
  
-    const onSubmitEvent = async (event) => {
+    const onPublishEvent = async (event) => {
         
-        const month = eventDate.$M  +  1
-        const eventDateFormat =  eventDate.$y + "-" + month  + "-" + eventDate.$D
-        let eventStartTimeFormat = eventStartTime.$H + ":" + eventStartTime.$m 
-        let eventEndTimeFormat = eventEndTime.$H + ":" + eventEndTime.$m 
-        let eventPosition = await getLatitudandlongitud(eventLocation)
-        //let photosNames = await handleUploadPhotos();
-        let eventAgenda = getAgenda();
-        let eventFaqs = getFaqs();
-        let token = localStorage.getItem("token")
-        const paramsUpload = {
-            method: "PATCH",
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                name: eventName,
-                owner: localStorage.getItem('username'), // Como no hay login esto tiene q ir harcodeado por ahora (no hay usuario)
-                description: eventDescription,
-                location: eventLocation,
-                locationDescription: eventLocationDescription,
-                capacity: eventCapacity,
-                dateEvent: eventDateFormat,
-                eventType: eventType,
-                tags: ["tag"],
-                agenda: eventAgenda,
-                latitud: eventPosition[1], 
-                longitud: eventPosition[0], 
-                start: eventStartTimeFormat,
-                end: eventEndTimeFormat,
-                //photos: photosNames,
-                faqs: eventFaqs, 
+        if (allFieldsAreNotFill()){
+            setNotifyPublish({
+                isOpen: true,
+                message: 'Por favor carga todos los campos antes de publicar',
+                type: 'error'
             })
-        };
-        const url = `${APIURL}/organizers/draft_events`;
-        const response = await fetch(
-            url,
-            paramsUpload
-        );
-        const jsonResponse = await response.json();
-        console.log("ver respuesta")
-        console.log(response.status)
-        console.log(jsonResponse)
-        if (response.status === 201){
+        } else {
+            const month = eventDate.$M  +  1
+            const eventDateFormat =  eventDate.$y + "-" + month  + "-" + eventDate.$D
+            let eventStartTimeFormat = eventStartTime.$H + ":" + eventStartTime.$m 
+            let eventEndTimeFormat = eventEndTime.$H + ":" + eventEndTime.$m 
+            let eventPosition = await getLatitudandlongitud(eventLocation)
+            let photosNames = await handleUploadPhotos();
+            let eventAgenda = getAgenda();
+            let eventFaqs = getFaqs();
 
-            if(!jsonResponse.status_code){
-                setOpen(true)
-               
-            }else{
-                console.log("hay error")
-                // mostrar mensaje de error 
+            const paramsUpload = {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: eventName,
+                    owner: localStorage.getItem('username'), // Como no hay login esto tiene q ir harcodeado por ahora (no hay usuario)
+                    description: eventDescription,
+                    location: eventLocation,
+                    locationDescription: eventLocationDescription,
+                    capacity: eventCapacity,
+                    dateEvent: eventDateFormat,
+                    eventType: eventType,
+                    tags: ["tag"],
+                    agenda: eventAgenda,
+                    latitud: eventPosition[1], 
+                    longitud: eventPosition[0], 
+                    start: eventStartTimeFormat,
+                    end: eventEndTimeFormat,
+                    photos: photosNames,
+                    faqs: eventFaqs, 
+                })
+            };
+            console.log(paramsUpload)
+            const url = `${APIURL}/events/`;
+            const response = await fetch(
+                url,
+                paramsUpload
+            );
+            const jsonResponse = await response.json();
+            console.log("ver respuesta")
+            console.log(response.status)
+            if (response.status === 201){
+                console.log(jsonResponse.status_code)
+                if(!jsonResponse.status_code){
+                    setNotifyPublish({
+                        isOpen: true,
+                        message: 'Evento ha sido publicado exitosamente',
+                        type: 'success'
+                    })
+                
+                }else{
+                    console.log("hay error")
+                    setNotifyPublish({
+                        isOpen: true,
+                        message: 'Error al publicar el evento',
+                        type: 'error'
+                    })
+                }
+
+            } else {
+                setNotifyPublish({
+                    isOpen: true,
+                    message: 'Evento ha sido publicado exitosamente',
+                    type: 'success'
+                })
+            
             }
-
         }
     }
-
-    const handleClose = () => {
-        setOpen(false);
-        setOpenSuccessDraftEvent(false);
-    };
 
     const getAgenda = () => {
         console.log(agendaValues)
@@ -238,6 +274,7 @@ export const EditDraftEvent = (props) => {
                     <Grid item xs={12}>
                         <GeneralEventInfo
                             eventName={eventName}
+                            disable={false}
                             setEventName={setEventName}
                             eventDescription={eventDescription}
                             setEventDescription={setEventDescription}
@@ -271,15 +308,10 @@ export const EditDraftEvent = (props) => {
                                     > Modificar Borrador
                             </Button>
                         </div>
-                        <Snackbar open={openSuccessDraftEvent} autoHideDuration={6000} onClose={handleClose} 
-                                anchorOrigin={{
-                                    vertical: "bottom",
-                                    horizontal: "center"
-                                }}>
-                            <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-                                El evento borrador a sido modificado exitosamente
-                            </Alert>
-                        </Snackbar>
+                        <Notification
+                            notify={notifyModify}
+                            setNotify={setNotifyModify}/>   
+                        
 
 
                     </Grid>
@@ -287,20 +319,16 @@ export const EditDraftEvent = (props) => {
                         <div style={{backgroundColor: 'rgba(112, 92, 156)'}}>
                             <Button variant="contained" 
                                 sx={{ color: 'white', backgroundColor: 'rgba(112, 92, 156)', borderColor: 'purple' }}
-                                onClick={onSubmitEvent}
+                                onClick={onPublishEvent}
                                         >+ Publicar Evento
                             </Button>
                         </div>
-                                
-                        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} 
-                                anchorOrigin={{
-                                    vertical: "bottom",
-                                    horizontal: "center"
-                                }}>
-                            <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-                                    El evento a sido creado exitosamente
-                            </Alert>
-                        </Snackbar>
+                          
+                       
+                        <Notification
+                            notify={notifyPublish}
+                            setNotify={setNotifyPublish}/>
+                        
                     </Grid>
                 </Grid> 
       </Box>

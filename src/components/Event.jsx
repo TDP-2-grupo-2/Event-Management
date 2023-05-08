@@ -1,20 +1,106 @@
 import React, { useState } from "react";
 import {Card, CardContent, CardMedia, Typography, Box, Button, Dialog, 
-    DialogContent, DialogContentText, DialogActions, Alert, Snackbar} from "@mui/material";
-
+    DialogContent, DialogContentText, DialogActions} from "@mui/material";
+import { Notification } from "./Notification";
+import { InfoPopUp } from "./InfoPopUp";
 import alert from "../images/alert.png" 
 
 export const Event = (props) => {
     let [cancelDialagog, setCancelDialog] = useState(false)
-    let [eventCancelSucces, setEventCancelSuccess] = useState(false)
+    const [notifyCancel, setNotifyCancel] = useState({isOpen: false, message: '', type: ''})
+    const [notifyPublish, setNotifyPublish] = useState({isOpen: false, message:'', type:''})
+
     const APIURL = 'https://event-service-solfonte.cloud.okteto.net'
 
+    const allFieldsAreNotFill = () => {
+        if (props.event.name == "" || props.event.description == "" || props.event.location == ""){
+            return true
+        } else {
+            return false
+        }
+    }
     
-
     const handleCancel = () => {
-            console.log("entre a handle")
-            setCancelDialog(true)
+        console.log("entre a handle")
+        setCancelDialog(true)
     } 
+
+
+    const handlePublish = async () => {
+        console.log("entre")
+        if (allFieldsAreNotFill()){
+            setNotifyPublish({
+                isOpen: true,
+                message: 'Por favor carga todos los campos antes de publicar',
+                type: 'error'
+            })
+        } else {
+            console.log(typeof props.event)
+            console.log(props.event)
+            console.log(props.event)
+            const paramsUpload = {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: props.event.name,
+                    owner: localStorage.getItem('username'), // Como no hay login esto tiene q ir harcodeado por ahora (no hay usuario)
+                    description: props.event.description,
+                    location: props.event.location,
+                    locationDescription: props.event.locationDescription,
+                    capacity: props.event.capacity,
+                    dateEvent: props.event.dateEvent,
+                    eventType: props.event.eventType,
+                    tags: ["tag"],
+                    agenda: props.event.agenda,
+                    latitud: props.event.latitud,
+                    longitud: props.event.longitud,
+                    start: props.event.start,
+                    end: props.event.end,
+                    photos: props.event.photos,
+                    faqs: props.event.faqs, 
+                })
+            };
+            console.log(paramsUpload)
+            const url = `${APIURL}/events/`;
+            const response = await fetch(
+                url,
+                paramsUpload
+            );
+            const jsonResponse = await response.json();
+            console.log("ver respuesta")
+            console.log(response.status)
+            if (response.status === 201){
+                console.log(jsonResponse.status_code)
+                if(!jsonResponse.status_code){
+                    console.log("entreeeeee")
+                    setNotifyPublish({
+                        isOpen: true,
+                        message: 'Evento ha sido publicado exitosamente',
+                        type: 'success'
+                    })
+                
+                }else{
+                    console.log("hay error")
+                    setNotifyPublish({
+                        isOpen: true,
+                        message: 'Error al publicar el evento',
+                        type: 'error'
+                    })
+                }
+
+            } else {
+                console.log("entreeee")
+                setNotifyPublish({
+                    isOpen: true,
+                    message: 'Error al publicar evento',
+                    type: 'error'
+                })
+            
+            }
+        }
+    }
 
     const onCancelEvent = async () => {
 
@@ -34,7 +120,8 @@ export const Event = (props) => {
         );
     
         if (response.status === 200){
-            setEventCancelSuccess(true)
+            setNotifyCancel({isOpen:true, message:"El evento ha sido cancelado exitosamente", type:"success"})
+            setCancelDialog(false);
         }
 
     }
@@ -43,16 +130,19 @@ export const Event = (props) => {
         setCancelDialog(false);
       };
     
-    const handleCloseCancel = () =>{
-        setEventCancelSuccess(false)
-    }
-    const handleEdit = () =>{ 
 
-        console.log(props.event)
-        props.event['image'] = props.image
-        console.log(props.event["_id"]["$oid"])
-        props.setEventToEdit(props.event)
-        props.setComponentToRenderize(3)
+    const handleEdit = () =>{ 
+        if (props.isDraft){
+           
+            props.event['image'] = props.image
+            props.setEventToEdit(props.event)
+            props.setComponentToRenderize(3)
+        }else{
+
+            props.event['image'] = props.image
+            props.setEventToEdit(props.event)
+            props.setComponentToRenderize(4)
+        }
     }
     console.log(props.event)
     return(
@@ -151,51 +241,28 @@ export const Event = (props) => {
                     <div>
                         <Button variant="contained" 
                                 sx={{ color: 'rgba(112, 92, 156)', backgroundColor: 'white', borderColor: 'white' }}
+                                onClick={handlePublish}
                                 size="small">Publicar
                         </Button>
                     </div>    
                 }
-                <Dialog
-                            open={cancelDialagog}
-                            onClose={handleClose}
-                            aria-labelledby="alert-dialog-title"
-                            aria-describedby="alert-dialog-description"
-                            maxWidth="xs"
-  
-                        >
-                          
-                            <img
-                                style={{ width: '5vw', height: '5vw' ,alignSelf: 'center' }}
-                                src={alert}
-                                class="center"
-                                alt="image"
-                                
-                                />
-                        
-                             <Typography variant="h3" align="center" color="red">Warning</Typography>
-                            
-                            <DialogContent>
-                            <DialogContentText id="alert-dialog-description" style={{justifyContent:"center"}}>
-                            ¿Estás seguro de que querés cancelar este evento?
-                            Si cancelas el eventos, se le notificará a los usuarios que iban a asistir al mismo
-                            </DialogContentText>
-                            </DialogContent>
-                            <DialogActions  style={{ justifyContent: "space-between" }}>
-                            <Button onClick={handleClose}>Cancelar</Button>
-                            <Button onClick={onCancelEvent} autoFocus>
-                                Aceptar
-                            </Button>
-                            </DialogActions>
-                        </Dialog>
-                        <Snackbar open={eventCancelSucces} autoHideDuration={6000} onClose={handleCloseCancel} 
-                                anchorOrigin={{
-                                    vertical: "bottom",
-                                    horizontal: "center"
-                                }}>
-                            <Alert onClose={handleCloseCancel} severity="success" sx={{ width: '100%' }}>
-                                    El evento a sido cancelado exitosamente
-                            </Alert>
-                        </Snackbar>
+                <InfoPopUp 
+                    openDialog={cancelDialagog}
+                    handleClose={handleClose}
+                    text="¿Estás seguro de que querés cancelar este evento?Si cancelas el eventos, se le notificará a los usuarios que iban a asistir al mismo"
+                    image={alert}
+                    mainText="Warning"
+                    onClick={onCancelEvent}
+                />
+                <Notification
+                    notify={notifyCancel}
+                    setNotify={setNotifyCancel}/>
+                
+                <Notification
+                    notify={notifyPublish}
+                    setNotify={setNotifyPublish}/>
+                
+                    
 
             </Box>
             

@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import { styled, useTheme } from '@mui/material/styles';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
-import {FaBeer, FaBars} from 'react-icons/fa'
+import {FaBeer, FaBars, FaDoorClosed} from 'react-icons/fa'
 import {AiOutlineHome} from 'react-icons/ai'
 import {BsGraphUp, BsGear}from 'react-icons/bs'
 import {BiCalendarEvent} from 'react-icons/bi'
@@ -21,6 +21,7 @@ import { CreateEvent } from '../pages/CreateEvent';
 import { Button } from '@mui/material';
 import {Avatar, CardHeader} from '@mui/material';
 import { EditDraftEvent } from '../pages/EditEventDraft';
+import {EditActiveEvent} from '../pages/EditActiveEvent';
 
 
 
@@ -105,6 +106,11 @@ export const Sidebar = () => {
         {
             path: "/edit-draft-event",
             name: "Edit draft event",
+            show: false,
+        },
+        {
+            path:"/edit-active-event",
+            name:"Edit active event",
             show: false,
         }
     ]
@@ -197,7 +203,8 @@ export const Sidebar = () => {
                {componentToRender == 0 ? <MyEvents setEventToEdit={setEvent} setComponentToRenderize={setComponentToRenderize}/>: <></>}
                {componentToRender == 1 ? <CreateEvent/>: <></>}
                {componentToRender == 2 ? <Metrics/>: <></>}  
-               {componentToRender == 3 ? <EditDraftEvent eventToEdit={event}/>: <></>}          
+               {componentToRender == 3 ? <EditDraftEvent eventToEdit={event}/>: <></>}         
+               {componentToRender == 4 ? <EditActiveEvent eventToEdit={event}/>: <></>}     
             </Main>
         </Box>
     )

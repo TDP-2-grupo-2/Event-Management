@@ -4,27 +4,28 @@ import { Alert } from "@material-ui/lab";
 
 
 export const Notification = (props) => {
-    const {notify, setNotify} = props;
-    console.log(notify)
+    
+    
 
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return
-        }
-        setNotify({
-            ...notify,
+    const handleClose = () => {
+
+        props.setNotify({
+            ...props.notify,
             isOpen: false
         })
     }
 
     return (
         <Snackbar
-        open={notify.isOpen}
-        autoHideDuration={3000}
-        onClose={handleClose}>
-            <Alert severity={notify.type}
-            onClose={handleClose}>
-                {notify.message}
+            open={props.notify.isOpen}
+            autoHideDuration={6000}
+            onClose={handleClose}
+            anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "center"
+            }}>
+            <Alert severity={props.notify.type} onClose={handleClose} sx={{ width: '100%' }}>
+                {props.notify.message}
                 
             </Alert>
         </Snackbar>
