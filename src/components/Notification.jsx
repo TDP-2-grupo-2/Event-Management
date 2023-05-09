@@ -1,7 +1,4 @@
-import { Snackbar } from "@material-ui/core";
-import { useState } from "react";
-import { Alert } from "@material-ui/lab";
-
+import {Snackbar, Alert} from "@mui/material";
 
 export const Notification = (props) => {
     
