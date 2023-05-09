@@ -5,9 +5,9 @@ import {Event} from './Event'
 import { getFirebaseImage } from '../common/FirebaseHandler';
 import { useEffect, useState } from 'react';
 
-export const ActiveEvents = (props) => {
+export const FinishEvents = (props) => {
     const APIURL = 'https://event-service-solfonte.cloud.okteto.net'
-
+    
     const [ events, setEvents ] = useState ( [] );
     const [ loading, setLoading ] = useState( true );
     const [ urlsImages, setUrlsImages ] = useState( [] );
@@ -58,7 +58,7 @@ export const ActiveEvents = (props) => {
             }
         };
         console.log(token)
-        const url = `${APIURL}/organizers/events?status=active`;
+        const url = `${APIURL}/organizers/events?status=finished`;
         const response = await fetch(
             url,
             paramsUpload
@@ -84,7 +84,7 @@ export const ActiveEvents = (props) => {
     
     return (
         !loading ? 
-        <div className="ActiveEvents" style={{background: "rgba(137,152,202,255)"}}>
+        <div className="FinishEvents" style={{background: "rgba(137,152,202,255)"}}>
             
         <Grid container spacing={5}>
             {events.length > 0 ? 
@@ -93,7 +93,7 @@ export const ActiveEvents = (props) => {
                             <Grid style={{"marginTop":"2rem"}} item xs={4}>
                                 <Event
                                     isDraft={false}
-                                    isActive={true}
+                                    isActive={false}
                                     event={event}
                                     image={ urlsImages.length > 0 ? urlsImages[idx][0] : []}
                                     setEventToEdit={props.setEventToEdit}

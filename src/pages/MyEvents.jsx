@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import { Tabs, Tab,  Grid, Typography,Box} from "@mui/material";
 import { ActiveEvents } from '../components/ActiveEvents';
 import { DraftEvents } from '../components/DraftEvents';
+import { CancelEvents } from "../components/CancelEvents";
+import { FinishEvents } from "../components/FinishEvents";
+import { SuspendedEvents } from "../components/SuspendedEvents";
 
 
 function TabPanel(props) {
@@ -54,6 +57,9 @@ export const MyEvents = (props) => {
                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                         <Tab label="Borrador" {...a11yProps(0)} />
                         <Tab label="Activos" {...a11yProps(1)} />
+                        <Tab label="Cancelados" {...a11yProps(2)} />
+                        <Tab label="Finalizados" {...a11yProps(3)} />
+                        <Tab label="Suspendidos" {...a11yProps(4)} />
                         
                 </Tabs>
             </Box>
@@ -71,6 +77,24 @@ export const MyEvents = (props) => {
                     setEventToEdit={props.setEventToEdit} 
                     setComponentToRenderize={props.setComponentToRenderize}>
                  </ActiveEvents>
+            </TabPanel>
+            <TabPanel value={value} index={2}>
+                <CancelEvents
+                    setEventToEdit={props.setEventToEdit} 
+                    setComponentToRenderize={props.setComponentToRenderize}>
+                 </CancelEvents>
+            </TabPanel>
+            <TabPanel value={value} index={3}>
+                <FinishEvents
+                    setEventToEdit={props.setEventToEdit} 
+                    setComponentToRenderize={props.setComponentToRenderize}>
+                 </FinishEvents>
+            </TabPanel>
+            <TabPanel value={value} index={4}>
+                <SuspendedEvents
+                    setEventToEdit={props.setEventToEdit} 
+                    setComponentToRenderize={props.setComponentToRenderize}>
+                 </SuspendedEvents>
             </TabPanel>
         </Box>
         </>
