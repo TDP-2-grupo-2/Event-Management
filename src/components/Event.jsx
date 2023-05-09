@@ -4,6 +4,7 @@ import {Card, CardContent, CardMedia, Typography, Box, Button, Dialog,
 import { Notification } from "./Notification";
 import { InfoPopUp } from "./InfoPopUp";
 import alert from "../images/alert.png" 
+import dayjs from "dayjs";
 
 export const Event = (props) => {
     let [cancelDialagog, setCancelDialog] = useState(false)
@@ -28,13 +29,24 @@ export const Event = (props) => {
 
     const handlePublish = async () => {
         console.log("entre")
+        console.log(dayjs(Date.now()))
+        console.log(dayjs(props.event.dateEvent))
+        console.log(dayjs(Date.now()) > dayjs(props.event.dateEvent))
         if (allFieldsAreNotFill()){
             setNotifyPublish({
                 isOpen: true,
                 message: 'Por favor carga todos los campos antes de publicar',
                 type: 'error'
             })
+        
+        } else if (dayjs(Date.now()) > dayjs(props.event.dateEvent)){
+            setNotifyPublish({
+                isOpen: true,
+                message: 'Por favor publicar una fecha valida',
+                type: 'error'
+            })
         } else {
+            
             console.log(typeof props.event)
             console.log(props.event)
             console.log(props.event)
@@ -136,6 +148,7 @@ export const Event = (props) => {
     
 
     const handleEdit = () =>{ 
+    
         if (props.isDraft){
            
             props.event['image'] = props.image
@@ -226,12 +239,14 @@ export const Event = (props) => {
                 
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', pl: 15, pb: 15, columnGap:"50px", height:"30%"}}>
-                <Button variant="contained" 
-                        sx={{ color: 'rgba(112, 92, 156)', backgroundColor: 'white', borderColor: 'white' }}
-                        size="small"
-                        onClick={handleEdit}>Editar
-                        
-                </Button>
+                {(props.isActive==true || props.isDraft==true) &&
+                    <Button variant="contained" 
+                            sx={{ color: 'rgba(112, 92, 156)', backgroundColor: 'white', borderColor: 'white' }}
+                            size="small"
+                            onClick={handleEdit}>Editar
+                            
+                    </Button>
+                }
                 
                 {props.isActive == true &&
                     <Button variant="contained" 

@@ -126,11 +126,20 @@ export const EditDraftEvent = (props) => {
     }
  
     const onPublishEvent = async (event) => {
-        
+        console.log("publoc evento")
+        let result = dayjs(Date.now()).isBefore(eventDate)
+        console.log(result)
         if (allFieldsAreNotFill()){
             setNotifyPublish({
                 isOpen: true,
                 message: 'Por favor carga todos los campos antes de publicar',
+                type: 'error'
+            })
+        
+        } else if (dayjs(Date.now()) > eventDate){
+            setNotifyPublish({
+                isOpen: true,
+                message: 'Por favor publicar una fecha valida',
                 type: 'error'
             })
         } else {
