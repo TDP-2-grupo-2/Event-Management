@@ -6,6 +6,8 @@ import { handleUploadFirebaseImage, deleteFirebaseImage } from '../common/Fireba
 import { DisplayImageLocation } from "../components/DisplayImageLocation";
 import { GeneralEventInfo } from "../components/GeneralEventInfo";
 import {Notification} from '../components/Notification'
+import { InfoPopUp } from "../components//InfoPopUp";
+import alert from "../images/alert.png" 
 
 
 export const EditActiveEvent = (props) => {
@@ -14,6 +16,7 @@ export const EditActiveEvent = (props) => {
     console.log(props.eventToEdit)
     console.log(Object.keys(props.eventToEdit));
     console.log(props.eventToEdit.start)
+    let [modifyDialago, setModifyDialog] = useState(false)
     const [notifyModify, setNotifyModify] = useState({isOpen: false, message: '', type: ''})
     
     const [eventName, setEventName] = useState(props.eventToEdit.name)
@@ -39,7 +42,7 @@ export const EditActiveEvent = (props) => {
     
     const APIURL = 'https://event-service-solfonte.cloud.okteto.net'
 
-    const onSubmitSaveEvent = async (event) => {
+    const onModifingEvent = async (event) => {
         const month = eventDate.$M  +  1
         const eventDateFormat =  eventDate.$y + "-" + month  + "-" + eventDate.$D
         let eventStartTimeFormat = eventStartTime.$H + ":" + eventStartTime.$m  + ":00"
@@ -83,7 +86,7 @@ export const EditActiveEvent = (props) => {
         console.log("id del evento")
         console.log(props.eventToEdit['_id'])
         const id = props.eventToEdit['_id']['$oid']
-        const url = `${APIURL}/organizers/draft_events/${id}`;
+        const url = `${APIURL}/organizers/active_events/${id}`;
         const response = await fetch(
             url,
             paramsUpload
@@ -94,6 +97,7 @@ export const EditActiveEvent = (props) => {
         if (response.status === 200){
             console.log(jsonResponse.status_code)
             if(!jsonResponse.status_code){
+                setModifyDialog(false);
                 setNotifyModify({
                     isOpen: true,
                     message: 'Evento ha sido modificado exitosamente',
@@ -154,6 +158,14 @@ export const EditActiveEvent = (props) => {
         return hashedNames;
     }
 
+    const handleModifingEvent = () =>{
+        setModifyDialog(true);
+    }
+
+    const handleClose = () => {
+        setModifyDialog(false);
+    }
+
     return (
         <div className="CreateEvent" style={{background: "rgba(137,152,202,255)"}}>
             <Typography  variant="h3" align="top">
@@ -212,9 +224,18 @@ export const EditActiveEvent = (props) => {
                         <div style={{backgroundColor: 'rgba(112, 92, 156)'}}>
                             <Button variant="contained" 
                                     sx={{ color: 'white', backgroundColor: 'rgba(112, 92, 156)', borderColor: 'purple' }}
+                                    onClick={handleModifingEvent}
                                     > Guardar Cambios
                             </Button>
                         </div>
+                        <InfoPopUp 
+                                openDialog={modifyDialago}
+                                handleClose={handleClose}
+                                text="¿Estás seguro de que querés modificar este evento? Si modificas el evento, se le notificará a los usuarios que iban a asistir al mismo de estos cambios"
+                                image={alert}
+                                mainText="Warning"
+                                onClick={onModifingEvent}
+                            />
                         <Notification
                             notify={notifyModify}
                             setNotify={setNotifyModify}/>   
