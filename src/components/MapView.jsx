@@ -28,16 +28,23 @@ export const MapView = (props) => {
     
     
     const findPlace = async () => {
+      console.log(props.location)
+      console.log(props.location.lenght)
+      console.log(typeof props.location)
       if (props.location !== ''){
+        console.log("entre")
         const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURI(props.location)}.json?access_token=${MAP_BOX_TOKEN}`
         const response = await fetch(url);
         const jsonResponse = await response.json();
+        console.log(jsonResponse)
         const newView = jsonResponse.features[0].center
         setViewPort({...viewPort, longitude: newView[0], latitude: newView[1]})
         }
     }
 
       useEffect(() => {
+        console.log("estoy en map view")
+        console.log(props.location)
         findPlace();
         console.log(props.location)
       }, [props.location])

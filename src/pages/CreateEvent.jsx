@@ -25,7 +25,7 @@ export const CreateEvent = (props) => {
     
     const [photosNamesHashed, setPhotosNamesHashed] = useState([]);
     const [eventPhotosUpload, setEventPhotosUpload] = useState([]);
-    const [locationToMap, setLocationToMap] = useState([])
+    const [locationToMap, setLocationToMap] = useState("")
     const [pregunta1, setPregunta1] = useState("")
     const [pregunta2, setPregunta2] = useState("")
     const [pregunta3, setPregunta3] = useState("")
