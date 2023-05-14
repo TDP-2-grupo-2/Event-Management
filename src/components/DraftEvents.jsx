@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 export const DraftEvents = (props) => {
     console.log("entreeeee a mis eventos")
     const APIURL = 'https://event-service-solfonte.cloud.okteto.net'
-
+    const [change, setChange] = useState("");
     const [ events, setEvents ] = useState ( [] );
     const [ loading, setLoading ] = useState( true );
     const [ urlsImages, setUrlsImages ] = useState( [] );
@@ -81,7 +81,7 @@ export const DraftEvents = (props) => {
 
     useEffect( () => {
         getOrganizerEvents(localStorage.getItem("token"));
-    }, []);
+    }, [change]);
     // pasarle ademas las dos funciones de arriba
     return (
         !loading ? 
@@ -97,6 +97,8 @@ export const DraftEvents = (props) => {
                                     isDraft={true}
                                     isActive={false}
                                     event={event}
+                                    change={change}
+                                    setChange={setChange}
                                     setEventToEdit={props.setEventToEdit}
                                     setComponentToRenderize={props.setComponentToRenderize}
                                 />

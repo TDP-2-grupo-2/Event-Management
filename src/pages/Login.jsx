@@ -10,6 +10,7 @@ import {Notification} from '../components/Notification'
 export const Login = (props) => {
     const APIURL = 'https://event-service-solfonte.cloud.okteto.net'
     const [notify, setNotify] = useState({isOpen: false, message: '', type: ''})
+    const [notifyUserIsBlock, setNotifyUserIsBlock] = useState({isOpen: false, message: '', type: ''})
 
     const responseMessage = async (googleMessage) => {
         console.log("respuesta de google")
@@ -56,8 +57,13 @@ export const Login = (props) => {
                     message: 'No se pudo conectar con google',
                     type: 'error'
                 })
-            }
-            
+            }    
+        } else if (response.status == 409){
+            setNotify({
+                isOpen: true,
+                message: 'Usted ha sido bloqueado, sus eventos activos han sido cancelados. Por favor contactese al mail admin@gmail.com',
+                type: 'warning'
+            })
         }
     }
 

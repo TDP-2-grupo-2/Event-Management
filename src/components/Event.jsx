@@ -95,6 +95,7 @@ export const Event = (props) => {
                         message: 'Evento ha sido publicado exitosamente',
                         type: 'success'
                     })
+                    props.setChange("publicar")
                 
                 }else{
                     console.log("hay error")
@@ -138,6 +139,7 @@ export const Event = (props) => {
         if (response.status === 200){
             setNotifyCancel({isOpen:true, message:"El evento ha sido cancelado exitosamente", type:"success"})
             setCancelDialog(false);
+            props.setChange("cancelar")
         }
 
     }
