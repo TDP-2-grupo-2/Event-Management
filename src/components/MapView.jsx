@@ -13,11 +13,8 @@ export const getLatitudandlongitud = async (location) => {
       const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURI(location)}.json?access_token=${MAP_BOX_TOKEN}`
       const response = await fetch(url);
       console.log(location);
-      let newView 
       const jsonResponse = await response.json();
-      if ("center" in jsonResponse.features[0]){
-          newView = jsonResponse.features[0].center;
-      }
+      const newView = jsonResponse.features[0].center;
       return newView;
     }
 }
@@ -34,7 +31,7 @@ export const MapView = (props) => {
       console.log(props.location)
       console.log(props.location.lenght)
       console.log(typeof props.location)
-      if (props.location !== ''){
+      if (props.location !== '' || props.location.lenght != 2){
         console.log("entre")
         const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURI(props.location)}.json?access_token=${MAP_BOX_TOKEN}`
         const response = await fetch(url);
