@@ -13,8 +13,11 @@ export const getLatitudandlongitud = async (location) => {
       const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURI(location)}.json?access_token=${MAP_BOX_TOKEN}`
       const response = await fetch(url);
       console.log(location);
+      let newView 
       const jsonResponse = await response.json();
-      const newView = jsonResponse.features[0].center;
+      if ("center" in jsonResponse.features[0]){
+          newView = jsonResponse.features[0].center;
+      }
       return newView;
     }
 }
