@@ -118,6 +118,42 @@ export const Event = (props) => {
         }
     }
 
+    const sendNotifications = async (event) => {
+        console.log("entre a send notifications")
+        const paramsUpload = {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                message: "Se ha cancelado el evento.",
+                modifications: {"status": "cancelled"},
+                event_id: props.event["_id"]["$oid"],
+                event_name: props.event.name
+            })
+        };
+        const url = 'https://notifications-service-solfonte.cloud.okteto.net/notifications/modifications';
+        const response = await fetch(
+            url,
+            paramsUpload
+        );
+        const jsonResponse = await response.json();
+        console.log(response.status);
+        if (response.status === 200){
+            console.log(jsonResponse.status_code)
+            if(!jsonResponse.status_code){
+                console.log("se enviaron todos los mensajes")
+                setNotifyModify({
+                    isOpen: true,
+                    message: 'Se han notificados a toso los usuarios asistentes',
+                    type: 'success'
+                })
+                setModifyVariables({})
+            }
+        }
+        return response.status
+    }
+
     const onCancelEvent = async () => {
         let token = localStorage.getItem("token")
         const paramsUpload = {
