@@ -37,8 +37,10 @@ const eventypes = [
 
 export const GeneralEventInfo = (props) => {
     console.log(props.disable)
+    console.log(props.modifyVariables)
 
     const addVariableMofify = (attribute, attributeChange) => {
+        console.log("entre a guardar variable")
         let aux = props.modifyVariables;
         aux[attribute] = attributeChange
         props.setModifyVariables(aux)
@@ -47,7 +49,7 @@ export const GeneralEventInfo = (props) => {
 
 
     return (
-
+       
         <Box
                     sx={{
                     p: 1,
@@ -79,7 +81,7 @@ export const GeneralEventInfo = (props) => {
                                         rows={1} 
                                         fullWidth
                                         value={props.eventDescription}
-                                        onChange = {(event) => {props.setEventDescription(event.target.value); addVariableMofify('eventDescription', event)}}
+                                        onChange = {(event) => {props.setEventDescription(event.target.value); addVariableMofify('eventDescription', event.target.value)}}
                                         />
                         </Grid>
                         <Grid item xs={12} style={{ display: "flex", justifyContent: "flex-start" }}>
@@ -93,7 +95,7 @@ export const GeneralEventInfo = (props) => {
                                 <DesktopTimePicker label= "Hora inicio"
                                                     
                                                     value={props.eventStartTime || null}
-                                                    onChange={(event) => {props.setEventStartTime(event);  addVariableMofify('eventStartTime', event)}}
+                                                    onChange={(event) => {props.setEventStartTime(event);  addVariableMofify('eventStartTime', event.$H + ":" + event.$m + ":00")}}
                                                     />
                             </LocalizationProvider>
 
@@ -102,7 +104,7 @@ export const GeneralEventInfo = (props) => {
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <DesktopTimePicker label="Hora fin" 
                                                     value={props.eventEndTime || null}
-                                                    onChange={(event) => {props.setEventEndTime(event);  addVariableMofify('eventEndTime', event)}}
+                                                    onChange={(event) => {props.setEventEndTime(event);  addVariableMofify('eventEndTime', event.$H + ":" + event.$m + ":00")}}
                                                 />
                             </LocalizationProvider>
 
@@ -123,9 +125,9 @@ export const GeneralEventInfo = (props) => {
                         <Grid item xs={6}  style={{ display: "flex", justifyContent: "flex-end" }}>
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <DatePicker label="Fecha" 
-                                            value={props.eventDate || null}
+                                            value={props.eventEndTime || null}
                                             minDate={dayjs(Date.now())}
-                                            onChange={(event) => {props.setEventDate(dayjs(new Date(event.toISOString()))); addVariableMofify('eventDate', dayjs(new Date(event.toISOString())))}}
+                                            onChange={(event) => {props.setEventDate(dayjs(new Date(event.toISOString()))); addVariableMofify('eventDate', event.$y + "-" + (event.$M + 1) + "-" + event.$D)}}
                                             
                                             />
                             </LocalizationProvider>
@@ -162,6 +164,8 @@ export const GeneralEventInfo = (props) => {
                                             eventEndTime={props.eventEndTime}
                                             agendaValues={props.agendaValues}
                                             setAgendaValues={props.setAgendaValues}
+                                            modifyVariables={props.modifyVariables}
+                                            setModifyVariables={props.setModifyVariables}
                                     >
 
                                     </TabSection>

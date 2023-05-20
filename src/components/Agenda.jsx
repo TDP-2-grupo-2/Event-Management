@@ -9,12 +9,20 @@ import { element } from "prop-types";
 
 export const  Agenda = (props)  => {
 
+    const addVariableMofify = (attribute, attributeChange) => {
+        console.log("entre a guardar variable")
+        let aux = props.modifyVariables;
+        aux[attribute] = attributeChange
+        props.setModifyVariables(aux)
+        console.log(props.modifyVariables)
+    }
 
     const handleHourChange=(e, index)=>{
         const {name, value} = e.target
         const list= [...props.agendaValues];
         list[index][name]= value;
         props.setAgendaValues(list);
+        addVariableMofify("agenda", list)
     }
 
     const handleDescriptionChange=(e, index)=>{
@@ -22,6 +30,7 @@ export const  Agenda = (props)  => {
         const list= [...props.agendaValues];
         list[index][name]= value;
         props.setAgendaValues(list);
+        addVariableMofify("agenda", list)
     
       }
 
@@ -33,6 +42,7 @@ export const  Agenda = (props)  => {
         list.splice(index,1);
         console.log(list)
         props.setAgendaValues(list);
+        addVariableMofify("agenda", list)
       }
 
       const handleAddingAgenda=(e, index)=>{ 
@@ -44,8 +54,11 @@ export const  Agenda = (props)  => {
         console.log(typeof props.agendaValues[index -1].horario)
         list.splice(index, 0, { horario:dayjs(props.agendaValues[index -1].horario, "HH:mm:ss"), descripcion:''});
         props.setAgendaValues(list)
+        addVariableMofify("agenda", list)
         
       }
+
+      
 
     console.log(props.agendaValues)
     return (

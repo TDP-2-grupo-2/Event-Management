@@ -43,7 +43,45 @@ export const EditActiveEvent = (props) => {
     
     const APIURL = 'https://event-service-solfonte.cloud.okteto.net'
 
+    const sendNotifications = async (event) => {
+        console.log("entre a send notifications")
+        const paramsUpload = {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                message: "Se han realizado modificaciones al evento.",
+                modifications: modifyVariables,
+                event_id: props.eventToEdit['_id']['$oid'],
+                event_name: eventName
+            })
+        };
+        const url = 'https://notifications-service-solfonte.cloud.okteto.net/notifications/modifications';
+        const response = await fetch(
+            url,
+            paramsUpload
+        );
+        const jsonResponse = await response.json();
+        console.log(response.status);
+        if (response.status === 200){
+            console.log(jsonResponse.status_code)
+            if(!jsonResponse.status_code){
+                console.log("se enviaron todos los mensajes")
+                setNotifyModify({
+                    isOpen: true,
+                    message: 'Se han notificados a toso los usuarios asistentes',
+                    type: 'success'
+                })
+                setModifyVariables({})
+            }
+        }
+        return response.status
+
+    }
+
     const onModifingEvent = async (event) => {
+        
         const month = eventDate.$M  +  1
         const eventDateFormat =  eventDate.$y + "-" + month  + "-" + eventDate.$D
         let eventStartTimeFormat = eventStartTime.$H + ":" + eventStartTime.$m  + ":00"
@@ -97,13 +135,17 @@ export const EditActiveEvent = (props) => {
         console.log(response.status)
         if (response.status === 200){
             console.log(jsonResponse.status_code)
-            if(!jsonResponse.status_code){
+            let aux = await sendNotifications();
+            console.log(aux)
+            if(!jsonResponse.status_code && aux == 201){
                 setModifyDialog(false);
+                console.log("estoy pot mandar las notis")
                 setNotifyModify({
                     isOpen: true,
                     message: 'Evento ha sido modificado exitosamente',
                     type: 'success'
                 })
+                
                
             }else{
                 console.log("hay error")
@@ -228,7 +270,10 @@ export const EditActiveEvent = (props) => {
                         <div style={{backgroundColor: 'rgba(112, 92, 156)'}}>
                             <Button variant="contained" 
                                     sx={{ color: 'white', backgroundColor: 'rgba(112, 92, 156)', borderColor: 'purple' }}
-                                    onClick={handleModifingEvent}
+                                    onClick={() =>{
+                                        handleModifingEvent();
+                                    }
+                                    }
                                     > Guardar Cambios
                             </Button>
                         </div>

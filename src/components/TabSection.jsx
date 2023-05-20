@@ -41,6 +41,13 @@ export const TabSection = (props) => {
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
+    const addVariableMofify = (attribute, attributeChange) => {
+        console.log("entre a guardar variable")
+        let aux = props.modifyVariables;
+        aux[attribute] = attributeChange
+        props.setModifyVariables(aux)
+        console.log(props.modifyVariables)
+    }
 
     return (
         <>
@@ -71,7 +78,7 @@ export const TabSection = (props) => {
                             value={props.pregunta1}
                             fullWidth
                             size="small"
-                            onChange = {(event) => props.setPregunta1(event.target.value)}
+                            onChange = {(event) => {props.setPregunta1(event.target.value); addVariableMofify("pregunta1", event.target.value)}}
                         />
                     </Grid>
                     <Grid item xs={12}  style={{ display: "flex", justifyContent: "flex-start" }}>
@@ -87,7 +94,7 @@ export const TabSection = (props) => {
                             value={props.pregunta2} 
                             fullWidth
                             size="small"
-                            onChange = {(event) => props.setPregunta2(event.target.value)}
+                            onChange = {(event) => {props.setPregunta2(event.target.value); addVariableMofify("pregunta2", event.target.value)}}
                         />
                     </Grid>
                     <Grid item xs={12}  style={{ display: "flex", justifyContent: "flex-start" }}>
@@ -103,7 +110,7 @@ export const TabSection = (props) => {
                             value={props.pregunta3} 
                             fullWidth
                             size="small"
-                            onChange = {(event) => props.setPregunta3(event.target.value)}
+                            onChange = {(event) => {props.setPregunta3(event.target.value);  addVariableMofify("pregunta3", event.target.value)}}
                         />
                     </Grid>
                 </Grid>     
@@ -112,7 +119,10 @@ export const TabSection = (props) => {
                 <Agenda start={props.eventStartTime}
                             end={props.eventEndTime}
                             agendaValues={props.agendaValues}
+                            modifyVariables={props.modifyVariables}
+                            setModifyVariables={props.setModifyVariables}
                             setAgendaValues={props.setAgendaValues}>
+                            
                 </Agenda>
             </TabPanel>
         </Box>

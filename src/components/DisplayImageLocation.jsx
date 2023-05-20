@@ -6,12 +6,21 @@ import {MapView, getLatitudandlongitud} from '../components/MapView'
 
 export const DisplayImageLocation = (props) => {
 
+    const addVariableMofify = (attribute, attributeChange) => {
+        console.log("entre a guardar variable")
+        let aux = props.modifyVariables;
+        aux[attribute] = attributeChange
+        props.setModifyVariables(aux)
+        console.log(props.modifyVariables)
+    }
     function handleUploadOfFile (event)  {
         props.setFileInputShow(event.target.value);
         props.setEventPhotosUpload(event.target.files)
         let url = URL.createObjectURL(event.target.files[0]);
         props.setFile(url)
+        addVariableMofify("photo", url)
     }
+    
 
 
     return(
@@ -64,7 +73,7 @@ export const DisplayImageLocation = (props) => {
                     required
                     placeholder="Ingresa la ubicacion de evento"
                     value={props.eventLocation}
-                    onChange = {(event) => props.setEventLocation(event.target.value)} 
+                    onChange = {(event) => {props.setEventLocation(event.target.value); addVariableMofify("eventLocation", event.target.value)}} 
                     />
                 </Grid>
                 <Grid item xs={6}  style={{ display: "flex", justifyContent: "flex-start" }}>
@@ -72,7 +81,7 @@ export const DisplayImageLocation = (props) => {
                         fullWidth
                         placeholder="Detalle la ubicación del evento"
                         value={props.eventLocationDescription}
-                        onChange = {(event) => props.setEventLocationDescription(event.target.value)} 
+                        onChange = {(event) => {props.setEventLocationDescription(event.target.value); addVariableMofify("eventLocationDescription", event.target.value)}} 
                 />                    
                 </Grid>
                 <Grid item xs={6} style={{ display: "flex", justifyContent: "flex-start" }}>
