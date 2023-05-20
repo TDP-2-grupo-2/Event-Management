@@ -28,17 +28,22 @@ export const MapView = (props) => {
     
     
     const findPlace = async () => {
+      console.log("estoy aca la puta madre")
       console.log(props.location)
-      console.log(props.location.lenght)
-      console.log(typeof props.location)
-      if (props.location !== ''){
+      console.log("size", props.location.lenght)
+      
+      console.log("typo ", typeof props.location)
+      if (props.location !== '' && props.location.length != 2){
         console.log("entre")
         const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURI(props.location)}.json?access_token=${MAP_BOX_TOKEN}`
         const response = await fetch(url);
         const jsonResponse = await response.json();
         console.log(jsonResponse)
-        const newView = jsonResponse.features[0].center
-        setViewPort({...viewPort, longitude: newView[0], latitude: newView[1]})
+        if ("center" in jsonResponse.features[0]){
+          console.log("HAY CENTERRRR")
+          const newView = jsonResponse.features[0].center
+          setViewPort({...viewPort, longitude: newView[0], latitude: newView[1]})
+        }
         }
     }
 

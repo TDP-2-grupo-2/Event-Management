@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 
 export const ActiveEvents = (props) => {
     const APIURL = 'https://event-service-solfonte.cloud.okteto.net'
-
+    const [change, setChange] = useState("");
     const [ events, setEvents ] = useState ( [] );
     const [ loading, setLoading ] = useState( true );
     const [ urlsImages, setUrlsImages ] = useState( [] );
@@ -80,7 +80,7 @@ export const ActiveEvents = (props) => {
 
     useEffect( () => {
         getOrganizerEvents(localStorage.getItem('token'));
-    }, []);
+    }, [change]);
     
     return (
         !loading ? 
@@ -95,6 +95,8 @@ export const ActiveEvents = (props) => {
                                     isDraft={false}
                                     isActive={true}
                                     event={event}
+                                    change={change}
+                                    setChange={setChange}
                                     image={ urlsImages.length > 0 ? urlsImages[idx][0] : []}
                                     setEventToEdit={props.setEventToEdit}
                                     setComponentToRenderize={props.setComponentToRenderize}
