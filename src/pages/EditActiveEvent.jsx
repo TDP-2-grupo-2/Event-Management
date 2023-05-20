@@ -16,9 +16,10 @@ export const EditActiveEvent = (props) => {
     console.log(props.eventToEdit)
     console.log(Object.keys(props.eventToEdit));
     console.log(props.eventToEdit.start)
+
     let [modifyDialago, setModifyDialog] = useState(false)
     const [notifyModify, setNotifyModify] = useState({isOpen: false, message: '', type: ''})
-    
+    const [modifyVariables, setModifyVariables] = useState({})
     const [eventName, setEventName] = useState(props.eventToEdit.name)
     const [eventDescription, setEventDescription] = useState(props.eventToEdit.description)
     const [eventStartTime, setEventStartTime] = useState(dayjs(props.eventToEdit.start, "HH:mm:ss"))
@@ -187,6 +188,8 @@ export const EditActiveEvent = (props) => {
                     eventLocationDescription={eventLocationDescription}
                     setEventLocationDescription={setEventLocationDescription}
                     locationToMap={locationToMap}
+                    setModifyVariables={setModifyVariables}
+                    modifyVariables={modifyVariables}
                 >
 
                 </DisplayImageLocation>
@@ -216,7 +219,8 @@ export const EditActiveEvent = (props) => {
                             setPregunta3={setPregunta3}
                             agendaValues={agendaValues}
                             setAgendaValues={setAgendaValues}
-                        
+                            setModifyVariables={setModifyVariables}
+                            modifyVariables={modifyVariables}
                         >
                         </GeneralEventInfo>
                     </Grid>
