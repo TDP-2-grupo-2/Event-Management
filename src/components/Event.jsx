@@ -143,12 +143,7 @@ export const Event = (props) => {
             console.log(jsonResponse.status_code)
             if(!jsonResponse.status_code){
                 console.log("se enviaron todos los mensajes")
-                setNotifyModify({
-                    isOpen: true,
-                    message: 'Se han notificados a toso los usuarios asistentes',
-                    type: 'success'
-                })
-                setModifyVariables({})
+
             }
         }
         return response.status
