@@ -73,7 +73,7 @@ export const DisplayImageLocation = (props) => {
                     required
                     placeholder="Ingresa la ubicacion de evento"
                     value={props.eventLocation}
-                    onChange = {(event) => {props.setEventLocation(event.target.value); addVariableMofify("eventLocation", event.target.value)}} 
+                    onChange = {(event) => {props.setEventLocation(event.target.value); addVariableMofify("location", event.target.value)}} 
                     />
                 </Grid>
                 <Grid item xs={6}  style={{ display: "flex", justifyContent: "flex-start" }}>
@@ -81,7 +81,7 @@ export const DisplayImageLocation = (props) => {
                         fullWidth
                         placeholder="Detalle la ubicación del evento"
                         value={props.eventLocationDescription}
-                        onChange = {(event) => {props.setEventLocationDescription(event.target.value); addVariableMofify("eventLocationDescription", event.target.value)}} 
+                        onChange = {(event) => {props.setEventLocationDescription(event.target.value); addVariableMofify("locationDescription", event.target.value)}} 
                 />                    
                 </Grid>
                 <Grid item xs={6} style={{ display: "flex", justifyContent: "flex-start" }}>

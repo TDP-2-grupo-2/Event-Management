@@ -81,7 +81,7 @@ export const GeneralEventInfo = (props) => {
                                         rows={1} 
                                         fullWidth
                                         value={props.eventDescription}
-                                        onChange = {(event) => {props.setEventDescription(event.target.value); addVariableMofify('eventDescription', event.target.value)}}
+                                        onChange = {(event) => {props.setEventDescription(event.target.value); addVariableMofify('description', event.target.value)}}
                                         />
                         </Grid>
                         <Grid item xs={12} style={{ display: "flex", justifyContent: "flex-start" }}>
@@ -95,7 +95,7 @@ export const GeneralEventInfo = (props) => {
                                 <DesktopTimePicker label= "Hora inicio"
                                                     
                                                     value={props.eventStartTime || null}
-                                                    onChange={(event) => {props.setEventStartTime(event);  addVariableMofify('eventStartTime', event.$H + ":" + event.$m + ":00")}}
+                                                    onChange={(event) => {props.setEventStartTime(event);  addVariableMofify('startTime', event.$H + ":" + event.$m + ":00")}}
                                                     />
                             </LocalizationProvider>
 
@@ -104,7 +104,7 @@ export const GeneralEventInfo = (props) => {
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <DesktopTimePicker label="Hora fin" 
                                                     value={props.eventEndTime || null}
-                                                    onChange={(event) => {props.setEventEndTime(event);  addVariableMofify('eventEndTime', event.$H + ":" + event.$m + ":00")}}
+                                                    onChange={(event) => {props.setEventEndTime(event);  addVariableMofify('endTime', event.$H + ":" + event.$m + ":00")}}
                                                 />
                             </LocalizationProvider>
 
@@ -127,7 +127,7 @@ export const GeneralEventInfo = (props) => {
                                 <DatePicker label="Fecha" 
                                             value={props.eventDate || null}
                                             minDate={dayjs(Date.now())}
-                                            onChange={(event) => {props.setEventDate(dayjs(new Date(event.toISOString()))); addVariableMofify('eventDate', event.$y + "-" + (event.$M + 1) + "-" + event.$D)}}
+                                            onChange={(event) => {props.setEventDate(dayjs(new Date(event.toISOString()))); addVariableMofify('dateEvent', event.$y + "-" + (event.$M + 1) + "-" + event.$D)}}
                                             
                                             />
                             </LocalizationProvider>
