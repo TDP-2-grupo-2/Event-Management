@@ -96,6 +96,7 @@ export const DraftEvents = (props) => {
                                     image={ urlsImages.length > 0 ? urlsImages[idx][0] : []}
                                     isDraft={true}
                                     isActive={false}
+                                    isSuspended={false}
                                     event={event}
                                     change={change}
                                     setChange={setChange}

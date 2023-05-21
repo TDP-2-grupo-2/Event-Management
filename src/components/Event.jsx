@@ -265,6 +265,7 @@ export const Event = (props) => {
                         <br />
                         {props.event.eventType || "TIPO DE EVENTO"}
                         <br />
+                        {props.isSuspended &&  "Motivo: " + props.event.suspendMotive}
                         {props.event.description || "Aqui iria la describcion del evento que usted creo"}
                     </Typography>
                     </CardContent>

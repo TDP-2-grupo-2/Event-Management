@@ -10,6 +10,7 @@ import { GeneralEventInfo } from "../components/GeneralEventInfo";
 
 export const CreateEvent = (props) => {
     const [open, setOpen] = useState(false)
+    const [modifyVariables, setModifyVariables] = useState({})
     const [openSuccessDraftEvent, setOpenSuccessDraftEvent] = useState(false)
     const [eventName, setEventName] = useState("")
     const [eventDescription, setEventDescription] = useState("")
@@ -187,13 +188,6 @@ export const CreateEvent = (props) => {
         return faqs
     }
 
-    // function handleUploadOfFile (event)  {
-    //     setFileInputShow(event.target.value);
-    //     setEventPhotosUpload(event.target.files)
-    //     let url = URL.createObjectURL(event.target.files[0]);
-    //     setFile(url)
-    // }
-
     const handleUploadPhotos = async () => {
         const hashedNames = [];
         for ( let i=0; i<eventPhotosUpload.length; i++){
@@ -224,6 +218,8 @@ export const CreateEvent = (props) => {
                     eventLocationDescription={eventLocationDescription}
                     setEventLocationDescription={setEventLocationDescription}
                     locationToMap={locationToMap}
+                    setModifyVariables={setModifyVariables}
+                    modifyVariables={modifyVariables}
                 >
 
                 </DisplayImageLocation>
@@ -253,6 +249,8 @@ export const CreateEvent = (props) => {
                             setPregunta3={setPregunta3}
                             agendaValues={agendaValues}
                             setAgendaValues={setAgendaValues}
+                            setModifyVariables={setModifyVariables}
+                            modifyVariables={modifyVariables}
                         
                         >
                         </GeneralEventInfo>

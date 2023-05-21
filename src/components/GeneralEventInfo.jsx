@@ -125,7 +125,7 @@ export const GeneralEventInfo = (props) => {
                         <Grid item xs={6}  style={{ display: "flex", justifyContent: "flex-end" }}>
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <DatePicker label="Fecha" 
-                                            value={props.eventEndTime || null}
+                                            value={props.eventDate || null}
                                             minDate={dayjs(Date.now())}
                                             onChange={(event) => {props.setEventDate(dayjs(new Date(event.toISOString()))); addVariableMofify('eventDate', event.$y + "-" + (event.$M + 1) + "-" + event.$D)}}
                                             

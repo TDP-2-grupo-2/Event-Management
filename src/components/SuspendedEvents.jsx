@@ -94,6 +94,7 @@ export const SuspendedEvents = (props) => {
                                 <Event
                                     isDraft={false}
                                     isActive={false}
+                                    isSuspended={true}
                                     event={event}
                                     image={ urlsImages.length > 0 ? urlsImages[idx][0] : []}
                                     setEventToEdit={props.setEventToEdit}

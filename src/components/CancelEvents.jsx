@@ -94,6 +94,7 @@ export const CancelEvents = (props) => {
                                 <Event
                                     isDraft={false}
                                     isActive={false}
+                                    isSuspended={false}
                                     event={event}
                                     image={ urlsImages.length > 0 ? urlsImages[idx][0] : []}
                                     setEventToEdit={props.setEventToEdit}

@@ -58,13 +58,15 @@ export const EditActiveEvent = (props) => {
             })
         };
         const url = 'https://notifications-service-solfonte.cloud.okteto.net/notifications/modifications';
+        console.log(paramsUpload);
         const response = await fetch(
             url,
             paramsUpload
         );
+        
         const jsonResponse = await response.json();
         console.log(response.status);
-        if (response.status === 200){
+        if (response.status === 201){
             console.log(jsonResponse.status_code)
             if(!jsonResponse.status_code){
                 console.log("se enviaron todos los mensajes")

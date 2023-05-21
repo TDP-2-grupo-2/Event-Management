@@ -94,6 +94,7 @@ export const ActiveEvents = (props) => {
                                 <Event
                                     isDraft={false}
                                     isActive={true}
+                                    isSuspended={false}
                                     event={event}
                                     change={change}
                                     setChange={setChange}
