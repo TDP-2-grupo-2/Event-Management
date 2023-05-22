@@ -139,7 +139,7 @@ export const Event = (props) => {
         );
         const jsonResponse = await response.json();
         console.log(response.status);
-        if (response.status === 200){
+        if (response.status === 201){
             console.log(jsonResponse.status_code)
             if(!jsonResponse.status_code){
                 console.log("se enviaron todos los mensajes")
@@ -166,8 +166,9 @@ export const Event = (props) => {
             url,
             paramsUpload
         );
-    
-        if (response.status === 200){
+        let aux = await sendNotifications();
+        console.log(aux)
+        if (response.status === 200 && aux === 201){
             setNotifyCancel({isOpen:true, message:"El evento ha sido cancelado exitosamente", type:"success"})
             setCancelDialog(false);
             props.setChange("cancelar")
