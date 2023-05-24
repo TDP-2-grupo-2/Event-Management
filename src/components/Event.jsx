@@ -132,7 +132,7 @@ export const Event = (props) => {
                 event_name: props.event.name
             })
         };
-        const url = 'https://notifications-service-solfonte.cloud.okteto.net/notifications/modifications';
+        const url = 'https://notifications-service-agustinaa235.cloud.okteto.net/notifications/modifications';
         const response = await fetch(
             url,
             paramsUpload
