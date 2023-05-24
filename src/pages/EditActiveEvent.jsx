@@ -56,8 +56,8 @@ export const EditActiveEvent = (props) => {
                 event_id: props.eventToEdit['_id']['$oid'],
                 event_name: eventName
             })
-        };
-        const url = 'https://notifications-service-solfonte.cloud.okteto.net/notifications/modifications';
+        }
+        const url = 'https://notifications-service-agustinaa235.cloud.okteto.net/notifications/modifications';
         console.log(paramsUpload);
         const response = await fetch(
             url,
