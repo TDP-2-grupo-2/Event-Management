@@ -14,6 +14,7 @@ export const EditDraftEvent = (props) => {
     console.log(props.eventToEdit)
     console.log(Object.keys(props.eventToEdit));
     console.log(props.eventToEdit.start)
+    const [modifyVariables, setModifyVariables] = useState({})
     const [notifyModify, setNotifyModify] = useState({isOpen: false, message: '', type: ''})
     const [notifyPublish, setNotifyPublish] = useState({isOpen: false, message:'', type:''})
  
@@ -278,6 +279,8 @@ export const EditDraftEvent = (props) => {
                     eventLocationDescription={eventLocationDescription}
                     setEventLocationDescription={setEventLocationDescription}
                     locationToMap={locationToMap}
+                    setModifyVariables={setModifyVariables}
+                    modifyVariables={modifyVariables}
                 >
 
                 </DisplayImageLocation>
@@ -307,6 +310,8 @@ export const EditDraftEvent = (props) => {
                             setPregunta3={setPregunta3}
                             agendaValues={agendaValues}
                             setAgendaValues={setAgendaValues}
+                            setModifyVariables={setModifyVariables}
+                            modifyVariables={modifyVariables}
                         
                         >
                         </GeneralEventInfo>

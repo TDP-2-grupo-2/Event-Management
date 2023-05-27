@@ -42,9 +42,25 @@ export const EditActiveEvent = (props) => {
 
     
     const APIURL = 'https://event-service-solfonte.cloud.okteto.net'
+    const processFaqsQuestions = () => {
+        let faqsAux = [];
+        if ("pregunta1" in modifyVariables){
+            faqsAux.push({'pregunta':'¿Hasta que hora puede ingresarse al evento?', 'respuesta': modifyVariables['pregunta1']})
+            delete modifyVariables['pregunta1']
+        } if ("pregunta2" in modifyVariables){
+            faqsAux.push({'pregunta': '¿Se suspende el evento por lluvia?', 'respuesta': modifyVariables['pregunta2']})
+            delete modifyVariables['pregunta2']
+        } if ("pregunta3" in modifyVariables){
+            faqsAux.push({'pregunta': '¿Se puede ingresar con comida?', 'respuesta': modifyVariables['pregunta3']})
+            delete modifyVariables['pregunta3']
+        }
+        modifyVariables['faqs'] = faqsAux
+    }
 
     const sendNotifications = async (event) => {
         console.log("entre a send notifications")
+        processFaqsQuestions()
+        console.log(modifyVariables)
         const paramsUpload = {
             method: "POST",
             headers: {
@@ -56,7 +72,11 @@ export const EditActiveEvent = (props) => {
                 event_id: props.eventToEdit['_id']['$oid'],
                 event_name: eventName
             })
+<<<<<<< HEAD
         };
+=======
+        }
+>>>>>>> b3eb3a3dcb9b414180e4c7bc3d7e0fa254b079e4
         const url = 'https://notifications-service-agustinaa235.cloud.okteto.net/notifications/modifications';
         console.log(paramsUpload);
         const response = await fetch(
