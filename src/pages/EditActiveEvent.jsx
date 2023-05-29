@@ -72,11 +72,7 @@ export const EditActiveEvent = (props) => {
                 event_id: props.eventToEdit['_id']['$oid'],
                 event_name: eventName
             })
-<<<<<<< HEAD
-        };
-=======
         }
->>>>>>> b3eb3a3dcb9b414180e4c7bc3d7e0fa254b079e4
         const url = 'https://notifications-service-agustinaa235.cloud.okteto.net/notifications/modifications';
         console.log(paramsUpload);
         const response = await fetch(

@@ -227,7 +227,7 @@ export const Event = (props) => {
                         {props.event.month}
                     </Typography>
                     <Typography variant="body2" color="text.primary" sx={{ flexShrink: 1 }}>
-                        {props.event.day}
+                        {props.event.day -1}
                     </Typography>
                     </CardContent>
                     </Box>
@@ -266,7 +266,7 @@ export const Event = (props) => {
                         <br />
                         {props.event.eventType || "TIPO DE EVENTO"}
                         <br />
-                        {props.isSuspended &&   <div> <br /> Motivo: {props.event.suspendMotive} <br /> </div>}
+                        {props.isSuspended &&   <div> <br /> Motivo: {props.event.suspendMotive} <br /> <br /> </div>}
                         {props.event.description || "Aqui iria la describcion del evento que usted creo"}
                     </Typography>
                     </CardContent>
