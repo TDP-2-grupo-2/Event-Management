@@ -215,22 +215,24 @@ export const Event = (props) => {
                         display: "flex",
                         gap: 2,
                         alignItems: "center",
+                        padding: 3,
                         justifyContent: "center",
                         bgcolor: 'white',
+                        paddingInline: 5,
                         borderRadius: 1,
                         width:"10%",
                         height: "50%",
                         }}>
-                    <Box >
-                    <CardContent  >
-                    <Typography variant="body2" color="text.secondary" sx={{ flexShrink: 1 }}>
+                    
+    
+                    <Typography variant="body1" color="text.secondary" sx={{ flexShrink: 1 , marginLeft:5}}>
                         {props.event.month}
                     </Typography>
-                    <Typography variant="body2" color="text.primary" sx={{ flexShrink: 1 }}>
+                    <Typography variant="body1" color="text.primary" sx={{ flexShrink: 1, marginRight:5 }}>
                         {props.event.day -1}
                     </Typography>
-                    </CardContent>
-                    </Box>
+
+                   
                 </Box>
                 <Box sx={{
                         p: 1,
@@ -244,12 +246,12 @@ export const Event = (props) => {
                         }} >
                     
                     <CardContent>
-                    <Typography variant="h5" component="div" color='white' wrap sx={{
+                    <Typography variant="h3"  component="div" color='white' wrap sx={{
                         '@media (min-width:600px)': {
-                        fontSize: '130%',
+                        fontSize: '220%',
                         },
                         '@media (min-width:900px)': {
-                        fontSize:'115%',
+                        fontSize:'165%',
                         },
                     }}>
                         {props.event.name || "Nombre del evento" }
@@ -257,16 +259,16 @@ export const Event = (props) => {
                     </Typography>
                     <Typography variant="caption" color="white" wrap sx={{
                         '@media (min-width:600px)': {
-                        fontSize: '130%',
+                        fontSize: '180%',
                         },
                         '@media (min-width:900px)': {
-                        fontSize:'60%',
+                        fontSize:'100%',
                         },
                     }}>
                         <br />
                         {props.event.eventType || "TIPO DE EVENTO"}
                         <br />
-                        {props.isSuspended &&   <div> <br /> Motivo: {props.event.suspendMotive} <br /> <br /> </div>}
+                        {props.isSuspended &&   <div style={{color:'darkred', fontWeight: "bold"}}> <br /> Motivo: {props.event.suspendMotive} <br /> <br /> </div>}
                         {props.event.description || "Aqui iria la describcion del evento que usted creo"}
                     </Typography>
                     </CardContent>
@@ -277,7 +279,7 @@ export const Event = (props) => {
                 {(props.isActive==true || props.isDraft==true) &&
                     <Button variant="contained" 
                             sx={{ color: 'rgba(112, 92, 156)', backgroundColor: 'white', borderColor: 'white' }}
-                            size="small"
+                            size="large"
                             onClick={handleEdit}>Editar
                             
                     </Button>
@@ -286,7 +288,7 @@ export const Event = (props) => {
                 {props.isActive == true &&
                     <Button variant="contained" 
                     sx={{ color: 'rgba(112, 92, 156)', backgroundColor: 'white', borderColor: 'white' }}
-                    size="small"
+                    size="large"
                     onClick={handleCancel}> Cancelar
                     </Button>
                     
