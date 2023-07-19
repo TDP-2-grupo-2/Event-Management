@@ -1,24 +1,26 @@
 import {Metrics} from './pages/Metrics';
 import {MyEvents} from './pages/MyEvents';
 import {CreateEvent} from './pages/CreateEvent';
+import { EditDraftEvent } from './pages/EditEventDraft';
 
 const AppRoutes = [
-  //{
-    //index: 1,
-    //element: <Home/>
-  //},
+ 
   {
     path: '/metrics',
-    element: <Metrics/>
+    element: <Metrics/>,
+    show: true
   },
   {
     path: '/my-events',
-    element: <MyEvents/>
+    element: <MyEvents/>,
+    show: true
   },
   {
     path: '/create-event',
-    element: <CreateEvent/>
-  }
+    element: <CreateEvent/>, 
+    show: true
+  },
+
 
 ];
 
